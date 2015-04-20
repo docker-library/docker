@@ -7,7 +7,7 @@ current="$(curl -fsSL "https://${bucket}/latest")"
 sha256="$(curl -fsSL "http://${bucket}/builds/Linux/x86_64/docker-${current}.sha256" | cut -d' ' -f1)"
 
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
-dindLatest="$(curl -sSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F '\s*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
+dindLatest="$(curl -sSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
 (
 	set -x
