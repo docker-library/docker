@@ -17,5 +17,5 @@ dindLatest="$(curl -sSL 'https://github.com/docker/docker/commits/master/hack/di
 		s/^(ENV DOCKER_BUCKET) .*/\1 '"$bucket"'/;
 		s/^(ENV DOCKER_VERSION) .*/\1 '"$current"'/;
 		s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
-	' Dockerfile
+	' {,dind/}Dockerfile
 )
