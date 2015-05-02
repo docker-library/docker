@@ -22,7 +22,7 @@ for va in "${versionAliases[@]}"; do
 	echo "$va: ${url}@${commit}"
 done
 
-for variant in dind; do
+for variant in dind git; do
 	commit="$(git log -1 --format='format:%H' -- "$variant")"
 	echo
 	for va in "${versionAliases[@]}"; do

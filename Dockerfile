@@ -3,16 +3,7 @@ FROM debian:jessie
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN apt-get update && apt-get install -y \
 		curl \
-		\
-		aufs-tools \
-		btrfs-tools \
 		ca-certificates \
-		e2fsprogs \
-		git \
-		iptables \
-		lxc \
-		procps \
-		xz-utils \
 	--no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 ENV DOCKER_BUCKET get.docker.com
