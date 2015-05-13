@@ -1,4 +1,4 @@
-FROM docker:1.6.0
+FROM docker:1.6.2
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN apt-get update && apt-get install -y \
