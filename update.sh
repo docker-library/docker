@@ -14,6 +14,7 @@ dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/d
 
 dockerVerions="$(git ls-remote --tags https://github.com/docker/docker.git | cut -d$'\t' -f2 | grep '^refs/tags/v[0-9].*$' | sed 's!^refs/tags/v!!; s!\^{}$!!' | sort -ruV)"
 
+travisEnv=
 for version in "${versions[@]}"; do
 	rcGrepV='-v'
 	rcVersion="${version%-rc}"
@@ -40,4 +41,9 @@ for version in "${versions[@]}"; do
 			s/^(FROM docker):.*/\1:'"$version"'/;
 		' "$version/Dockerfile" "$version"/*/Dockerfile
 	)
+	
+	travisEnv='\n  - VERSION='"$version$travisEnv"
 done
+
+travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
+echo "$travis" > .travis.yml
