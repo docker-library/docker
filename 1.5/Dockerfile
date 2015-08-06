@@ -6,8 +6,8 @@ RUN apk add --update \
 	&& rm -rf /var/cache/apk/*
 
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.6.2
-ENV DOCKER_SHA256 e131b2d78d9f9e51b0e5ca8df632ac0a1d48bcba92036d0c839e371d6cf960ec
+ENV DOCKER_VERSION 1.5.0
+ENV DOCKER_SHA256 5729164f6ed53c47b5c18e0c0a64fe03b8548e3fd16028fa961ea5ae5e5946c6
 
 RUN wget "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -O /usr/local/bin/docker \
 	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \

@@ -12,13 +12,15 @@ versions=( "${versions[@]%/}" )
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
+dockerVerions="$(git ls-remote --tags https://github.com/docker/docker.git | cut -d$'\t' -f2 | grep '^refs/tags/v[0-9].*$' | sed 's!^refs/tags/v!!; s!\^{}$!!' | sort -ruV)"
+
 for version in "${versions[@]}"; do
 	rcGrepV='-v'
 	rcVersion="${version%-rc}"
 	if [ "$rcVersion" != "$version" ]; then
 		rcGrepV=
 	fi
-	fullVersion="$(git ls-remote --tags https://github.com/docker/docker.git | cut -d$'\t' -f2 | grep '^refs/tags/v[0-9].*\^{}$' | sed 's!^refs/tags/v!!; s!\^{}$!!' | grep $rcGrepV -- '-rc' | grep "^$rcVersion[.]" | sort -rV | head -n1)"
+	fullVersion="$(echo "$dockerVerions" | grep $rcGrepV -- '-rc' | grep "^$rcVersion[.]" | head -n1)"
 	if [ -z "$fullVersion" ]; then
 		echo >&2 "warning: cannot find full version for $version"
 		continue
