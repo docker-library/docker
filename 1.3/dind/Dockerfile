@@ -1,4 +1,4 @@
-FROM docker:1.6
+FROM docker:1.3
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN apk add --update \

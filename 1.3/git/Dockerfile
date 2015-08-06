@@ -1,4 +1,4 @@
-FROM docker:1.6
+FROM docker:1.3
 
 RUN apk add --update \
 		git \
