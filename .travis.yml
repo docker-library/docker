@@ -30,4 +30,7 @@ script:
   - docker build -t "$image-git" git
   - ~/official-images/test/run.sh "$image-git"
 
+after_script:
+  - docker images
+
 # vim:set et ts=2 sw=2:
