@@ -5,9 +5,9 @@ RUN apk add --update \
 		openssl \
 	&& rm -rf /var/cache/apk/*
 
-ENV DOCKER_BUCKET test.docker.com
-ENV DOCKER_VERSION 1.8.0-rc3
-ENV DOCKER_SHA256 6bef0a464f2175a7c9475bcf949393d53376772a9ff91419514c6eae940da26d
+ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_VERSION 1.8.1
+ENV DOCKER_SHA256 843f90f5001e87d639df82441342e6d4c53886c65f72a5cc4765a7ba3ad4fc57
 
 RUN wget "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -O /usr/local/bin/docker \
 	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
