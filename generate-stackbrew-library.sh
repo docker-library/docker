@@ -3,8 +3,8 @@ set -e
 
 declare -A aliases
 aliases=(
-	[1.7]='1 latest'
-	[1.8-rc]='rc'
+	[1.8]='1 latest'
+	[1.9-rc]='rc'
 )
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
