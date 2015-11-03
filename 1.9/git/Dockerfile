@@ -1,4 +1,4 @@
-FROM docker:1.9-rc
+FROM docker:1.9
 
 RUN apk add --update \
 		git \
