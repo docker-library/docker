@@ -1,8 +1,6 @@
-FROM alpine:3.2
+FROM alpine:3.3
 
-RUN apk add --update \
-		curl \
-	&& rm -rf /var/cache/apk/*
+RUN apk add --no-cache curl
 
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.8.3
