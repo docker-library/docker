@@ -3,8 +3,8 @@ FROM alpine:3.3
 RUN apk add --no-cache curl
 
 ENV DOCKER_BUCKET test.docker.com
-ENV DOCKER_VERSION 1.10.0-rc2
-ENV DOCKER_SHA256 9d9ee3ec6d1724c4c9459230583c611b76d2a2483595e1d4d6361b06d447bd3e
+ENV DOCKER_VERSION 1.10.0-rc3
+ENV DOCKER_SHA256 0f9e6839f810c6609eaff4da8f8b6ec29886fb652b74a01cac92f6d6b8d3cc00
 
 RUN curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/local/bin/docker \
 	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
