@@ -37,7 +37,7 @@ for version in "${versions[@]}"; do
 			s/^(ENV DOCKER_BUCKET) .*/\1 '"$bucket"'/;
 			s/^(ENV DOCKER_VERSION) .*/\1 '"$fullVersion"'/;
 			s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
-			s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
+			#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
 			s/^(FROM docker):.*/\1:'"$version"'/;
 		' "$version/Dockerfile" "$version"/*/Dockerfile
 	)
