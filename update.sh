@@ -30,7 +30,15 @@ for version in "${versions[@]}"; do
 	if [ "$rcVersion" != "$version" ]; then
 		bucket='test.docker.com'
 	fi
-	sha256="$(curl -fsSL "https://$bucket/builds/Linux/x86_64/docker-$fullVersion.sha256" | cut -d' ' -f1)"
+	case "$rcVersion" in
+		1.9|1.10)
+			artifact="https://$bucket/builds/Linux/x86_64/docker-$fullVersion"
+			;;
+		*)
+			artifact="https://$bucket/builds/Linux/x86_64/docker-$fullVersion.tgz"
+			;;
+	esac
+	sha256="$(curl -fsSL "$artifact.sha256" | cut -d' ' -f1)" || true
 	(
 		set -x
 		sed -ri '
