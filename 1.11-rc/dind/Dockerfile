@@ -4,7 +4,9 @@ FROM docker:1.11-rc
 RUN apk add --no-cache \
 		btrfs-progs \
 		e2fsprogs \
+		e2fsprogs-extra \
 		iptables \
+		xfsprogs \
 		xz
 
 # TODO aufs-tools
