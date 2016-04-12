@@ -3,8 +3,8 @@ FROM alpine:3.3
 RUN apk add --no-cache curl
 
 ENV DOCKER_BUCKET test.docker.com
-ENV DOCKER_VERSION 1.11.0-rc4
-ENV DOCKER_SHA256 933d28b70dff2de839d7c332a4b9c645e2001afcd870fbd510f2880d1e222190
+ENV DOCKER_VERSION 1.11.0-rc5
+ENV DOCKER_SHA256 c18e16417c3c430d9b15f3a24112f3612ba89f511da2a2b9809e1a58324d2ff3
 
 RUN set -x \
 	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz" -o docker.tgz \
