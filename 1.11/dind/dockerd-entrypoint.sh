@@ -6,13 +6,14 @@ if [ "$#" -eq 0 -o "${1:0:1}" = '-' ]; then
 		--host=unix:///var/run/docker.sock \
 		--host=tcp://0.0.0.0:2375 \
 		--storage-driver=vfs \
+		"${DOCKER_DAEMON_ARGS}" \
 		"$@"
 fi
 
 if [ "$1" = 'docker' -a "$2" = 'daemon' ]; then
 	# if we're running Docker, let's pipe through dind
 	# (and we'll run dind explicitly with "sh" since its shebang is /bin/bash)
-	set -- sh "$(which dind)" "$@"
+	set -- sh "$(which dind)" "${DOCKER_DAEMON_ARGS}" "$@"
 fi
 
 exec "$@"
