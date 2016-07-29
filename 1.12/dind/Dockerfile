@@ -1,4 +1,4 @@
-FROM docker:1.10
+FROM docker:1.12
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN apk add --no-cache \
