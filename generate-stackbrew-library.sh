@@ -70,12 +70,16 @@ for version in "${versions[@]}"; do
 		Directory: $version
 	EOE
 
-	for variant in dind git; do
+	for variant in \
+		dind git \
+		experimental experimental/dind experimental/git \
+	; do
 		[ -f "$version/$variant/Dockerfile" ] || continue
 
 		commit="$(dirCommit "$version/$variant")"
 
-		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+		slash='/'
+		variantAliases=( "${versionAliases[@]/%/-${variant//$slash/-}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
 		echo

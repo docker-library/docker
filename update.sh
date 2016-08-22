@@ -26,31 +26,34 @@ for version in "${versions[@]}"; do
 		echo >&2 "warning: cannot find full version for $version"
 		continue
 	fi
-	bucket='get.docker.com'
-	if [ "$rcVersion" != "$version" ]; then
-		bucket='test.docker.com'
-	fi
-	case "$rcVersion" in
-		1.9|1.10)
-			artifact="https://$bucket/builds/Linux/x86_64/docker-$fullVersion"
-			;;
-		*)
-			artifact="https://$bucket/builds/Linux/x86_64/docker-$fullVersion.tgz"
-			;;
-	esac
-	sha256="$(curl -fsSL "$artifact.sha256" | cut -d' ' -f1)" || true
-	(
-		set -x
-		sed -ri '
-			s/^(ENV DOCKER_BUCKET) .*/\1 '"$bucket"'/;
-			s/^(ENV DOCKER_VERSION) .*/\1 '"$fullVersion"'/;
-			s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
-			#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/; # TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
-			s/^(FROM docker):.*/\1:'"$version"'/;
-		' "$version/Dockerfile" "$version"/*/Dockerfile
-	)
-	
-	travisEnv='\n  - VERSION='"$version$travisEnv"
+	for variant in experimental ''; do
+		dir="$version${variant:+/$variant}"
+		[ -d "$dir" ] || continue
+
+		if [ "$variant" = 'experimental' ]; then
+			bucket='experimental.docker.com'
+		elif [ "$rcVersion" != "$version" ]; then
+			bucket='test.docker.com'
+		else
+			bucket='get.docker.com'
+		fi
+
+		artifact="https://$bucket/builds/Linux/x86_64/docker-$fullVersion.tgz"
+		sha256="$(curl -fsSL "$artifact.sha256" | cut -d' ' -f1)" || true
+
+		(
+			set -x
+			sed -ri '
+				s/^(ENV DOCKER_BUCKET) .*/\1 '"$bucket"'/;
+				s/^(ENV DOCKER_VERSION) .*/\1 '"$fullVersion"'/;
+				s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
+				#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/; # TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
+				s/^(FROM docker):.*/\1:'"$version${variant:+-$variant}"'/;
+			' "$dir"/{,git/,dind/}Dockerfile
+		)
+
+		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
+	done
 done
 
 travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
