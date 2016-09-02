@@ -1,6 +1,6 @@
 FROM docker:1.11
 
 RUN apk add --no-cache \
-    bash
+		bash
 
 CMD ["bash"]
