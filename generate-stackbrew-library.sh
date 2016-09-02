@@ -71,8 +71,8 @@ for version in "${versions[@]}"; do
 	EOE
 
 	for variant in \
-		dind git \
-		experimental experimental/dind experimental/git \
+		dind git bash \
+		experimental experimental/dind experimental/git experimental/bash \
 	; do
 		[ -f "$version/$variant/Dockerfile" ] || continue
 
