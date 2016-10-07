@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-if [ "${1:0:1}" = '-' ]; then
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
 	set -- docker "$@"
 fi
 
