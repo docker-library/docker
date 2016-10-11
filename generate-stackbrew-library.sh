@@ -3,7 +3,7 @@ set -eu
 
 declare -A aliases=(
 	[1.12]='1 latest'
-	[1.12-rc]='rc'
+	[1.13-rc]='rc'
 )
 
 self="$(basename "$BASH_SOURCE")"
