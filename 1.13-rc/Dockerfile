@@ -6,8 +6,8 @@ RUN apk add --no-cache \
 		openssl
 
 ENV DOCKER_BUCKET test.docker.com
-ENV DOCKER_VERSION 1.13.0-rc2
-ENV DOCKER_SHA256 b6f355225f1823ec227b2f29371416260eb44f5f918b62db461a6b89aa805292
+ENV DOCKER_VERSION 1.13.0-rc3
+ENV DOCKER_SHA256 2c3c596512034c8e9cf4b0cb43b28d0de7e0a408bc26e8f8f1bc45251570bff4
 
 RUN set -x \
 	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
