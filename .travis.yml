@@ -12,8 +12,8 @@ install:
 
 before_script:
   - env | sort
-  - cd "$VERSION"
-  - image="docker:$VERSION"
+  - cd "${VERSION}${VARIANT:+/$VARIANT}"
+  - image="docker:${VERSION}${VARIANT:+-$VARIANT}"
 
 script:
   - docker build -t "$image" .
