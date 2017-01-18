@@ -1,4 +1,4 @@
-FROM docker:1.11
+FROM docker:1.13
 
 RUN apk add --no-cache \
 		git \
