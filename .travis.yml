@@ -2,6 +2,7 @@ language: bash
 services: docker
 
 env:
+  - VERSION=17.03-rc VARIANT=
   - VERSION=1.13 VARIANT=
   - VERSION=1.12 VARIANT=
   - VERSION=1.12 VARIANT=experimental
