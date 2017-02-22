@@ -49,7 +49,7 @@ for version in "${versions[@]}"; do
 				s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
 				#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/; # TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
 				s/^(FROM docker):.*/\1:'"$version${variant:+-$variant}"'/;
-			' "$dir"/{,git/,dind/}Dockerfile
+			' "$dir"/{,git/,dind/,bash/}Dockerfile
 		)
 
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
