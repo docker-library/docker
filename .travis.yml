@@ -16,11 +16,11 @@ before_script:
   - image="docker:${VERSION}${VARIANT:+-$VARIANT}"
 
 script:
-  - docker build -t "$image" .
+  - travis_retry docker build -t "$image" .
   - ~/official-images/test/run.sh "$image"
-  - docker build -t "$image-dind" dind
+  - travis_retry docker build -t "$image-dind" dind
   - ~/official-images/test/run.sh "$image-dind"
-  - docker build -t "$image-git" git
+  - travis_retry docker build -t "$image-git" git
   - ~/official-images/test/run.sh "$image-git"
 
 after_script:
