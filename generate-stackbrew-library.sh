@@ -53,12 +53,14 @@ join() {
 }
 
 for version in "${versions[@]}"; do
+	rcVersion="${version%-rc}"
+
 	commit="$(dirCommit "$version")"
 
 	fullVersion="$(git show "$commit":"$version/Dockerfile" | awk '$1 == "ENV" && $2 == "DOCKER_VERSION" { print $3; exit }')"
 
 	versionAliases=()
-	while [ "$fullVersion" != "$version" -a "${fullVersion%[.-]*}" != "$fullVersion" ]; do
+	while [ "$fullVersion" != "$rcVersion" -a "${fullVersion%[.-]*}" != "$fullVersion" ]; do
 		versionAliases+=( $fullVersion )
 		fullVersion="${fullVersion%[.-]*}"
 	done
