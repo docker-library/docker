@@ -72,7 +72,6 @@ for version in "${versions[@]}"; do
 
 	for variant in \
 		dind git \
-		experimental experimental/dind experimental/git \
 	; do
 		[ -f "$version/$variant/Dockerfile" ] || continue
 
