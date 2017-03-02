@@ -2,10 +2,8 @@ language: bash
 services: docker
 
 env:
-  - VERSION=17.03-rc VARIANT=
+  - VERSION=17.03 VARIANT=
   - VERSION=1.13 VARIANT=
-  - VERSION=1.12 VARIANT=
-  - VERSION=1.12 VARIANT=experimental
 
 install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images

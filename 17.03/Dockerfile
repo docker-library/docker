@@ -1,13 +1,13 @@
-FROM alpine:3.4
+FROM alpine:3.5
 
 RUN apk add --no-cache \
 		ca-certificates \
 		curl \
 		openssl
 
-ENV DOCKER_BUCKET experimental.docker.com
-ENV DOCKER_VERSION 1.12.6
-ENV DOCKER_SHA256 7f0c0fee0a302a4c3b6f62f9ed063813976200386b2299b36db52a6b67994674
+ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_VERSION 17.03.0-ce
+ENV DOCKER_SHA256 4a9766d99c6818b2d54dc302db3c9f7b352ad0a80a2dc179ec164a3ba29c2d3e
 
 RUN set -x \
 	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
