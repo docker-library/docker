@@ -2,7 +2,9 @@
 set -eu
 
 declare -A aliases=(
-	[17.03]='17 latest'
+	# https://blog.docker.com/2017/03/docker-enterprise-edition/
+	[17.03]='17 latest stable'
+	#[17.04]='17 latest edge'
 	[17.04-rc]='rc'
 )
 
