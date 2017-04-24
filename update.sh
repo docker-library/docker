@@ -36,19 +36,27 @@ for version in "${versions[@]}"; do
 		bucket='get.docker.com'
 	fi
 
-	artifact="https://$bucket/builds/Linux/x86_64/docker-$fullVersion.tgz"
-	sha256="$(curl -fsSL "$artifact.sha256" | cut -d' ' -f1)" || true
-
 	(
 		set -x
-		sed -ri '
-			s/^(ENV DOCKER_BUCKET) .*/\1 '"$bucket"'/;
-			s/^(ENV DOCKER_VERSION) .*/\1 '"$fullVersion"'/;
-			s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
-			#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/; # TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
-			s/^(FROM docker):.*/\1:'"$version"'/;
-		' "$dir"/{,git/,dind/}Dockerfile
+		#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/; # TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
+		sed -ri \
+			-e 's/^(ENV DOCKER_BUCKET) .*/\1 '"$bucket"'/' \
+			-e 's/^(ENV DOCKER_VERSION) .*/\1 '"$fullVersion"'/' \
+			-e 's/^(FROM docker):.*/\1:'"$version"'/' \
+			"$dir"/{,git/,dind/}Dockerfile
 	)
+
+	for arch in \
+		x86_64 \
+		armel \
+	; do
+		url="https://$bucket/builds/Linux/$arch/docker-$fullVersion.tgz.sha256"
+		sha256="$(curl -fsSL "$url" | cut -d' ' -f1)"
+		(
+			set -x
+			sed -ri 's!^(ENV DOCKER_SHA256_'"$arch"') .*!\1 '"$sha256"'!' "$dir/Dockerfile"
+		)
+	done
 
 	travisEnv='\n  - VERSION='"$version$travisEnv"
 done
