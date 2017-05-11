@@ -1,30 +1,30 @@
 FROM alpine:3.5
 
 RUN apk add --no-cache \
-		ca-certificates \
-		curl \
-		openssl
+		ca-certificates
 
-ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_CHANNEL stable
 ENV DOCKER_VERSION 17.03.1-ce
-ENV DOCKER_SHA256_x86_64 820d13b5699b5df63f7032c8517a5f118a44e2be548dd03271a86656a544af55
-ENV DOCKER_SHA256_armel f05c733c22915b0c26d8b0390b26a026b33aaf7593d15475a6f86e1bbe1ddbe2
+# TODO ENV DOCKER_SHA256
 
 RUN set -ex; \
-	apkArch="$(apk --print-arch)"; \
-	case "$apkArch" in \
-		x86_64) dockerArch=x86_64 ;; \
-		armhf) dockerArch=armel ;; \
-		*) echo >&2 "error: unknown Docker static binary arch $apkArch"; exit 1 ;; \
-	esac; \
-	curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/${dockerArch}/docker-${DOCKER_VERSION}.tgz" -o docker.tgz; \
-# /bin/sh doesn't support ${!...} :(
-	sha256="DOCKER_SHA256_${dockerArch}"; sha256="$(eval "echo \$${sha256}")"; \
-	echo "${sha256} *docker.tgz" | sha256sum -c -; \
-	tar -xzvf docker.tgz; \
-	mv docker/* /usr/local/bin/; \
-	rmdir docker; \
+# why we use "curl" instead of "wget":
+# + wget -O docker.tgz https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz
+# Connecting to download.docker.com (54.230.87.253:443)
+# wget: error getting response: Connection reset by peer
+	apk add --no-cache --virtual .fetch-deps \
+		curl \
+		tar \
+	; \
+	curl -fL -o docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz"; \
+	tar --extract \
+		--file docker.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+	; \
 	rm docker.tgz; \
+	apk del .fetch-deps; \
+	dockerd -v; \
 	docker -v
 
 COPY docker-entrypoint.sh /usr/local/bin/
