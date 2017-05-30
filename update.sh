@@ -12,7 +12,16 @@ versions=( "${versions[@]%/}" )
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
-dockerVersions="$(git ls-remote --tags https://github.com/docker/docker.git | cut -d$'\t' -f2 | grep '^refs/tags/v[0-9].*$' | sed 's!^refs/tags/v!!; s!\^{}$!!' | sort -ruV)"
+dockerVersions="$(
+	{
+		git ls-remote --tags https://github.com/docker/docker-ce.git
+		git ls-remote --tags https://github.com/docker/docker.git # TODO remove-me (17.06+ live in docker-ce)
+	} \
+		| cut -d$'\t' -f2 \
+		| grep '^refs/tags/v[0-9].*$' \
+		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
+		| sort -ruV
+)"
 
 travisEnv=
 for version in "${versions[@]}"; do
