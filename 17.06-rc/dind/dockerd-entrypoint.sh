@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+DOCKER_OPTS=${DOCKER_OPTS:-}
+
 # no arguments passed
 # or first arg is `-f` or `--some-option`
 if [ "$#" -eq 0 -o "${1#-}" != "$1" ]; then
@@ -9,6 +11,7 @@ if [ "$#" -eq 0 -o "${1#-}" != "$1" ]; then
 		--host=unix:///var/run/docker.sock \
 		--host=tcp://0.0.0.0:2375 \
 		--storage-driver=vfs \
+		${DOCKER_OPTS} \
 		"$@"
 fi
 
