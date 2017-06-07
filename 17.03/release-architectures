@@ -1,0 +1,4 @@
+# see subdirectories of https://download.docker.com/linux/static/
+
+# bashbrew-arch apk-arch docker-release-arch
+amd64 x86_64 x86_64

@@ -1,7 +1,16 @@
 #!/bin/bash
 set -eo pipefail
 
+defaultAlpineVersion='3.6'
+declare -A alpineVersion=(
+	[17.03]='3.5'
+	[17.03-rc]='3.5'
+	[17.05]='3.5'
+)
+
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
+
+source '.architectures-lib'
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
@@ -9,13 +18,26 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
+# see http://stackoverflow.com/a/2705678/433558
+sed_escape_lhs() {
+	echo "$@" | sed -e 's/[]\/$*.^|[]/\\&/g'
+}
+sed_escape_rhs() {
+	echo "$@" | sed -e 's/[\/&]/\\&/g' | sed -e ':a;N;$!ba;s/\n/\\n/g'
+}
+
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
+
+# TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
+#sed -r -e 's/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/' Dockerfile-dind.template
 
 dockerVersions="$(
 	{
 		git ls-remote --tags https://github.com/docker/docker-ce.git
-		git ls-remote --tags https://github.com/docker/docker.git # TODO remove-me (17.06+ live in docker-ce)
+
+		# TODO remove-me (17.06+ live exclusively in docker-ce)
+		git ls-remote --tags https://github.com/docker/docker.git
 	} \
 		| cut -d$'\t' -f2 \
 		| grep '^refs/tags/v[0-9].*$' \
@@ -47,15 +69,31 @@ for version in "${versions[@]}"; do
 		channel='stable'
 	fi
 
-	(
-		set -x
-		#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/; # TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
-		sed -ri \
-			-e 's/^(ENV DOCKER_CHANNEL) .*/\1 '"$channel"'/' \
-			-e 's/^(ENV DOCKER_VERSION) .*/\1 '"$fullVersion"'/' \
-			-e 's/^(FROM docker):.*/\1:'"$version"'/' \
-			"$version"/{,git/,dind/}Dockerfile
-	)
+	archCase='apkArch="$(apk --print-arch)"; '$'\\\n'
+	archCase+=$'\t''case "$apkArch" in '$'\\\n'
+	for apkArch in $(apkArches "$version"); do
+		dockerArch="$(apkToDockerArch "$version" "$apkArch")"
+		archCase+=$'\t\t'"$apkArch) dockerArch='$dockerArch' ;; "$'\\\n'
+	done
+	archCase+=$'\t\t''*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;'$'\\\n'
+	archCase+=$'\t''esac'
+
+	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
+
+	sed -r \
+		-e 's!%%DOCKER-CHANNEL%%!'"$channel"'!g' \
+		-e 's!%%DOCKER-VERSION%%!'"$fullVersion"'!g' \
+		-e 's!%%ALPINE-VERSION%%!'"$alpine"'!g' \
+		-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
+		Dockerfile.template > "$version/Dockerfile"
+	cp -a docker-entrypoint.sh "$version/"
+	cp -a dockerd-entrypoint.sh "$version/dind/"
+
+	for variant in git dind; do
+		sed -r \
+			-e 's!%%VERSION%%!'"$version"'!g' \
+			"Dockerfile-$variant.template" > "$version/$variant/Dockerfile"
+	done
 
 	travisEnv='\n  - VERSION='"$version$travisEnv"
 done
