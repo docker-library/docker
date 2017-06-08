@@ -9,6 +9,7 @@ if [ "$#" -eq 0 -o "${1#-}" != "$1" ]; then
 		--host=unix:///var/run/docker.sock \
 		--host=tcp://0.0.0.0:2375 \
 		--storage-driver=vfs \
+        --bip=172.18.0.1/24 \
 		"$@"
 fi
 
