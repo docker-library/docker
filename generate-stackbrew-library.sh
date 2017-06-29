@@ -4,8 +4,8 @@ set -eu
 declare -A aliases=(
 	# https://blog.docker.com/2017/03/docker-enterprise-edition/
 	[17.03]='stable'
-	[17.05]='17 latest edge'
-	[17.06-rc]='rc test'
+	[17.06]='17 latest edge'
+	[17.07-rc]='rc test'
 )
 
 self="$(basename "$BASH_SOURCE")"

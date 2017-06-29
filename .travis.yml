@@ -2,9 +2,7 @@ language: bash
 services: docker
 
 env:
-  - VERSION=17.06-rc
-  - VERSION=17.05
-  - VERSION=17.03-rc
+  - VERSION=17.06
   - VERSION=17.03
 
 install:

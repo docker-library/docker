@@ -3,8 +3,8 @@ FROM alpine:3.6
 RUN apk add --no-cache \
 		ca-certificates
 
-ENV DOCKER_CHANNEL test
-ENV DOCKER_VERSION 17.06.0-ce-rc5
+ENV DOCKER_CHANNEL stable
+ENV DOCKER_VERSION 17.06.0-ce
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
