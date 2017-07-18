@@ -5,6 +5,7 @@ RUN apk add --no-cache \
 		btrfs-progs \
 		e2fsprogs \
 		e2fsprogs-extra \
+		git \
 		iptables \
 		xfsprogs \
 		xz
