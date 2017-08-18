@@ -23,8 +23,6 @@ RUN set -ex; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		x86_64) dockerArch='x86_64' ;; \
-		armhf) dockerArch='armel' ;; \
-		aarch64) dockerArch='aarch64' ;; \
 		s390x) dockerArch='s390x' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
