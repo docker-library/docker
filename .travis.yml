@@ -3,6 +3,7 @@ services: docker
 
 env:
   - VERSION=17.07-rc
+  - VERSION=17.06-rc
   - VERSION=17.06
 
 install:
