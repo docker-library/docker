@@ -2,6 +2,7 @@
 
 # bashbrew-arch apk-arch docker-release-arch
 amd64 x86_64 x86_64
+ppc64le ppc64le ppc64le
 s390x s390x s390x
 
 # these arches are temporarily on hold upstream (Docker+ARM has some bugs ATM)
