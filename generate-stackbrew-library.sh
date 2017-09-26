@@ -64,10 +64,14 @@ for version in "${versions[@]}"; do
 	fullVersion="$(git show "$commit":"$version/Dockerfile" | awk '$1 == "ENV" && $2 == "DOCKER_VERSION" { print $3; exit }')"
 
 	versionAliases=()
-	while [ "$fullVersion" != "$rcVersion" -a "${fullVersion%[.-]*}" != "$fullVersion" ]; do
+	if [ "$version" = "$rcVersion" ]; then
+		while [ "$fullVersion" != "$rcVersion" -a "${fullVersion%[.-]*}" != "$fullVersion" ]; do
+			versionAliases+=( $fullVersion )
+			fullVersion="${fullVersion%[.-]*}"
+		done
+	else
 		versionAliases+=( $fullVersion )
-		fullVersion="${fullVersion%[.-]*}"
-	done
+	fi
 	versionAliases+=(
 		$version
 		${aliases[$version]:-}
