@@ -1,4 +1,4 @@
-FROM docker:17.06
+FROM docker:17.09
 
 RUN apk add --no-cache \
 		git \

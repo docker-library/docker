@@ -4,7 +4,7 @@ RUN apk add --no-cache \
 		ca-certificates
 
 ENV DOCKER_CHANNEL stable
-ENV DOCKER_VERSION 17.06.2-ce
+ENV DOCKER_VERSION 17.09.0-ce
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
@@ -23,6 +23,8 @@ RUN set -ex; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		x86_64) dockerArch='x86_64' ;; \
+		aarch64) dockerArch='aarch64' ;; \
+		ppc64le) dockerArch='ppc64le' ;; \
 		s390x) dockerArch='s390x' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
