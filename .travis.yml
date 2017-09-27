@@ -4,7 +4,6 @@ services: docker
 env:
   - VERSION=17.09
   - VERSION=17.07
-  - VERSION=17.06
 
 install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
