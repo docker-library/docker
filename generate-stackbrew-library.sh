@@ -86,23 +86,31 @@ for version in "${versions[@]}"; do
 		Directory: $version
 	EOE
 
-	for variant in \
+	for v in \
 		dind git \
+		windows/windowsservercore windows/nanoserver \
 	; do
-		[ -f "$version/$variant/Dockerfile" ] || continue
+		dir="$version/$v"
+		[ -f "$dir/Dockerfile" ] || continue
+		variant="$(basename "$v")"
 
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "$dir")"
 
-		slash='/'
-		variantAliases=( "${versionAliases[@]/%/-${variant//$slash/-}}" )
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
+
+		case "$v" in
+			windows/*) variantArches='windows-amd64' ;;
+			*)         variantArches="$versionArches" ;;
+		esac
 
 		echo
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: $(join ', ' $versionArches)
+			Architectures: $(join ', ' $variantArches)
 			GitCommit: $commit
-			Directory: $version/$variant
+			Directory: $dir
 		EOE
+		[ "$variant" = "$v" ] || echo "Constraints: $variant"
 	done
 done

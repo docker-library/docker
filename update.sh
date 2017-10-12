@@ -69,6 +69,8 @@ for version in "${versions[@]}"; do
 		channel='stable'
 	fi
 
+	echo "$version: $fullVersion ($channel)"
+
 	archCase='apkArch="$(apk --print-arch)"; '$'\\\n'
 	archCase+=$'\t''case "$apkArch" in '$'\\\n'
 	for apkArch in $(apkArches "$version"); do
@@ -80,20 +82,22 @@ for version in "${versions[@]}"; do
 
 	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
 
-	sed -r \
-		-e 's!%%DOCKER-CHANNEL%%!'"$channel"'!g' \
-		-e 's!%%DOCKER-VERSION%%!'"$fullVersion"'!g' \
-		-e 's!%%ALPINE-VERSION%%!'"$alpine"'!g' \
-		-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
-		Dockerfile.template > "$version/Dockerfile"
-	cp -a docker-entrypoint.sh "$version/"
-	cp -a dockerd-entrypoint.sh "$version/dind/"
-
-	for variant in git dind; do
+	for variant in '' git dind windows/windowsservercore; do
+		dir="$version${variant:+/$variant}"
+		[ -d "$dir" ] || continue
+		df="$dir/Dockerfile"
+		slash='/'
+		template="Dockerfile${variant:+-${variant//$slash/-}}.template"
 		sed -r \
 			-e 's!%%VERSION%%!'"$version"'!g' \
-			"Dockerfile-$variant.template" > "$version/$variant/Dockerfile"
+			-e 's!%%DOCKER-CHANNEL%%!'"$channel"'!g' \
+			-e 's!%%DOCKER-VERSION%%!'"$fullVersion"'!g' \
+			-e 's!%%ALPINE-VERSION%%!'"$alpine"'!g' \
+			-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
+			"$template" > "$df"
 	done
+	cp -a docker-entrypoint.sh "$version/"
+	cp -a dockerd-entrypoint.sh "$version/dind/"
 
 	travisEnv='\n  - VERSION='"$version$travisEnv"
 done
