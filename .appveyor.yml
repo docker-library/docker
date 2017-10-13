@@ -1,0 +1,27 @@
+version: build-{build}.{branch}
+image: Visual Studio 2017
+
+environment:
+  matrix:
+    - version: 17.10-rc
+      variant: windowsservercore
+    - version: 17.09
+      variant: windowsservercore
+    - version: 17.07
+      variant: windowsservercore
+    - version: 17.06
+      variant: windowsservercore
+
+install:
+  - ps: |
+      [Environment]::SetEnvironmentVariable('dockerImage', ('docker:{0}' -f $env:version), [EnvironmentVariableTarget]::Process);
+      [Environment]::SetEnvironmentVariable('buildDirectory', ('{0}/windows/{1}' -f $env:version, $env:variant), [EnvironmentVariableTarget]::Process);
+
+build_script:
+  - cmd: appveyor-retry docker build --pull -t %dockerImage% %buildDirectory%
+
+after_build:
+  - ps: docker images
+
+test_script:
+  - ps: docker run --rm $env:dockerImage docker --version

@@ -46,9 +46,10 @@ dockerVersions="$(
 )"
 
 travisEnv=
+appveyorEnv=
 for version in "${versions[@]}"; do
-	rcGrepV='-v'
 	rcVersion="${version%-rc}"
+	rcGrepV='-v'
 	if [ "$rcVersion" != "$version" ]; then
 		rcGrepV=
 	fi
@@ -95,7 +96,13 @@ for version in "${versions[@]}"; do
 			-e 's!%%ALPINE-VERSION%%!'"$alpine"'!g' \
 			-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
 			"$template" > "$df"
+
+		if [[ "$variant" == windows/* ]]; then
+			winVariant="$(basename "$variant")"
+			appveyorEnv='\n    - version: '"$version"'\n      variant: '"$winVariant$appveyorEnv"
+		fi
 	done
+
 	cp -a docker-entrypoint.sh "$version/"
 	cp -a dockerd-entrypoint.sh "$version/dind/"
 
@@ -104,3 +111,6 @@ done
 
 travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
 echo "$travis" > .travis.yml
+
+appveyor="$(awk -v 'RS=\n\n' '$1 == "environment:" { $0 = "environment:\n  matrix:'"$appveyorEnv"'" } { printf "%s%s", $0, RS }' .appveyor.yml)"
+echo "$appveyor" > .appveyor.yml
