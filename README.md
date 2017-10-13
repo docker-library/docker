@@ -10,6 +10,8 @@ See a change merged here that doesn't show up on the Docker Hub yet? Check [the 
 
 -	[Travis CI:  
 	![build status badge](https://img.shields.io/travis/docker-library/docker/master.svg)](https://travis-ci.org/docker-library/docker/branches)
+-	[AppVeyor (Windows):  
+	![build status badge](https://ci.appveyor.com/api/projects/status/github/docker-library/docker?branch=master&svg=true)](https://ci.appveyor.com/project/docker-library/docker)
 -	[Automated `update.sh`:  
 	![build status badge](https://doi-janky.infosiftr.net/job/update.sh/job/docker/badge/icon)](https://doi-janky.infosiftr.net/job/update.sh/job/docker)
 
