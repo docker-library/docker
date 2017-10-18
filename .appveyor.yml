@@ -3,11 +3,9 @@ image: Visual Studio 2017
 
 environment:
   matrix:
-    - version: 17.10-rc
+    - version: 17.10
       variant: windowsservercore
     - version: 17.09
-      variant: windowsservercore
-    - version: 17.07
       variant: windowsservercore
     - version: 17.06
       variant: windowsservercore
