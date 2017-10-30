@@ -7,7 +7,8 @@ RUN apk add --no-cache \
 		e2fsprogs-extra \
 		iptables \
 		xfsprogs \
-		xz
+		xz \
+		zfs
 
 # TODO aufs-tools
 
