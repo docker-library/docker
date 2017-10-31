@@ -8,7 +8,6 @@ if [ "$#" -eq 0 -o "${1#-}" != "$1" ]; then
 	set -- dockerd \
 		--host=unix:///var/run/docker.sock \
 		--host=tcp://0.0.0.0:2375 \
-		--storage-driver=vfs \
 		"$@"
 fi
 
