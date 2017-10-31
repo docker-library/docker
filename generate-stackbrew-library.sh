@@ -2,11 +2,11 @@
 set -eu
 
 declare -A aliases=(
-	# https://blog.docker.com/2017/03/docker-enterprise-edition/
-	[17.09]='stable'
-	[17.10]='17 edge test latest'
-	[17.11-rc]='rc'
 )
+
+# used for auto-detecting the "latest" of each channel (for tagging it appropriately)
+# https://blog.docker.com/2017/03/docker-enterprise-edition/
+declare -A latestChannelRelease=()
 
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
@@ -76,6 +76,31 @@ for version in "${versions[@]}"; do
 		$version
 		${aliases[$version]:-}
 	)
+
+	# add a few channel/version-related aliases
+	channel="$(versionChannel "$version")"
+	majorVersion="${version%%.*}"
+	if [ "$version" != "$rcVersion" ] && [ -z "${latestChannelRelease['rc']:-}" ]; then
+		versionAliases+=( 'rc' )
+		latestChannelRelease['rc']="$version"
+	fi
+	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease[$majorVersion]:-}" ]; then
+		versionAliases+=( "$majorVersion" )
+		latestChannelRelease["$majorVersion"]="$version"
+	fi
+	if [ -z "${latestChannelRelease[$channel]:-}" ]; then
+		versionAliases+=( "$channel" )
+		latestChannelRelease[$channel]="$version"
+	fi
+	# every release goes into the "test" channel, so the biggest numbered release wins (RC or not)
+	if [ -z "${latestChannelRelease['test']:-}" ]; then
+		versionAliases+=( 'test' )
+		latestChannelRelease['test']="$version"
+	fi
+	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease['latest']:-}" ]; then
+		versionAliases+=( 'latest' )
+		latestChannelRelease['latest']="$version"
+	fi
 
 	versionArches="$(versionArches "$version")"
 

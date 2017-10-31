@@ -58,3 +58,21 @@ versionArches() {
 	done
 	echo "${versionArches[*]}"
 }
+
+versionChannel() {
+	local version="$1"; shift # "17.06", "17.11-rc", etc
+	local rcVersion="${version%-rc}"
+
+	local channel='edge' minorVersion
+	if [ "$rcVersion" != "$version" ]; then
+		channel='test'
+	elif \
+		minorVersion="${rcVersion##*.}" \
+		&& minorVersion="${minorVersion#0}" \
+		&& [ "$(( minorVersion % 3 ))" = '0' ] \
+	; then
+		channel='stable'
+	fi
+
+	echo "$channel"
+}

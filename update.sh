@@ -59,16 +59,7 @@ for version in "${versions[@]}"; do
 		continue
 	fi
 
-	channel='edge'
-	if [ "$rcVersion" != "$version" ]; then
-		channel='test'
-	elif \
-		minorVersion="${rcVersion##*.}" \
-		&& minorVersion="${minorVersion#0}" \
-		&& [ "$(( minorVersion % 3 ))" = '0' ] \
-	; then
-		channel='stable'
-	fi
+	channel="$(versionChannel "$version")"
 
 	echo "$version: $fullVersion ($channel)"
 
