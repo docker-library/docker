@@ -1,0 +1,14 @@
+# see subdirectories of https://download.docker.com/linux/static/
+
+# bashbrew-arch apk-arch docker-release-arch
+amd64 x86_64 x86_64
+arm64v8 aarch64 aarch64
+ppc64le ppc64le ppc64le
+s390x s390x s390x
+
+# "armel" (arm32v6) might not last to 17.11 GA (was in the 17.09 RCs but not GA)
+arm32v6 armhf armel
+
+# Docker's "armhf" is ARMv7, but Alpine's is ARMv6 (see above)
+#arm32v7 armhf armhf
+# https://dockercommunity.slackarchive.io/arm/page-15
