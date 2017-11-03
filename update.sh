@@ -94,7 +94,7 @@ for version in "${versions[@]}"; do
 		fi
 	done
 
-	cp -a docker-entrypoint.sh "$version/"
+	cp -a docker-entrypoint.sh modprobe.sh "$version/"
 	cp -a dockerd-entrypoint.sh "$version/dind/"
 
 	travisEnv='\n  - VERSION='"$version$travisEnv"

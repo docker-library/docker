@@ -50,6 +50,7 @@ RUN set -ex; \
 	dockerd -v; \
 	docker -v
 
+COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
