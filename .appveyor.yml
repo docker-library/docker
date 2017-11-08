@@ -9,8 +9,6 @@ environment:
       variant: windowsservercore
     - version: 17.09
       variant: windowsservercore
-    - version: 17.06
-      variant: windowsservercore
 
 install:
   - ps: |
