@@ -10,7 +10,7 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 # doing this first to share cache across versions more aggressively
 
 ENV DOCKER_CHANNEL test
-ENV DOCKER_VERSION 17.11.0-ce-rc3
+ENV DOCKER_VERSION 17.11.0-ce-rc4
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
