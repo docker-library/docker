@@ -74,23 +74,33 @@ for version in "${versions[@]}"; do
 
 	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
 
-	for variant in '' git dind windows/windowsservercore; do
+	for variant in \
+		'' git dind \
+		windows/windowsservercore-{1709,ltsc2016} \
+	; do
 		dir="$version${variant:+/$variant}"
 		[ -d "$dir" ] || continue
 		df="$dir/Dockerfile"
 		slash='/'
-		template="Dockerfile${variant:+-${variant//$slash/-}}.template"
+		case "$variant" in
+			windows/windowsservercore*) tag="${variant#*-}"; template='Dockerfile-windows-windowsservercore.template' ;;
+			*) tag="$alpine"; template="Dockerfile${variant:+-${variant//$slash/-}}.template" ;;
+		esac
 		sed -r \
 			-e 's!%%VERSION%%!'"$version"'!g' \
 			-e 's!%%DOCKER-CHANNEL%%!'"$channel"'!g' \
 			-e 's!%%DOCKER-VERSION%%!'"$fullVersion"'!g' \
-			-e 's!%%ALPINE-VERSION%%!'"$alpine"'!g' \
+			-e 's!%%TAG%%!'"$tag"'!g' \
 			-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
 			"$template" > "$df"
 
 		if [[ "$variant" == windows/* ]]; then
 			winVariant="$(basename "$variant")"
-			appveyorEnv='\n    - version: '"$version"'\n      variant: '"$winVariant$appveyorEnv"
+
+			case "$winVariant" in
+				*-1709) ;; # no AppVeyor support for 1709 yet: https://github.com/appveyor/ci/issues/1885
+				*) appveyorEnv='\n    - version: '"$version"'\n      variant: '"$winVariant$appveyorEnv" ;;
+			esac
 		fi
 	done
 

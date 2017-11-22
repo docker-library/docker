@@ -4,7 +4,7 @@ image: Visual Studio 2017
 environment:
   matrix:
     - version: 17.09
-      variant: windowsservercore
+      variant: windowsservercore-ltsc2016
 
 install:
   - ps: |
