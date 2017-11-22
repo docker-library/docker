@@ -1,4 +1,4 @@
-FROM microsoft/windowsservercore:%%TAG%%
+FROM microsoft/windowsservercore:ltsc2016
 
 # $ProgressPreference: https://github.com/PowerShell/PowerShell/issues/2138#issuecomment-251261324
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -9,8 +9,8 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine);
 # doing this first to share cache across versions more aggressively
 
-ENV DOCKER_CHANNEL %%DOCKER-CHANNEL%%
-ENV DOCKER_VERSION %%DOCKER-VERSION%%
+ENV DOCKER_CHANNEL stable
+ENV DOCKER_VERSION 17.09.0-ce
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)

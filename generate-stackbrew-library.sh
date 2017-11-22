@@ -114,7 +114,7 @@ for version in "${versions[@]}"; do
 
 	for v in \
 		dind git \
-		windows/windowsservercore windows/nanoserver \
+		windows/windowsservercore-{ltsc2016,1709} \
 	; do
 		dir="$version/$v"
 		[ -f "$dir/Dockerfile" ] || continue
@@ -130,9 +130,17 @@ for version in "${versions[@]}"; do
 			*)         variantArches="$versionArches" ;;
 		esac
 
+		sharedTags=()
+		if [[ "$variant" == 'windowsservercore'* ]]; then
+			sharedTags+=( 'windowsservercore' )
+		fi
+
 		echo
+		echo "Tags: $(join ', ' "${variantAliases[@]}")"
+		if [ "${#sharedTags[@]}" -gt 0 ]; then
+			echo "SharedTags: $(join ', ' "${sharedTags[@]}")"
+		fi
 		cat <<-EOE
-			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: $(join ', ' $variantArches)
 			GitCommit: $commit
 			Directory: $dir
