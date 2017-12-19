@@ -132,7 +132,8 @@ for version in "${versions[@]}"; do
 
 		sharedTags=()
 		if [[ "$variant" == 'windowsservercore'* ]]; then
-			sharedTags+=( 'windowsservercore' )
+			sharedTags=( "${versionAliases[@]/%/-windowsservercore}" )
+			sharedTags=( "${sharedTags[@]//latest-/}" )
 		fi
 
 		echo
