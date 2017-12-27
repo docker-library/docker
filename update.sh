@@ -1,11 +1,9 @@
 #!/bin/bash
 set -eo pipefail
 
-defaultAlpineVersion='3.6'
+defaultAlpineVersion='3.7'
 declare -A alpineVersion=(
-	[17.03]='3.5'
-	[17.03-rc]='3.5'
-	[17.05]='3.5'
+	[17.09]='3.6'
 )
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
