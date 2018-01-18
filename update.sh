@@ -72,6 +72,11 @@ for version in "${versions[@]}"; do
 
 	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
 
+	majorVersion="${fullVersion%%.*}"
+	minorVersion="${fullVersion#$majorVersion.}"
+	minorVersion="${minorVersion%%.*}"
+	minorVersion="${minorVersion#0}"
+
 	for variant in \
 		'' git dind \
 		windows/windowsservercore-{1709,ltsc2016} \
@@ -91,6 +96,11 @@ for version in "${versions[@]}"; do
 			-e 's!%%TAG%%!'"$tag"'!g' \
 			-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
 			"$template" > "$df"
+
+		# pigz (https://github.com/moby/moby/pull/35697) is only 18.02+
+		if [ "$majorVersion" -lt 18 ] || { [ "$majorVersion" -eq 18 ] && [ "$minorVersion" -lt 2 ]; }; then
+			sed -ri '/pigz/d' "$df"
+		fi
 
 		if [[ "$variant" == windows/* ]]; then
 			winVariant="$(basename "$variant")"
