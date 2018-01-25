@@ -29,6 +29,7 @@ RUN set -ex; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		x86_64) dockerArch='x86_64' ;; \
+		armhf) dockerArch='armel' ;; \
 		aarch64) dockerArch='aarch64' ;; \
 		ppc64le) dockerArch='ppc64le' ;; \
 		s390x) dockerArch='s390x' ;; \
