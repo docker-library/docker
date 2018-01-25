@@ -2,6 +2,7 @@ language: bash
 services: docker
 
 env:
+  - VERSION=18.02-rc
   - VERSION=18.01
   - VERSION=17.12
   - VERSION=17.09
