@@ -1,0 +1,12 @@
+# see subdirectories of https://download.docker.com/linux/static/
+
+# bashbrew-arch apk-arch docker-release-arch
+amd64 x86_64 x86_64
+arm32v6 armhf armel
+arm64v8 aarch64 aarch64
+ppc64le ppc64le ppc64le
+s390x s390x s390x
+
+# Docker's "armhf" is ARMv7, but Alpine's is ARMv6 (see above)
+#arm32v7 armhf armhf
+# https://dockercommunity.slackarchive.io/arm/page-15
