@@ -1,4 +1,4 @@
-FROM docker:18.04-rc
+FROM docker:18.04
 
 RUN apk add --no-cache \
 		git \
