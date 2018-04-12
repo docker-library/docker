@@ -3,6 +3,7 @@ services: docker
 
 env:
   - VERSION=18.04
+  - VERSION=18.03-rc
   - VERSION=18.03
   - VERSION=17.12
 
