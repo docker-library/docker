@@ -3,6 +3,7 @@ FROM docker:18.04
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
 	apk add --no-cache \
+		aufs-util \
 		btrfs-progs \
 		e2fsprogs \
 		e2fsprogs-extra \
