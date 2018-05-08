@@ -27,9 +27,6 @@ sed_escape_rhs() {
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
-# TODO once "Supported Docker versions" minimums at Docker 1.8+ (1.6 at time of this writing), bring this back again
-#sed -r -e 's/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/' Dockerfile-dind.template
-
 dockerVersions="$(
 	{
 		git ls-remote --tags https://github.com/docker/docker-ce.git
@@ -94,6 +91,7 @@ for version in "${versions[@]}"; do
 			-e 's!%%DOCKER-CHANNEL%%!'"$channel"'!g' \
 			-e 's!%%DOCKER-VERSION%%!'"$fullVersion"'!g' \
 			-e 's!%%TAG%%!'"$tag"'!g' \
+			-e 's!%%DIND-COMMIT%%!'"$dindLatest"'!g' \
 			-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
 			"$template" > "$df"
 
