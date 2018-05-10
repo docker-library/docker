@@ -1,4 +1,4 @@
-FROM docker:17.12
+FROM docker:18.05
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
@@ -9,6 +9,8 @@ RUN set -eux; \
 		iptables \
 		xfsprogs \
 		xz \
+# pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
+		pigz \
 	; \
 # only install zfs if it's available for the current architecture
 # https://git.alpinelinux.org/cgit/aports/tree/main/zfs/APKBUILD?h=3.6-stable#n9 ("all !armhf !ppc64le" as of 2017-11-01)

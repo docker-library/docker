@@ -2,10 +2,8 @@ language: bash
 services: docker
 
 env:
-  - VERSION=18.05-rc
-  - VERSION=18.04
+  - VERSION=18.05
   - VERSION=18.03
-  - VERSION=17.12
 
 install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
