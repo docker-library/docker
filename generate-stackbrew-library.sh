@@ -2,6 +2,7 @@
 set -eu
 
 declare -A aliases=(
+	[18.06]='edge'
 )
 
 # used for auto-detecting the "latest" of each channel (for tagging it appropriately)
@@ -74,7 +75,6 @@ for version in "${versions[@]}"; do
 	fi
 	versionAliases+=(
 		$version
-		${aliases[$version]:-}
 	)
 
 	# add a few channel/version-related aliases
@@ -88,14 +88,12 @@ for version in "${versions[@]}"; do
 		versionAliases+=( "$majorVersion" )
 		latestChannelRelease["$majorVersion"]="$version"
 	fi
+	versionAliases+=(
+		${aliases[$version]:-}
+	)
 	if [ -z "${latestChannelRelease[$channel]:-}" ]; then
 		versionAliases+=( "$channel" )
 		latestChannelRelease[$channel]="$version"
-	fi
-	# if we don't have a newer explicit "edge" release, then the latest non-RC release _is_ an edge release (even if it's "stable")
-	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease['edge']:-}" ]; then
-		versionAliases+=( 'edge' )
-		latestChannelRelease['edge']="$version"
 	fi
 	# every release goes into the "test" channel, so the biggest numbered release wins (RC or not)
 	if [ -z "${latestChannelRelease['test']:-}" ]; then
