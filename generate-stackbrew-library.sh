@@ -92,11 +92,6 @@ for version in "${versions[@]}"; do
 		versionAliases+=( "$channel" )
 		latestChannelRelease[$channel]="$version"
 	fi
-	# if we don't have a newer explicit "edge" release, then the latest non-RC release _is_ an edge release (even if it's "stable")
-	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease['edge']:-}" ]; then
-		versionAliases+=( 'edge' )
-		latestChannelRelease['edge']="$version"
-	fi
 	# every release goes into the "test" channel, so the biggest numbered release wins (RC or not)
 	if [ -z "${latestChannelRelease['test']:-}" ]; then
 		versionAliases+=( 'test' )
