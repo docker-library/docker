@@ -3,7 +3,7 @@ set -eo pipefail
 
 defaultAlpineVersion='3.7'
 declare -A alpineVersion=(
-	[17.09]='3.6'
+	#[17.09]='3.6'
 )
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
@@ -28,12 +28,7 @@ sed_escape_rhs() {
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
 dockerVersions="$(
-	{
-		git ls-remote --tags https://github.com/docker/docker-ce.git
-
-		# TODO remove-me (17.06+ live exclusively in docker-ce)
-		git ls-remote --tags https://github.com/docker/docker.git
-	} \
+	git ls-remote --tags https://github.com/docker/docker-ce.git \
 		| cut -d$'\t' -f2 \
 		| grep '^refs/tags/v[0-9].*$' \
 		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
