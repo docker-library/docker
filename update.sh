@@ -39,11 +39,21 @@ travisEnv=
 appveyorEnv=
 for version in "${versions[@]}"; do
 	rcVersion="${version%-rc}"
+
+	versionOptions="$(grep "^$rcVersion[.]" <<<"$dockerVersions")"
+
 	rcGrepV='-v'
 	if [ "$rcVersion" != "$version" ]; then
 		rcGrepV=
+		# "beta" sorts lower than "tp" even though "beta" is a more preferred release, so we need to explicitly adjust the sorting order for RCs
+		versionOptions="$(
+			grep -E -- '-rc' <<<"$versionOptions" || :
+			grep -E -- '-beta' <<<"$versionOptions" || :
+			grep -E -- '-tp' <<<"$versionOptions" || :
+		)"
 	fi
-	fullVersion="$(echo "$dockerVersions" | grep $rcGrepV -E -- '-(rc|tp|beta)' | grep "^$rcVersion[.]" | head -n1)"
+
+	fullVersion="$(grep $rcGrepV -Em1 -- '-(rc|tp|beta)' <<<"$versionOptions")"
 	if [ -z "$fullVersion" ]; then
 		echo >&2 "warning: cannot find full version for $version"
 		continue
