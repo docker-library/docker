@@ -43,7 +43,7 @@ for version in "${versions[@]}"; do
 	if [ "$rcVersion" != "$version" ]; then
 		rcGrepV=
 	fi
-	fullVersion="$(echo "$dockerVersions" | grep $rcGrepV -E -- '-(rc|tp)' | grep "^$rcVersion[.]" | head -n1)"
+	fullVersion="$(echo "$dockerVersions" | grep $rcGrepV -E -- '-(rc|tp|beta)' | grep "^$rcVersion[.]" | head -n1)"
 	if [ -z "$fullVersion" ]; then
 		echo >&2 "warning: cannot find full version for $version"
 		continue
