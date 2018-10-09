@@ -32,7 +32,35 @@ dockerVersions="$(
 		| cut -d$'\t' -f2 \
 		| grep '^refs/tags/v[0-9].*$' \
 		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
-		| sort -ruV
+		| sort -u \
+		| gawk '
+			{ data[lines++] = $0 }
+
+			# "beta" sorts lower than "tp" even though "beta" is a more preferred release, so we need to explicitly adjust the sorting order for RCs
+			# also, "18.09.0-ce-beta1" vs "18.09.0-beta3"
+			function docker_version_compare(i1, v1, i2, v2, l, r) {
+				l = v1; gsub(/-ce/, "", l); gsub(/-tp/, "-alpha", l)
+				r = v2; gsub(/-ce/, "", r); gsub(/-tp/, "-alpha", r)
+				patsplit(l, ltemp, /[^.-]+/)
+				patsplit(r, rtemp, /[^.-]+/)
+				for (i = 0; i < length(ltemp) && i < length(rtemp); ++i) {
+					if (ltemp[i] < rtemp[i]) {
+						return -1
+					}
+					if (ltemp[i] > rtemp[i]) {
+						return 1
+					}
+				}
+				return 0
+			}
+
+			END {
+				asort(data, result, "docker_version_compare")
+				for (i in result) {
+					print result[i]
+				}
+			}
+		'
 )"
 
 travisEnv=
@@ -45,15 +73,9 @@ for version in "${versions[@]}"; do
 	rcGrepV='-v'
 	if [ "$rcVersion" != "$version" ]; then
 		rcGrepV=
-		# "beta" sorts lower than "tp" even though "beta" is a more preferred release, so we need to explicitly adjust the sorting order for RCs
-		versionOptions="$(
-			grep -E -- '-rc' <<<"$versionOptions" || :
-			grep -E -- '-beta' <<<"$versionOptions" || :
-			grep -E -- '-tp' <<<"$versionOptions" || :
-		)"
 	fi
 
-	fullVersion="$(grep $rcGrepV -Em1 -- '-(rc|tp|beta)' <<<"$versionOptions")"
+	fullVersion="$(grep $rcGrepV -E -- '-(rc|tp|beta)' <<<"$versionOptions" | tail -1)"
 	if [ -z "$fullVersion" ]; then
 		echo >&2 "warning: cannot find full version for $version"
 		continue
