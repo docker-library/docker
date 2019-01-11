@@ -25,8 +25,7 @@ sed_escape_rhs() {
 }
 
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
-#dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
-dindLatest='52379fa76dee07ca038624d639d9e14f4fb719ff' # TODO https://github.com/moby/moby/pull/38424 added bashisms to dind, so we can't use it verbatim with /bin/sh anymore
+dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
 dockerVersions="$(
 	git ls-remote --tags https://github.com/docker/docker-ce.git \
