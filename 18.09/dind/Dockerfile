@@ -1,5 +1,8 @@
 FROM docker:18.09
 
+ARG DOCKER_HOST
+ENV DOCKER_HOST=$DOCKER_HOST
+
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
 	apk add --no-cache \
