@@ -12,8 +12,10 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$1" = 'dockerd' ]; then
-	# if we're running Docker, let's pipe through dind
-	set -- "$(which dind)" "$@"
+	if [ -x '/usr/local/bin/dind' ]; then
+		# if we have the (mostly defunct now) Docker-in-Docker wrapper script, use it
+		set -- '/usr/local/bin/dind' "$@"
+	fi
 
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete
