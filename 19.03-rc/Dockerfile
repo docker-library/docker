@@ -20,11 +20,14 @@ RUN set -eux; \
 # this "case" statement is generated via "update.sh"
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
+# amd64
 		x86_64) dockerArch='x86_64' ;; \
+# arm32v6
 		armhf) dockerArch='armel' ;; \
+# arm32v7
+		armv7) dockerArch='armhf' ;; \
+# arm64v8
 		aarch64) dockerArch='aarch64' ;; \
-		ppc64le) dockerArch='ppc64le' ;; \
-		s390x) dockerArch='s390x' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
 	\

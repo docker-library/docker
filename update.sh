@@ -87,9 +87,14 @@ for version in "${versions[@]}"; do
 
 	archCase='apkArch="$(apk --print-arch)"; '$'\\\n'
 	archCase+=$'\t''case "$apkArch" in '$'\\\n'
-	for apkArch in $(apkArches "$version"); do
-		dockerArch="$(apkToDockerArch "$version" "$apkArch")"
-		archCase+=$'\t\t'"$apkArch) dockerArch='$dockerArch' ;; "$'\\\n'
+	for apkArch in $(apkArches); do
+		dockerArch="$(apkToDockerArch "$apkArch")"
+		# check whether the given architecture is supported for this release
+		if wget --quiet --spider "https://download.docker.com/linux/static/$channel/$dockerArch/docker-$fullVersion.tgz" &> /dev/null; then
+			bashbrewArch="$(apkToBashbrewArch "$apkArch")"
+			archCase+="# $bashbrewArch"$'\n'
+			archCase+=$'\t\t'"$apkArch) dockerArch='$dockerArch' ;; "$'\\\n'
+		fi
 	done
 	archCase+=$'\t\t''*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;'$'\\\n'
 	archCase+=$'\t''esac'

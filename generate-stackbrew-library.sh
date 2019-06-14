@@ -14,6 +14,26 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 source '.architectures-lib'
 
+parentArches() {
+	local version="$1"; shift # "17.06", etc
+
+	local parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
+	echo "${parentRepoToArches[$parent]:-}"
+}
+versionArches() {
+	local version="$1"; shift
+
+	local parentArches="$(parentArches "$version")"
+
+	local versionArches=()
+	for arch in $parentArches; do
+		if hasBashbrewArch "$arch" && grep -qE "^# $arch\$" "$version/Dockerfile"; then
+			versionArches+=( "$arch" )
+		fi
+	done
+	echo "${versionArches[*]}"
+}
+
 versions=( */ )
 versions=( "${versions[@]%/}" )
 

@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 
 _awkArch() {
-	local version="$1"; shift
 	local awkExpr="$1"; shift
-	awk "$@" "/^#|^\$/ { next } $awkExpr" "$version/release-architectures"
-}
-
-apkArches() {
-	local version="$1"; shift
-	_awkArch "$version" '{ print $2 }'
+	awk "$@" "/^#|^\$/ { next } $awkExpr" release-architectures
 }
 
 hasBashbrewArch() {
-	local version="$1"; shift
 	local bashbrewArch="$1"; shift
-	_awkArch "$version" 'BEGIN { exitCode = 1 } $1 == bashbrewArch { exitCode = 0 } END { exit exitCode }' -v bashbrewArch="$bashbrewArch"
+	_awkArch 'BEGIN { exitCode = 1 } $1 == bashbrewArch { exitCode = 0 } END { exit exitCode }' -v bashbrewArch="$bashbrewArch"
+}
+
+apkArches() {
+	_awkArch '{ print $2 }'
 }
 
 apkToDockerArch() {
-	local version="$1"; shift
 	local apkArch="$1"; shift
-	_awkArch "$version" '$2 == apkArch { print $3; exit }' -v apkArch="$apkArch"
+	_awkArch '$2 == apkArch { print $3; exit }' -v apkArch="$apkArch"
+}
+
+apkToBashbrewArch() {
+	local apkArch="$1"; shift
+	_awkArch '$2 == apkArch { print $1; exit }' -v apkArch="$apkArch"
 }
 
 _generateParentRepoToArches() {
@@ -38,26 +39,6 @@ _generateParentRepoToArches() {
 	) )"
 }
 _generateParentRepoToArches 'docker'
-
-parentArches() {
-	local version="$1"; shift # "17.06", etc
-
-	local parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
-	echo "${parentRepoToArches[$parent]:-}"
-}
-versionArches() {
-	local version="$1"; shift
-
-	local parentArches="$(parentArches "$version")"
-
-	local versionArches=()
-	for arch in $parentArches; do
-		if hasBashbrewArch "$version" "$arch"; then
-			versionArches+=( "$arch" )
-		fi
-	done
-	echo "${versionArches[*]}"
-}
 
 versionChannel() {
 	local version="$1"; shift # "17.06", "17.11-rc", etc
