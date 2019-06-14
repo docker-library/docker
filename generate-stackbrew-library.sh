@@ -2,7 +2,7 @@
 set -eu
 
 declare -A aliases=(
-	[18.06]='edge'
+	#[18.06]='edge'
 )
 
 # used for auto-detecting the "latest" of each channel (for tagging it appropriately)

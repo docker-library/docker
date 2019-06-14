@@ -5,7 +5,6 @@ env:
   - VERSION=19.03-rc
   - VERSION=18.09-rc
   - VERSION=18.09
-  - VERSION=18.06
 
 install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
