@@ -105,9 +105,10 @@ for version in "${versions[@]}"; do
 	minorVersion="${fullVersion#$majorVersion.}"
 	minorVersion="${minorVersion%%.*}"
 	minorVersion="${minorVersion#0}"
+	rootlessExtrasURL="https://download.docker.com/linux/static/nightly/x86_64/docker-rootless-extras-0.0.0-20190710010648-0143db1.tgz"
 
 	for variant in \
-		'' git dind \
+		'' git dind dind-rootless \
 		windows/windowsservercore-{1709,ltsc2016} \
 	; do
 		dir="$version${variant:+/$variant}"
@@ -125,6 +126,7 @@ for version in "${versions[@]}"; do
 			-e 's!%%TAG%%!'"$tag"'!g' \
 			-e 's!%%DIND-COMMIT%%!'"$dindLatest"'!g' \
 			-e 's!%%ARCH-CASE%%!'"$(sed_escape_rhs "$archCase")"'!g' \
+			-e 's!%%ROOTLESS-EXTRAS-URL%%!'"$rootlessExtrasURL"'!g' \
 			"$template" > "$df"
 
 		# pigz (https://github.com/moby/moby/pull/35697) is only 18.02+
@@ -144,6 +146,7 @@ for version in "${versions[@]}"; do
 
 	cp -a docker-entrypoint.sh modprobe.sh "$version/"
 	cp -a dockerd-entrypoint.sh "$version/dind/"
+	[ -d "$version/dind-rootless" ] && cp -a dockerd-rootless-entrypoint.sh "$version/dind-rootless/"
 
 	travisEnv='\n  - VERSION='"$version$travisEnv"
 done

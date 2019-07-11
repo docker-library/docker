@@ -145,7 +145,7 @@ for version in "${versions[@]}"; do
 	EOE
 
 	for v in \
-		dind git \
+		dind dind-rootless git \
 		windows/windowsservercore-{ltsc2016,1709} \
 	; do
 		dir="$version/$v"
