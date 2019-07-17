@@ -24,7 +24,7 @@ if [ "$1" = 'dockerd' ]; then
 
 		   You probably should use the "dind" image variant instead, something like:
 
-		     docker run --privileged --name some-overlay-docker -d docker:stable-dind --storage-driver=overlay
+		     docker run --privileged --name some-docker ... docker:dind ...
 
 		   See https://hub.docker.com/_/docker/ for more documentation and usage examples.
 
