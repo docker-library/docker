@@ -7,6 +7,7 @@ RUN set -eux; \
 		e2fsprogs \
 		e2fsprogs-extra \
 		iptables \
+		openssl \
 		xfsprogs \
 		xz \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
@@ -38,7 +39,7 @@ RUN set -eux; \
 COPY dockerd-entrypoint.sh /usr/local/bin/
 
 VOLUME /var/lib/docker
-EXPOSE 2375
+EXPOSE 2375 2376
 
 ENTRYPOINT ["dockerd-entrypoint.sh"]
 CMD []
