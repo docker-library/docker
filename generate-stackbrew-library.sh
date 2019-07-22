@@ -88,7 +88,7 @@ for version in "${versions[@]}"; do
 		# if this is a "-rc" release, let's make sure the release it contains isn't already GA (and thus something we should not publish anymore)
 		rcFullVersion="$(git show HEAD:"$rcVersion/Dockerfile" | awk '$1 == "ENV" && $2 == "DOCKER_VERSION" { print $3; exit }')"
 		latestVersion="$({ echo "$fullVersion"; echo "$rcFullVersion"; } | sort -V | tail -1)"
-		if [ "$latestVersion" = "$rcFullVersion" ]; then
+		if [[ "$fullVersion" == "$rcFullVersion"* ]] || [ "$latestVersion" = "$rcFullVersion" ]; then
 			# "x.y.z-rc1" == x.y.z*
 			continue
 		fi
