@@ -39,7 +39,10 @@ RUN set -eux; \
 COPY dockerd-entrypoint.sh /usr/local/bin/
 
 VOLUME /var/lib/docker
-EXPOSE 2375 2376
+
+# TODO figure out why folks are using EXPOSE for health checks (https://gitlab.com/gitlab-org/gitlab-runner/issues/4501#note_194904002)
+#EXPOSE 2375 2376
+# (just because a port is listed under EXPOSE does not mean it will actually be listened on)
 
 ENTRYPOINT ["dockerd-entrypoint.sh"]
 CMD []
