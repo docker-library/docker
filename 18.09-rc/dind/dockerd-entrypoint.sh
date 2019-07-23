@@ -66,6 +66,7 @@ _tls_generate_certs() {
 		# if we have a CA private key, we should create/manage a client key
 		mkdir -p "$dir/client"
 		_tls_ensure_private "$dir/client/key.pem"
+		chmod 0644 "$dir/client/key.pem" # openssl defaults to 0600 for the private key, but this one needs to be shared with arbitrary client contexts
 		openssl req -new \
 				-key "$dir/client/key.pem" \
 				-out "$dir/client/csr.pem" \
