@@ -173,13 +173,11 @@ if [ "$1" = 'dockerd' ]; then
 			--port-driver=builtin \
 			--copy-up=/etc --copy-up=/run \
 			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
-			sh -c '
-				rm -f /run/docker /run/xtables.lock
-				exec "$@" --userland-proxy-path=rootlesskit-docker-proxy
-			' -- "$@"
+			"$@" --userland-proxy-path=rootlesskit-docker-proxy
 	fi
-elif [ "$1" = 'docker' ]; then
-	exec docker-entrypoint.sh "$@"
+else
+	# if it isn't `dockerd` we're trying to run, pass it through `docker-entrypoint.sh` so it gets `DOCKER_HOST` set appropriately too
+	set -- docker-entrypoint.sh "$@"
 fi
 
 exec "$@"

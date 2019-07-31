@@ -65,17 +65,9 @@ RUN set -eux; \
 	apk del --no-network .rootlesskit-build-deps; \
 	rootlesskit --version
 
-# pre-create a few useful directories for our rootless user
+# pre-create "/var/lib/docker" for our rootless user
 RUN set -eux; \
-	mkdir -p \
-		/home/rootless/.local/share/docker \
-		/home/rootless/certs/ca \
-		/home/rootless/certs/client \
-		/home/rootless/certs/server \
-	; \
-	chown -R rootless:rootless \
-		/home/rootless/.local/share/docker \
-		/home/rootless/certs
-ENV DOCKER_TLS_CERTDIR=/home/rootless/certs
+	mkdir -p /home/rootless/.local/share/docker; \
+	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 USER rootless
