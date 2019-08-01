@@ -92,6 +92,17 @@ _tls_generate_certs() {
 # no arguments passed
 # or first arg is `-f` or `--some-option`
 if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
+	# set DOCKER_HOST to the default "--host" value (for both standard or rootless)
+	uid="$(id -u)"
+	if [ "$uid" = '0' ]; then
+		: "${DOCKER_HOST:=unix:///var/run/docker.sock}"
+	else
+		# if we're not root, we must be trying to run rootless
+		: "${XDG_RUNTIME_DIR:=/run/user/$uid}"
+		: "${DOCKER_HOST:=unix://$XDG_RUNTIME_DIR/docker.sock}"
+	fi
+	export DOCKER_HOST
+
 	# add our default arguments
 	if [ -n "${DOCKER_TLS_CERTDIR:-}" ] \
 		&& _tls_generate_certs "$DOCKER_TLS_CERTDIR" \
@@ -101,19 +112,21 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	; then
 		# generate certs and use TLS if requested/possible (default in 19.03+)
 		set -- dockerd \
-			--host=unix:///var/run/docker.sock \
+			--host="$DOCKER_HOST" \
 			--host=tcp://0.0.0.0:2376 \
 			--tlsverify \
 			--tlscacert "$DOCKER_TLS_CERTDIR/server/ca.pem" \
 			--tlscert "$DOCKER_TLS_CERTDIR/server/cert.pem" \
 			--tlskey "$DOCKER_TLS_CERTDIR/server/key.pem" \
 			"$@"
+		DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS="${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} -p 0.0.0.0:2376:2376/tcp"
 	else
 		# TLS disabled (-e DOCKER_TLS_CERTDIR='') or missing certs
 		set -- dockerd \
-			--host=unix:///var/run/docker.sock \
+			--host="$DOCKER_HOST" \
 			--host=tcp://0.0.0.0:2375 \
 			"$@"
+		DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS="${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} -p 0.0.0.0:2375:2375/tcp"
 	fi
 fi
 
@@ -124,7 +137,47 @@ if [ "$1" = 'dockerd' ]; then
 	fi
 
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
-	find /run /var/run -iname 'docker*.pid' -delete
+	find /run /var/run -iname 'docker*.pid' -delete || :
+
+	uid="$(id -u)"
+	if [ "$uid" != '0' ]; then
+		# if we're not root, we must be trying to run rootless
+		if ! command -v rootlesskit > /dev/null; then
+			echo >&2 "error: attempting to run rootless dockerd but missing 'rootlesskit' (perhaps the 'docker:dind-rootless' image variant is intended?)"
+			exit 1
+		fi
+		user="$(id -un 2>/dev/null || :)"
+		if ! grep -qE "^($uid${user:+|$user}):" /etc/subuid || ! grep -qE "^($uid${user:+|$user}):" /etc/subgid; then
+			echo >&2 "error: attempting to run rootless dockerd but missing necessary entries in /etc/subuid and/or /etc/subgid for $uid"
+			exit 1
+		fi
+		: "${XDG_RUNTIME_DIR:=/run/user/$uid}"
+		export XDG_RUNTIME_DIR
+		if ! mkdir -p "$XDG_RUNTIME_DIR" || [ ! -w "$XDG_RUNTIME_DIR" ] || ! mkdir -p "$HOME/.local/share/docker" || [ ! -w "$HOME/.local/share/docker" ]; then
+			echo >&2 "error: attempting to run rootless dockerd but need writable HOME ($HOME) and XDG_RUNTIME_DIR ($XDG_RUNTIME_DIR) for user $uid"
+			exit 1
+		fi
+		if ! unprivClone="$(cat /proc/sys/kernel/unprivileged_userns_clone || :)" || [ "$unprivClone" != '1' ]; then
+			echo >&2 "error: attempting to run rootless dockerd but need 'kernel.unprivileged_userns_clone' (/proc/sys/kernel/unprivileged_userns_clone) set to 1"
+			exit 1
+		fi
+		if ! maxUserns="$(cat /proc/sys/user/max_user_namespaces || :)" || [ "$maxUserns" = '0' ]; then
+			echo >&2 "error: attempting to run rootless dockerd but need 'user.max_user_namespaces' (/proc/sys/user/max_user_namespaces) set to a sufficiently large value"
+			exit 1
+		fi
+		# TODO overlay support detection?
+		exec rootlesskit \
+			--net="${DOCKERD_ROOTLESS_ROOTLESSKIT_NET:-vpnkit}" \
+			--mtu="${DOCKERD_ROOTLESS_ROOTLESSKIT_MTU:-1500}" \
+			--disable-host-loopback \
+			--port-driver=builtin \
+			--copy-up=/etc --copy-up=/run \
+			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
+			"$@" --userland-proxy-path=rootlesskit-docker-proxy
+	fi
+else
+	# if it isn't `dockerd` we're trying to run, pass it through `docker-entrypoint.sh` so it gets `DOCKER_HOST` set appropriately too
+	set -- docker-entrypoint.sh "$@"
 fi
 
 exec "$@"

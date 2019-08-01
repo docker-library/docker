@@ -107,7 +107,7 @@ for version in "${versions[@]}"; do
 	minorVersion="${minorVersion#0}"
 
 	for variant in \
-		'' git dind \
+		'' git dind dind-rootless \
 		windows/windowsservercore-{1709,ltsc2016} \
 	; do
 		dir="$version${variant:+/$variant}"

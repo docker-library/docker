@@ -8,6 +8,7 @@ RUN set -eux; \
 		e2fsprogs-extra \
 		iptables \
 		openssl \
+		shadow-uidmap \
 		xfsprogs \
 		xz \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
