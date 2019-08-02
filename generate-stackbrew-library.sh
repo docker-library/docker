@@ -159,6 +159,10 @@ for version in "${versions[@]}"; do
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
 		case "$v" in
+			# https://github.com/docker/docker-ce/blob/8fb3bb7b2210789a4471c017561c1b0de0b4f145/components/engine/hack/make/binary-daemon#L24
+			# "vpnkit is amd64-only" ... for now??
+			dind-rootless) variantArches='amd64' ;;
+
 			windows/*) variantArches='windows-amd64' ;;
 			*)         variantArches="$versionArches" ;;
 		esac
