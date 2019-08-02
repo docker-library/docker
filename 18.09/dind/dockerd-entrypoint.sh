@@ -92,16 +92,16 @@ _tls_generate_certs() {
 # no arguments passed
 # or first arg is `-f` or `--some-option`
 if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
-	# set DOCKER_HOST to the default "--host" value (for both standard or rootless)
+	# set DOCKER_SOCKET to the default "--host" value (for both standard or rootless)
 	uid="$(id -u)"
 	if [ "$uid" = '0' ]; then
-		: "${DOCKER_HOST:=unix:///var/run/docker.sock}"
+		: "${DOCKER_SOCKET:=unix:///var/run/docker.sock}"
 	else
 		# if we're not root, we must be trying to run rootless
 		: "${XDG_RUNTIME_DIR:=/run/user/$uid}"
-		: "${DOCKER_HOST:=unix://$XDG_RUNTIME_DIR/docker.sock}"
+		: "${DOCKER_SOCKET:=unix://$XDG_RUNTIME_DIR/docker.sock}"
 	fi
-	export DOCKER_HOST
+	export DOCKER_SOCKET
 
 	# add our default arguments
 	if [ -n "${DOCKER_TLS_CERTDIR:-}" ] \
@@ -112,7 +112,7 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	; then
 		# generate certs and use TLS if requested/possible (default in 19.03+)
 		set -- dockerd \
-			--host="$DOCKER_HOST" \
+			--host="$DOCKER_SOCKET" \
 			--host=tcp://0.0.0.0:2376 \
 			--tlsverify \
 			--tlscacert "$DOCKER_TLS_CERTDIR/server/ca.pem" \
@@ -123,7 +123,7 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	else
 		# TLS disabled (-e DOCKER_TLS_CERTDIR='') or missing certs
 		set -- dockerd \
-			--host="$DOCKER_HOST" \
+			--host="$DOCKER_SOCKET" \
 			--host=tcp://0.0.0.0:2375 \
 			"$@"
 		DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS="${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} -p 0.0.0.0:2375:2375/tcp"
