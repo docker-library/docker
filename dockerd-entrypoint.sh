@@ -156,11 +156,11 @@ if [ "$1" = 'dockerd' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need writable HOME ($HOME) and XDG_RUNTIME_DIR ($XDG_RUNTIME_DIR) for user $uid"
 			exit 1
 		fi
-		if ! unprivClone="$(cat /proc/sys/kernel/unprivileged_userns_clone || :)" || [ "$unprivClone" != '1' ]; then
+		if [ -f /proc/sys/kernel/unprivileged_userns_clone ] && unprivClone="$(cat /proc/sys/kernel/unprivileged_userns_clone)" && [ "$unprivClone" != '1' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need 'kernel.unprivileged_userns_clone' (/proc/sys/kernel/unprivileged_userns_clone) set to 1"
 			exit 1
 		fi
-		if ! maxUserns="$(cat /proc/sys/user/max_user_namespaces || :)" || [ "$maxUserns" = '0' ]; then
+		if [ -f /proc/sys/user/max_user_namespaces ] && maxUserns="$(cat /proc/sys/user/max_user_namespaces)" && [ "$maxUserns" = '0' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need 'user.max_user_namespaces' (/proc/sys/user/max_user_namespaces) set to a sufficiently large value"
 			exit 1
 		fi
