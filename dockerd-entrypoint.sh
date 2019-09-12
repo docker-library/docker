@@ -88,10 +88,30 @@ _tls_generate_certs() {
 		openssl verify -CAfile "$dir/client/ca.pem" "$dir/client/cert.pem"
 	fi
 }
+_remount_sys_rw(){
+	mount -o remount,rw /sys
+	mount -o remount,rw /sys/fs/cgroup
+	grep "cgroup /sys/fs/cgroup" /proc/1/mounts | \
+		while read l; do
+			path=$(echo $l | cut -d " " -f 2)
+			opt=$(echo $l | cut -d " " -f 4)
+			umount $path
+			mount -t cgroup -o $(echo $opt | sed -e s/ro/rw/g) none $path
+		done
+}
 
 # no arguments passed
 # or first arg is `-f` or `--some-option`
 if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
+	if [ -n "${DOCKER_REMOUNT_SYS_RW:-}" ]; then
+		# DOCKER_REMOUNT_SYS_RW=1 allows running Docker-in-Kata without --privileged.
+		# This is important because `--runtime=kata --privileged` mounts /dev from the host and ruins the benefit of using VM isolation.
+		#
+		# Full flags needed for Docker-in-Kata:
+		# --runtime kata -e DOCKER_REMOUNT_SYS_RW=1 --cap-add all --security-opt seccomp=unconfined --security-opt systempaths=unconfined
+		echo "Remounting /sys in RW"
+		_remount_sys_rw
+	fi
 	# set "dockerSocket" to the default "--host" *unix socket* value (for both standard or rootless)
 	uid="$(id -u)"
 	if [ "$uid" = '0' ]; then
