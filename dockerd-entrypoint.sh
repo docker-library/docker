@@ -3,7 +3,7 @@ set -eu
 
 _tls_ensure_private() {
 	local f="$1"; shift
-	[ -s "$f" ] || openssl genrsa -out "$f" 4196
+	[ -s "$f" ] || openssl genrsa -out "$f" 4096
 }
 _tls_san() {
 	{
