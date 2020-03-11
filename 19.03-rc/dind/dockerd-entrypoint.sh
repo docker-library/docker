@@ -170,7 +170,8 @@ if [ "$1" = 'dockerd' ]; then
 			--mtu="${DOCKERD_ROOTLESS_ROOTLESSKIT_MTU:-1500}" \
 			--disable-host-loopback \
 			--port-driver=builtin \
-			--copy-up=/etc --copy-up=/run \
+			--copy-up=/etc \
+			--copy-up=/run \
 			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
 			"$@" --userland-proxy-path=rootlesskit-docker-proxy
 	elif [ -x '/usr/local/bin/dind' ]; then
