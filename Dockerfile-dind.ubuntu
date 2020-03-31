@@ -1,4 +1,4 @@
-FROM docker:ubuntu
+FROM fdns/docker:ubuntu
 
 RUN apt-get update \
     && apt-get install -y \
