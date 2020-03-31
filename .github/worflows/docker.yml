@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Build Ubuntu Docker image
+        run: docker build . --file ./Dockerfile.ubuntu --tag fdns/docker:ubuntu-${GITHUB_SHA}
+
+      - name: Build Ubuntu Docker image dind
+        run: docker build . --file ./Dockerfile-dind.ubuntu --tag fdns/docker:ubuntu-dind-${GITHUB_SHA}
+
+      - name: Push
+        run: |
+          echo "${DOCKERHUB_PASSWORD}" | docker login --username ${DOCKERHUB_USER} --password-stdin
+          docker push fdns/docker:ubuntu-${GITHUB_SHA}
+          docker push fdns/docker:ubuntu-dind-${GITHUB_SHA}
+        env:
+          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
