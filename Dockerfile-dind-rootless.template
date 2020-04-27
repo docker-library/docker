@@ -36,22 +36,12 @@ RUN set -eux; \
 	vpnkit --version
 
 # https://github.com/rootless-containers/rootlesskit/releases
-ENV ROOTLESSKIT_VERSION 0.9.1
+ENV ROOTLESSKIT_VERSION 0.9.4
 
 RUN set -eux; \
-	apk add --no-cache --virtual .rootlesskit-build-deps \
-		go \
-		libc-dev \
-	; \
-	wget -O rootlesskit.tgz "https://github.com/rootless-containers/rootlesskit/archive/v${ROOTLESSKIT_VERSION}.tar.gz"; \
-	export GOPATH='/go'; mkdir "$GOPATH"; \
-	mkdir -p "$GOPATH/src/github.com/rootless-containers/rootlesskit"; \
-	tar --extract --file rootlesskit.tgz --directory "$GOPATH/src/github.com/rootless-containers/rootlesskit" --strip-components 1; \
-	rm rootlesskit.tgz; \
-	go build -o /usr/local/bin/rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit; \
-	go build -o /usr/local/bin/rootlesskit-docker-proxy github.com/rootless-containers/rootlesskit/cmd/rootlesskit-docker-proxy; \
-	rm -rf "$GOPATH"; \
-	apk del --no-network .rootlesskit-build-deps; \
+	wget -O rootlesskit.tar.gz "https://github.com/rootless-containers/rootlesskit/releases/download/v${ROOTLESSKIT_VERSION}/rootlesskit-x86_64.tar.gz"; \
+	tar --extract --gzip --file rootlesskit.tar.gz --directory /usr/local/bin; \
+	rm rootlesskit.tar.gz; \
 	rootlesskit --version
 
 # pre-create "/var/lib/docker" for our rootless user
