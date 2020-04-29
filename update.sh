@@ -63,8 +63,6 @@ dockerVersions="$(
 		'
 )"
 
-travisEnv=
-appveyorEnv=
 for version in "${versions[@]}"; do
 	rcVersion="${version%-rc}"
 
@@ -136,27 +134,8 @@ for version in "${versions[@]}"; do
 		if [ "$majorVersion" -lt 18 ] || { [ "$majorVersion" -eq 18 ] && [ "$minorVersion" -lt 2 ]; }; then
 			sed -ri '/pigz/d' "$df"
 		fi
-
-		if [[ "$variant" == windows/* ]]; then
-			winVariant="$(basename "$variant")"
-
-			case "$winVariant" in
-				*-1709) ;; # no AppVeyor support for 1709 yet: https://github.com/appveyor/ci/issues/1885
-				*) appveyorEnv='\n    - version: '"$version"'\n      variant: '"$winVariant$appveyorEnv" ;;
-			esac
-		fi
 	done
 
 	cp -a docker-entrypoint.sh modprobe.sh "$version/"
 	cp -a dockerd-entrypoint.sh "$version/dind/"
-
-	travisEnv='\n  - VERSION='"$version$travisEnv"
 done
-
-travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
-echo "$travis" > .travis.yml
-
-if [ -f .appveyor.yml ]; then
-	appveyor="$(awk -v 'RS=\n\n' '$1 == "environment:" { $0 = "environment:\n  matrix:'"$appveyorEnv"'" } { printf "%s%s", $0, RS }' .appveyor.yml)"
-	echo "$appveyor" > .appveyor.yml
-fi
