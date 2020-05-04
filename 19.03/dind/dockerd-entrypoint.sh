@@ -173,7 +173,7 @@ if [ "$1" = 'dockerd' ]; then
 			--copy-up=/etc \
 			--copy-up=/run \
 			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
-			"$@" --userland-proxy-path=rootlesskit-docker-proxy
+			"$@"
 	elif [ -x '/usr/local/bin/dind' ]; then
 		# if we have the (mostly defunct now) Docker-in-Docker wrapper script, use it
 		set -- '/usr/local/bin/dind' "$@"
