@@ -134,6 +134,14 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	fi
 fi
 
+if [ "$DOCKER_REGISTRY_MIRROR" ]; then
+  set -- "$@" --registry-mirror=$DOCKER_REGISTRY_MIRROR
+fi
+
+if [ "$DOCKER_INSECURE_REGISTRY" ]; then
+  set -- "$@" --insecure-registry=$DOCKER_INSECURE_REGISTRY
+fi
+
 if [ "$1" = 'dockerd' ]; then
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete || :
