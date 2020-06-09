@@ -122,12 +122,12 @@ for version in "${versions[@]}"; do
 		${aliases[$version]:-}
 	)
 	if [ -z "${latestChannelRelease[$channel]:-}" ]; then
-		versionAliases+=( "$channel" )
+		if [ "$rcVersion" = '19.03' ]; then versionAliases+=( "$channel" ); fi # 19.03 is the last release to include any "channel" aliases
 		latestChannelRelease[$channel]="$version"
 	fi
 	# every release goes into the "test" channel, so the biggest numbered release wins (RC or not)
 	if [ -z "${latestChannelRelease['test']:-}" ]; then
-		versionAliases+=( 'test' )
+		if [ "$rcVersion" = '19.03' ]; then versionAliases+=( 'test' ); fi # 19.03 is the last release to include any "channel" aliases
 		latestChannelRelease['test']="$version"
 	fi
 	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease['latest']:-}" ]; then
