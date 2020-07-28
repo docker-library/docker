@@ -1,6 +1,7 @@
 version: 1.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+image: Ubuntu
 nuget:
   account_feed: true
   project_feed: true
-build:
-  verbosity: minimal
