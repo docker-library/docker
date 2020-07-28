@@ -18,6 +18,8 @@ For more information about the official images process, see the [docker-library/
 	![build status badge](https://img.shields.io/travis/docker-library/docker/master.svg)](https://travis-ci.org/docker-library/docker/branches)
 -	[AppVeyor (Windows):  
 	![build status badge](https://ci.appveyor.com/api/projects/status/github/docker-library/docker?branch=master&svg=true)](https://ci.appveyor.com/project/docker-library/docker)
+-	[AppVeyor:  
+	[![Build status](https://ci.appveyor.com/api/projects/status/jb45iiwty4c3b9nd?svg=true)](https://ci.appveyor.com/project/BdDsl/docker-3gi7a)
 -	[Automated `update.sh`:  
 	![build status badge](https://doi-janky.infosiftr.net/job/update.sh/job/docker/badge/icon)](https://doi-janky.infosiftr.net/job/update.sh/job/docker)
 
