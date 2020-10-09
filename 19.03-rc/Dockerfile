@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM alpine:3.12
 
 RUN apk add --no-cache \
@@ -11,7 +17,6 @@ RUN apk add --no-cache \
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
-ENV DOCKER_CHANNEL test
 ENV DOCKER_VERSION 19.03.13-beta2
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
@@ -19,24 +24,24 @@ ENV DOCKER_VERSION 19.03.13-beta2
 
 RUN set -eux; \
 	\
-# this "case" statement is generated via "update.sh"
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-# amd64
-		x86_64) dockerArch='x86_64' ;; \
-# arm32v6
-		armhf) dockerArch='armel' ;; \
-# arm32v7
-		armv7) dockerArch='armhf' ;; \
-# arm64v8
-		aarch64) dockerArch='aarch64' ;; \
-		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
+		'x86_64') \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-19.03.13-beta2.tgz'; \
+			;; \
+		'armhf') \
+			url='https://download.docker.com/linux/static/test/armel/docker-19.03.13-beta2.tgz'; \
+			;; \
+		'armv7') \
+			url='https://download.docker.com/linux/static/test/armhf/docker-19.03.13-beta2.tgz'; \
+			;; \
+		'aarch64') \
+			url='https://download.docker.com/linux/static/test/aarch64/docker-19.03.13-beta2.tgz'; \
+			;; \
+		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
-	if ! wget -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
-		echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"; \
-		exit 1; \
-	fi; \
+	wget -O docker.tgz "$url"; \
 	\
 	tar --extract \
 		--file docker.tgz \

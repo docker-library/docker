@@ -1,9 +1,0 @@
-# see subdirectories of https://download.docker.com/linux/static/
-
-# bashbrew-arch  apk-arch  docker-release-arch
-amd64    x86_64   x86_64
-arm32v6  armhf    armel
-arm32v7  armv7    armhf
-arm64v8  aarch64  aarch64
-ppc64le  ppc64le  ppc64le
-s390x    s390x    s390x
