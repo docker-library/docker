@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM docker:19.03-rc-dind
 
 # busybox "ip" is insufficient:
@@ -15,24 +21,15 @@ RUN set -eux; \
 
 RUN set -eux; \
 	\
-# this "case" statement is generated via "update.sh"
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-# amd64
-		x86_64) dockerArch='x86_64' ;; \
-# arm32v6
-		armhf) dockerArch='armel' ;; \
-# arm32v7
-		armv7) dockerArch='armhf' ;; \
-# arm64v8
-		aarch64) dockerArch='aarch64' ;; \
-		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
+		'x86_64') \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-19.03.13-beta2.tgz'; \
+			;; \
+		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
-	if ! wget -O rootless.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-rootless-extras-${DOCKER_VERSION}.tgz"; then \
-		echo >&2 "error: failed to download 'docker-rootless-extras-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"; \
-		exit 1; \
-	fi; \
+	wget -O rootless.tgz "$url"; \
 	\
 	tar --extract \
 		--file rootless.tgz \
