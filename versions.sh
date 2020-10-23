@@ -32,7 +32,7 @@ versions=( "${versions[@]%/}" )
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
 dockerVersions="$(
-	git ls-remote --tags https://github.com/docker/docker-ce.git \
+	git ls-remote --tags https://github.com/docker/docker.git \
 		| cut -d$'\t' -f2 \
 		| grep '^refs/tags/v[0-9].*$' \
 		| sed 's!^refs/tags/v!!; s!\^{}$!!' \

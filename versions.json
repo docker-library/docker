@@ -50,5 +50,31 @@
       "git"
     ],
     "version": "19.03.13-beta2"
+  },
+  "20.10-rc": {
+    "alpine": "3.12",
+    "arches": {
+      "amd64": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-20.10.0-beta1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-20.10.0-beta1.tgz"
+      },
+      "arm32v6": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-20.10.0-beta1.tgz"
+      },
+      "arm32v7": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-20.10.0-beta1.tgz"
+      },
+      "arm64v8": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-20.10.0-beta1.tgz"
+      }
+    },
+    "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",
+    "variants": [
+      "",
+      "dind",
+      "dind-rootless",
+      "git"
+    ],
+    "version": "20.10.0-beta1"
   }
 }
