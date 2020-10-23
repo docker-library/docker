@@ -24,11 +24,11 @@ RUN set -eux; \
 # TODO aufs-tools
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
-RUN set -x \
-	&& addgroup -S dockremap \
-	&& adduser -S -G dockremap dockremap \
-	&& echo 'dockremap:165536:65536' >> /etc/subuid \
-	&& echo 'dockremap:165536:65536' >> /etc/subgid
+RUN set -eux; \
+	addgroup -S dockremap; \
+	adduser -S -G dockremap dockremap; \
+	echo 'dockremap:165536:65536' >> /etc/subuid; \
+	echo 'dockremap:165536:65536' >> /etc/subgid
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT {{ .dindCommit }}
