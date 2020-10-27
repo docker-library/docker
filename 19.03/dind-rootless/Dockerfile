@@ -6,6 +6,8 @@
 
 FROM docker:19.03-dind
 
+ARG ROOTLESS_UID=1000
+
 # busybox "ip" is insufficient:
 #   [rootlesskit:child ] error: executing [[ip tuntap add name tap0 mode tap] [ip link set tap0 address 02:50:00:00:00:01]]: exit status 1
 RUN apk add --no-cache iproute2
@@ -15,7 +17,7 @@ RUN mkdir /run/user && chmod 1777 /run/user
 
 # create a default user preconfigured for running rootless dockerd
 RUN set -eux; \
-	adduser -h /home/rootless -g 'Rootless' -D -u 1000 rootless; \
+	adduser -h /home/rootless -g 'Rootless' -D -u ${ROOTLESS_UID} rootless; \
 	echo 'rootless:100000:65536' >> /etc/subuid; \
 	echo 'rootless:100000:65536' >> /etc/subgid
 
@@ -68,3 +70,4 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 USER rootless
+ENV DOCKER_HOST unix:///run/user/${ROOTLESS_UID}/docker.sock
