@@ -44,7 +44,7 @@ RUN set -eux; \
 	vpnkit --version
 
 # https://github.com/rootless-containers/rootlesskit/releases
-ENV ROOTLESSKIT_VERSION 0.10.0
+ENV ROOTLESSKIT_VERSION 0.11.0
 
 RUN set -eux; \
 	apk add --no-cache --virtual .rootlesskit-build-deps \
