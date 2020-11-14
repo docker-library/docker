@@ -4,6 +4,19 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
+FROM golang:1.14-alpine3.12 AS builder
+
+# https://github.com/rootless-containers/rootlesskit/releases
+ENV ROOTLESSKIT_VERSION 0.11.0
+
+RUN set -eux; \
+	wget -O rootlesskit.tgz "https://github.com/rootless-containers/rootlesskit/archive/v${ROOTLESSKIT_VERSION}.tar.gz"; \
+	mkdir -p "$GOPATH/src/github.com/rootless-containers/rootlesskit"; \
+	tar --extract --file rootlesskit.tgz --directory "$GOPATH/src/github.com/rootless-containers/rootlesskit" --strip-components 1; \
+	go build -o /usr/local/bin/rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit; \
+	go build -o /usr/local/bin/rootlesskit-docker-proxy github.com/rootless-containers/rootlesskit/cmd/rootlesskit-docker-proxy; \
+	rootlesskit --version
+
 FROM docker:20.10-rc-dind
 
 # busybox "ip" is insufficient:
@@ -46,21 +59,7 @@ RUN set -eux; \
 # https://github.com/rootless-containers/rootlesskit/releases
 ENV ROOTLESSKIT_VERSION 0.11.0
 
-RUN set -eux; \
-	apk add --no-cache --virtual .rootlesskit-build-deps \
-		go \
-		libc-dev \
-	; \
-	wget -O rootlesskit.tgz "https://github.com/rootless-containers/rootlesskit/archive/v${ROOTLESSKIT_VERSION}.tar.gz"; \
-	export GOPATH='/go'; mkdir "$GOPATH"; \
-	mkdir -p "$GOPATH/src/github.com/rootless-containers/rootlesskit"; \
-	tar --extract --file rootlesskit.tgz --directory "$GOPATH/src/github.com/rootless-containers/rootlesskit" --strip-components 1; \
-	rm rootlesskit.tgz; \
-	go build -o /usr/local/bin/rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit; \
-	go build -o /usr/local/bin/rootlesskit-docker-proxy github.com/rootless-containers/rootlesskit/cmd/rootlesskit-docker-proxy; \
-	rm -rf "$GOPATH"; \
-	apk del --no-network .rootlesskit-build-deps; \
-	rootlesskit --version
+COPY --from=builder /usr/local/bin/rootlesskit* /usr/local/bin/
 
 # pre-create "/var/lib/docker" for our rootless user
 RUN set -eux; \
