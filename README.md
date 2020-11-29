@@ -1,6 +1,6 @@
 # https://github.com/bddsl/docker
 
-## Maintained by: [dslzuha (of the Bd Dsl Group)](https://github.com/bddsl/docker)
+## Maintained by: [dslzuha (of the Bd Dsl Group)](https://github.com/bddsl/docker) and Main Project is collected from [Tianon (of the Docker Project)](https://github.com/docker-library/docker)
 
 This is the Git repo of the [Docker "Official Image"](https://docs.docker.com/docker-hub/official_repos/) for [docker](https://hub.docker.com/_/docker/) (not to be confused with any official docker image provided by docker upstream). See [the Docker Hub page](https://hub.docker.com/_/docker/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
 
