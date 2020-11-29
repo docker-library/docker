@@ -30,7 +30,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags:  ushamandya/simplewhale:latest
+          tags:  ghcr.io/${{ github.repository_owner }}/simplewhale:latest
           
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
