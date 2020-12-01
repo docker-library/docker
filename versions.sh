@@ -115,8 +115,7 @@ for version in "${versions[@]}"; do
 
 		rootlessExtrasUrl="https://download.docker.com/linux/static/$channel/$arch/docker-rootless-extras-$fullVersion.tgz"
 		# https://github.com/docker/docker-ce/blob/8fb3bb7b2210789a4471c017561c1b0de0b4f145/components/engine/hack/make/binary-daemon#L24
-		# "vpnkit is amd64-only" ... for now??
-		if [ "$bashbrewArch" = 'amd64' ] && wget --quiet --spider "$rootlessExtrasUrl" &> /dev/null; then
+		if wget --quiet --spider "$rootlessExtrasUrl" &> /dev/null; then
 			export rootlessExtrasUrl
 			doc="$(
 				jq <<<"$doc" -c \

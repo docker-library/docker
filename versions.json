@@ -7,13 +7,16 @@
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-19.03.15.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-19.03.15.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-19.03.15.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/armel/docker-rootless-extras-19.03.15.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-19.03.15.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-19.03.15.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-19.03.15.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-19.03.15.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-19.03.15.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-19.03.15.tgz"
       }
     },
     "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",
@@ -33,13 +36,16 @@
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-19.03.13-beta2.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-19.03.13-beta2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-19.03.13-beta2.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/armel/docker-rootless-extras-19.03.13-beta2.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-19.03.13-beta2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-19.03.13-beta2.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/armhf/docker-rootless-extras-19.03.13-beta2.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-19.03.13-beta2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-19.03.13-beta2.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-19.03.13-beta2.tgz"
       }
     },
     "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",
@@ -59,13 +65,16 @@
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.3.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-20.10.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-20.10.3.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/armel/docker-rootless-extras-20.10.3.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-20.10.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-20.10.3.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-20.10.3.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-20.10.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-20.10.3.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-20.10.3.tgz"
       }
     },
     "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",
@@ -85,13 +94,16 @@
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-20.10.0-rc2.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-20.10.0-rc2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-20.10.0-rc2.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/armel/docker-rootless-extras-20.10.0-rc2.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-20.10.0-rc2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-20.10.0-rc2.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/armhf/docker-rootless-extras-20.10.0-rc2.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-20.10.0-rc2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-20.10.0-rc2.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-20.10.0-rc2.tgz"
       }
     },
     "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",

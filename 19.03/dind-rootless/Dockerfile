@@ -26,6 +26,15 @@ RUN set -eux; \
 		'x86_64') \
 			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-19.03.15.tgz'; \
 			;; \
+		'armhf') \
+			url='https://download.docker.com/linux/static/stable/armel/docker-rootless-extras-19.03.15.tgz'; \
+			;; \
+		'armv7') \
+			url='https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-19.03.15.tgz'; \
+			;; \
+		'aarch64') \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-19.03.15.tgz'; \
+			;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
@@ -37,12 +46,24 @@ RUN set -eux; \
 		--directory /usr/local/bin/ \
 		'docker-rootless-extras/rootlesskit' \
 		'docker-rootless-extras/rootlesskit-docker-proxy' \
-		'docker-rootless-extras/vpnkit' \
 	; \
 	rm rootless.tgz; \
 	\
-	rootlesskit --version; \
-	vpnkit --version
+	rootlesskit --version
+
+# We do not use vpnkit binary included in x86_64 version of docker-rootless-extras,
+# because it is not available for other architectures and yet slower than slirp4netns.
+
+ENV SLIRP4NETNS_VERSION 1.1.8
+ENV SLIRP4NETNS_SHA256SUMS_SHA256 366f40a49c0cf25b7e2ee22e9fae6df575127aef75f968454f5705a1ff0784ff
+RUN set -eux; \
+  wget https://github.com/rootless-containers/slirp4netns/releases/download/v${SLIRP4NETNS_VERSION}/slirp4netns-$(uname -m); \
+  wget https://github.com/rootless-containers/slirp4netns/releases/download/v${SLIRP4NETNS_VERSION}/SHA256SUMS; \
+  echo "$SLIRP4NETNS_SHA256SUMS_SHA256  SHA256SUMS" | sha256sum -c -; \
+  grep "slirp4netns-$(uname -m)" SHA256SUMS | sha256sum -c -; \
+  mv slirp4netns-$(uname -m) /usr/local/bin/slirp4netns; \
+  rm -f SHA256SUMS; \
+  chmod +x /usr/local/bin/slirp4netns
 
 # pre-create "/var/lib/docker" for our rootless user
 RUN set -eux; \

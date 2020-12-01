@@ -52,12 +52,24 @@ RUN set -eux; \
 		--directory /usr/local/bin/ \
 		'docker-rootless-extras/rootlesskit' \
 		'docker-rootless-extras/rootlesskit-docker-proxy' \
-		'docker-rootless-extras/vpnkit' \
 	; \
 	rm rootless.tgz; \
 	\
-	rootlesskit --version; \
-	vpnkit --version
+	rootlesskit --version
+
+# We do not use vpnkit binary included in x86_64 version of docker-rootless-extras,
+# because it is not available for other architectures and yet slower than slirp4netns.
+
+ENV SLIRP4NETNS_VERSION 1.1.8
+ENV SLIRP4NETNS_SHA256SUMS_SHA256 366f40a49c0cf25b7e2ee22e9fae6df575127aef75f968454f5705a1ff0784ff
+RUN set -eux; \
+  wget https://github.com/rootless-containers/slirp4netns/releases/download/v${SLIRP4NETNS_VERSION}/slirp4netns-$(uname -m); \
+  wget https://github.com/rootless-containers/slirp4netns/releases/download/v${SLIRP4NETNS_VERSION}/SHA256SUMS; \
+  echo "$SLIRP4NETNS_SHA256SUMS_SHA256  SHA256SUMS" | sha256sum -c -; \
+  grep "slirp4netns-$(uname -m)" SHA256SUMS | sha256sum -c -; \
+  mv slirp4netns-$(uname -m) /usr/local/bin/slirp4netns; \
+  rm -f SHA256SUMS; \
+  chmod +x /usr/local/bin/slirp4netns
 
 # pre-create "/var/lib/docker" for our rootless user
 RUN set -eux; \
