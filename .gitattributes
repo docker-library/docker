@@ -1,0 +1,5 @@
+/*/**/Dockerfile             linguist-generated
+/*/**/docker-entrypoint.sh   linguist-generated
+/*/**/dockerd-entrypoint.sh  linguist-generated
+/*/**/modprobe.sh            linguist-generated
+/Dockerfile*.template        linguist-language=Dockerfile
