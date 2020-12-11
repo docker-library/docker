@@ -12,6 +12,7 @@ RUN set -eux; \
 		btrfs-progs \
 		e2fsprogs \
 		e2fsprogs-extra \
+		ip6tables \
 		iptables \
 		openssl \
 		shadow-uidmap \

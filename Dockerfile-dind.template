@@ -6,6 +6,9 @@ RUN set -eux; \
 		btrfs-progs \
 		e2fsprogs \
 		e2fsprogs-extra \
+{{ if ["19.03", "19.03-rc"] | index(env.version) | not then ( -}}
+		ip6tables \
+{{ ) else "" end -}}
 		iptables \
 		openssl \
 		shadow-uidmap \
