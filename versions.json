@@ -1,6 +1,6 @@
 {
   "19.03": {
-    "alpine": "3.12",
+    "alpine": "3.13",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-19.03.14.tgz",
@@ -26,7 +26,7 @@
     "version": "19.03.14"
   },
   "19.03-rc": {
-    "alpine": "3.12",
+    "alpine": "3.13",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-19.03.13-beta2.tgz",
@@ -52,7 +52,7 @@
     "version": "19.03.13-beta2"
   },
   "20.10": {
-    "alpine": "3.12",
+    "alpine": "3.13",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.2.tgz",
@@ -78,7 +78,7 @@
     "version": "20.10.2"
   },
   "20.10-rc": {
-    "alpine": "3.12",
+    "alpine": "3.13",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-20.10.0-rc2.tgz",
