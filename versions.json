@@ -55,17 +55,17 @@
     "alpine": "3.13",
     "arches": {
       "amd64": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.2.tgz",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.3.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.3.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-20.10.2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-20.10.3.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-20.10.2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-20.10.3.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-20.10.2.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-20.10.3.tgz"
       }
     },
     "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",
@@ -75,7 +75,7 @@
       "dind-rootless",
       "git"
     ],
-    "version": "20.10.2"
+    "version": "20.10.3"
   },
   "20.10-rc": {
     "alpine": "3.13",
