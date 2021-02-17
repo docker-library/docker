@@ -6,4 +6,5 @@
 
 FROM docker:20.10
 
+# git is installed in a separate layer to allow sharing between the "dind" and "git" variants
 RUN apk add --no-cache git

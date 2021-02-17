@@ -1,5 +1,9 @@
 FROM docker:{{ env.version }}
 
+{{ if ["19.03", "19.03-rc", "20.10-rc"] | index(env.version) | not then ( -}}
+# git is installed in a separate layer to allow sharing between the "dind" and "git" variants
+RUN apk add --no-cache git
+{{ ) else "" end -}}
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
 	apk add --no-cache \

@@ -6,6 +6,8 @@
 
 FROM docker:20.10
 
+# git is installed in a separate layer to allow sharing between the "dind" and "git" variants
+RUN apk add --no-cache git
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
 	apk add --no-cache \
