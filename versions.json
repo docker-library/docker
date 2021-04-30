@@ -94,7 +94,7 @@
         "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-20.10.0-rc2.tgz"
       }
     },
-    "dindCommit": "ed89041433a031cafc0a0f19cfe573c31688d377",
+    "dindCommit": "42b1175eda071c0e9121e1d64345928384a93df1",
     "variants": [
       "",
       "dind",

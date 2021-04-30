@@ -38,7 +38,7 @@ RUN set -eux; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
 
 # https://github.com/docker/docker/tree/master/hack/dind
-ENV DIND_COMMIT ed89041433a031cafc0a0f19cfe573c31688d377
+ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
 
 RUN set -eux; \
 	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
