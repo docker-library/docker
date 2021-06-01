@@ -33,13 +33,28 @@ for version; do
 	eval "variants=( $variants )"
 
 	for variant in "${variants[@]}"; do
-		template="Dockerfile${variant:+-$variant}.template"
-		target="$version${variant:+/$variant}/Dockerfile"
+		dir="$version${variant:+/$variant}"
 
+		case "$variant" in
+			windows/*)
+				variant="$(basename "$variant")" # "windowsservercore-1809", etc
+				windowsVariant="${variant%%-*}" # "windowsservercore", "nanoserver"
+				windowsRelease="${variant#$windowsVariant-}" # "1809", "ltsc2016", etc
+				windowsVariant="${windowsVariant#windows}" # "servercore", "nanoserver"
+				export windowsVariant windowsRelease
+				template="Dockerfile-windows-$windowsVariant.template"
+				;;
+
+			*)
+				template="Dockerfile${variant:+-$variant}.template"
+				;;
+		esac
+
+		mkdir -p "$dir"
 		{
 			generated_warning
 			gawk -f "$jqt" "$template"
-		} > "$target"
+		} > "$dir/Dockerfile"
 	done
 
 	cp -a docker-entrypoint.sh modprobe.sh "$version/"

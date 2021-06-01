@@ -14,7 +14,7 @@ declare -A dockerArches=(
 	['arm64v8']='aarch64'
 	['ppc64le']='ppc64le'
 	['s390x']='s390x'
-#	['windows-amd64']='windows-amd64'
+	['windows-amd64']='x86_64'
 )
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
@@ -98,10 +98,14 @@ for version in "${versions[@]}"; do
 		}'
 	)"
 
+	hasWindows=
 	for bashbrewArch in "${!dockerArches[@]}"; do
 		arch="${dockerArches[$bashbrewArch]}"
 		# check whether the given architecture is supported for this release
-		url="https://download.docker.com/linux/static/$channel/$arch/docker-$fullVersion.tgz"
+		case "$bashbrewArch" in
+			windows-*) url="https://download.docker.com/win/static/$channel/$arch/docker-$fullVersion.zip"; windows=1 ;;
+			*) url="https://download.docker.com/linux/static/$channel/$arch/docker-$fullVersion.tgz"; windows= ;;
+		esac
 		if wget --quiet --spider "$url" &> /dev/null; then
 			export bashbrewArch url
 			doc="$(
@@ -111,6 +115,11 @@ for version in "${versions[@]}"; do
 			)"
 		else
 			continue
+		fi
+
+		if [ -n "$windows" ]; then
+			hasWindows=1
+			continue # Windows doesn't have rootless extras :)
 		fi
 
 		rootlessExtrasUrl="https://download.docker.com/linux/static/$channel/$arch/docker-rootless-extras-$fullVersion.tgz"
@@ -131,9 +140,13 @@ for version in "${versions[@]}"; do
 		dind \
 		dind-rootless \
 		git \
+		windows/windowsservercore-1809 \
 	; do
 		base="${variant%%/*}" # "buster", "windows", etc.
 		[ -d "$version/$base" ] || continue
+		if [ "$base" = 'windows' ] && [ -z "$hasWindows" ]; then
+			continue
+		fi
 		export variant
 		doc="$(jq <<<"$doc" -c '.variants += [ env.variant ]')"
 	done

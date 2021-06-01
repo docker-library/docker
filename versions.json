@@ -66,6 +66,9 @@
       },
       "arm64v8": {
         "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-20.10.6.tgz"
+      },
+      "windows-amd64": {
+        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-20.10.6.zip"
       }
     },
     "dindCommit": "42b1175eda071c0e9121e1d64345928384a93df1",
@@ -73,7 +76,8 @@
       "",
       "dind",
       "dind-rootless",
-      "git"
+      "git",
+      "windows/windowsservercore-1809"
     ],
     "version": "20.10.6"
   },

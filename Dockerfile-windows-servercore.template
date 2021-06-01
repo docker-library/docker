@@ -1,4 +1,4 @@
-FROM microsoft/windowsservercore:%%TAG%%
+FROM mcr.microsoft.com/windows/{{ env.windowsVariant }}:{{ env.windowsRelease }}
 
 # $ProgressPreference: https://github.com/PowerShell/PowerShell/issues/2138#issuecomment-251261324
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -9,15 +9,14 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine);
 # doing this first to share cache across versions more aggressively
 
-ENV DOCKER_CHANNEL %%DOCKER-CHANNEL%%
-ENV DOCKER_VERSION %%DOCKER-VERSION%%
+ENV DOCKER_VERSION {{ .version }}
+ENV DOCKER_URL {{ .arches["windows-amd64"].dockerUrl }}
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
 
-RUN $url = ('https://download.docker.com/win/static/{0}/x86_64/docker-{1}.zip' -f $env:DOCKER_CHANNEL, $env:DOCKER_VERSION); \
-	Write-Host ('Downloading {0} ...' -f $url); \
-	Invoke-WebRequest -Uri $url -OutFile 'docker.zip'; \
+RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
+	Invoke-WebRequest -Uri $env:DOCKER_URL -OutFile 'docker.zip'; \
 	\
 	Write-Host 'Expanding ...'; \
 	Expand-Archive docker.zip -DestinationPath $env:ProgramFiles; \
