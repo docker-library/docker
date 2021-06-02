@@ -55,6 +55,15 @@ versionArches() {
 		selector='rootlessExtrasUrl'
 	fi
 
+	if [[ "$variant" = windows/* ]]; then
+		version="$version" jq -r '
+			.[env.version].arches
+			| keys[]
+			| select(startswith("windows-"))
+		' versions.json | sort
+		return
+	fi
+
 	local parent parentArches
 	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
 	parentArches="${parentRepoToArches[$parent]:-}"
@@ -154,21 +163,32 @@ for version; do
 	variants="$(jq -r '.[env.version].variants | map(@sh) | join(" ")' versions.json)"
 	eval "variants=( $variants )"
 
-	for variant in "${variants[@]}"; do
-		dir="$version${variant:+/$variant}"
+	for v in "${variants[@]}"; do
+		dir="$version${v:+/$v}"
 		[ -f "$dir/Dockerfile" ] || continue
 
 		commit="$(dirCommit "$dir")"
 
+		variant="$(basename "$v")"
 		variantAliases=( "${versionAliases[@]/%/${variant:+-$variant}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
+		sharedTags=()
+		if [[ "$variant" == windowsservercore* ]]; then
+			sharedTags=( "${versionAliases[@]/%/-windowsservercore}" )
+			sharedTags=( "${sharedTags[@]//latest-/}" )
+		fi
+
 		echo
+		echo "Tags: $(join ', ' "${variantAliases[@]}")"
+		if [ "${#sharedTags[@]}" -gt 0 ]; then
+			echo "SharedTags: $(join ', ' "${sharedTags[@]}")"
+		fi
 		cat <<-EOE
-			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: $(join ', ' $(versionArches "$version" "$variant"))
+			Architectures: $(join ', ' $(versionArches "$version" "$v"))
 			GitCommit: $commit
 			Directory: $dir
 		EOE
+		[ "$variant" = "$v" ] || echo "Constraints: $variant"
 	done
 done

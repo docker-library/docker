@@ -23,7 +23,7 @@ RUN set -eux; \
 {{
 	[
 		.arches | to_entries[]
-		| select(.value.dockerUrl)
+		| select(.value.dockerUrl and (.key | startswith("windows-") | not))
 		| .key as $bashbrewArch
 		| (
 			{
