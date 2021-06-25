@@ -122,16 +122,24 @@ for version in "${versions[@]}"; do
 			continue # Windows doesn't have rootless extras :)
 		fi
 
-		rootlessExtrasUrl="https://download.docker.com/linux/static/$channel/$arch/docker-rootless-extras-$fullVersion.tgz"
-		# https://github.com/docker/docker-ce/blob/8fb3bb7b2210789a4471c017561c1b0de0b4f145/components/engine/hack/make/binary-daemon#L24
-		# "vpnkit is amd64-only" ... for now??
-		if [ "$bashbrewArch" = 'amd64' ] && wget --quiet --spider "$rootlessExtrasUrl" &> /dev/null; then
-			export rootlessExtrasUrl
-			doc="$(
-				jq <<<"$doc" -c \
-					'.arches[env.bashbrewArch].rootlessExtrasUrl = env.rootlessExtrasUrl'
-			)"
+		if [ "$rcVersion" = '19.03' ] && [ "$bashbrewArch" != 'amd64' ]; then
+			# https://github.com/moby/moby/blob/v19.03.15/hack/make/binary-daemon#L24
+			# "vpnkit is amd64 only"
+			continue
 		fi
+		# https://github.com/moby/moby/blob/v20.10.7/hack/make/binary-daemon#L24
+		# "vpnkit is available for x86_64 and aarch64"
+		case "$bashbrewArch" in
+			amd64 | arm64v8)
+				rootlessExtrasUrl="https://download.docker.com/linux/static/$channel/$arch/docker-rootless-extras-$fullVersion.tgz"
+				if wget --quiet --spider "$rootlessExtrasUrl" &> /dev/null; then
+					export rootlessExtrasUrl
+					doc="$(jq <<<"$doc" -c '
+						.arches[env.bashbrewArch].rootlessExtrasUrl = env.rootlessExtrasUrl
+					')"
+				fi
+				;;
+		esac
 	done
 
 	# order here controls the order of the library/ file

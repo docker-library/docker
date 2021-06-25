@@ -26,6 +26,9 @@ RUN set -eux; \
 		'x86_64') \
 			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.7.tgz'; \
 			;; \
+		'aarch64') \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-20.10.7.tgz'; \
+			;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
