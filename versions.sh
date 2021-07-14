@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-defaultAlpineVersion='3.13'
+defaultAlpineVersion='3.14'
 declare -A alpineVersion=(
 	#[17.09]='3.6'
 )

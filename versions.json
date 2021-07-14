@@ -1,6 +1,6 @@
 {
   "20.10": {
-    "alpine": "3.13",
+    "alpine": "3.14",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.8.tgz",
@@ -31,7 +31,7 @@
     "version": "20.10.8"
   },
   "20.10-rc": {
-    "alpine": "3.13",
+    "alpine": "3.14",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-20.10.0-rc2.tgz",
