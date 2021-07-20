@@ -138,6 +138,11 @@ if [ "$1" = 'dockerd' ]; then
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete || :
 
+	if dockerd --version | grep -qF ' 20.10.'; then
+		# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
+		set -- docker-init -- "$@"
+	fi
+
 	uid="$(id -u)"
 	if [ "$uid" != '0' ]; then
 		# if we're not root, we must be trying to run rootless
