@@ -4,6 +4,6 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:19.03-rc
+FROM docker:19.03.13-beta2
 
 RUN apk add --no-cache git

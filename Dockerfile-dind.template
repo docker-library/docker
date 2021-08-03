@@ -1,4 +1,4 @@
-FROM docker:{{ env.version }}
+FROM docker:{{ .version }}
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \

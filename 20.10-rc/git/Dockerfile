@@ -4,6 +4,6 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:20.10-rc
+FROM docker:20.10.0-rc2
 
 RUN apk add --no-cache git
