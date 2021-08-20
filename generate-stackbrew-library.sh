@@ -176,6 +176,14 @@ for version; do
 		variantAliases=( "${versionAliases[@]/%/${variant:+-$variant}}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
+		if [[ "$variant" != windowsservercore* ]]; then
+			parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
+			alpine="${parent#*:}" # "3.14"
+			suiteAliases=( "${variantAliases[@]/%/-alpine$alpine}" )
+			suiteAliases=( "${suiteAliases[@]//latest-/}" )
+			variantAliases+=( "${suiteAliases[@]}" )
+		fi
+
 		sharedTags=()
 		if [[ "$variant" == windowsservercore* ]]; then
 			sharedTags=( "${versionAliases[@]/%/-windowsservercore}" )
