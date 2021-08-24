@@ -122,11 +122,6 @@ for version in "${versions[@]}"; do
 			continue # Windows doesn't have rootless extras :)
 		fi
 
-		if [ "$rcVersion" = '19.03' ] && [ "$bashbrewArch" != 'amd64' ]; then
-			# https://github.com/moby/moby/blob/v19.03.15/hack/make/binary-daemon#L24
-			# "vpnkit is amd64 only"
-			continue
-		fi
 		# https://github.com/moby/moby/blob/v20.10.7/hack/make/binary-daemon#L24
 		# "vpnkit is available for x86_64 and aarch64"
 		case "$bashbrewArch" in

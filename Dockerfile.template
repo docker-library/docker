@@ -2,10 +2,8 @@ FROM alpine:{{ .alpine }}
 
 RUN apk add --no-cache \
 		ca-certificates \
-{{ if ["19.03", "19.03-rc", "20.10-rc"] | index(env.version) | not then ( -}}
 # Workaround for golang not producing a static ctr binary on Go 1.15 and up https://github.com/containerd/containerd/issues/5824
 		libc6-compat \
-{{ ) else "" end -}}
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client
 
