@@ -5,7 +5,14 @@ self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 if [ "$#" -eq 0 ]; then
-	versions="$(jq -r 'keys | map(@sh) | join(" ")' versions.json)"
+	versions="$(jq -r '
+		to_entries
+		# sort version numbers with highest first
+		| sort_by(.key | split("[.-]"; "") | map(try tonumber // .))
+		| reverse
+		| map(if .value then .key | @sh else empty end)
+		| join(" ")
+	' versions.json)"
 	eval "set -- $versions"
 fi
 
@@ -82,9 +89,6 @@ versionArches() {
 		<(xargs -n1 <<<"$parentArches" | sort)
 }
 
-# sort version numbers with highest first
-IFS=$'\n'; set -- $(sort -rV <<<"$*"); unset IFS
-
 cat <<-EOH
 # this file is generated via https://github.com/docker-library/docker/blob/$(fileCommit "$self")/$self
 
@@ -108,17 +112,9 @@ for version; do
 	export version
 	rcVersion="${version%-rc}"
 
-	fullVersion="$(jq -r '.[env.version].version' versions.json)"
-
-	if [ "$rcVersion" != "$version" ] && [ -e "$rcVersion/Dockerfile" ]; then
-		# if this is a "-rc" release, let's make sure the release it contains isn't already GA (and thus something we should not publish anymore)
-		export rcVersion
-		rcFullVersion="$(jq -r '.[env.rcVersion].version' versions.json)"
-		latestVersion="$({ echo "$fullVersion"; echo "$rcFullVersion"; } | sort -V | tail -1)"
-		if [[ "$fullVersion" == "$rcFullVersion"* ]] || [ "$latestVersion" = "$rcFullVersion" ]; then
-			# "x.y.z-rc1" == x.y.z*
-			continue
-		fi
+	if ! fullVersion="$(jq -er '.[env.version] | if . then .version else empty end' versions.json)"; then
+		# support running "generate-stackbrew-library.sh" on a singular "null" version ("20.10-rc" when the RC is older than the GA release, for example)
+		continue
 	fi
 
 	versionAliases=()
