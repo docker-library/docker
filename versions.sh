@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-defaultAlpineVersion='3.14'
 declare -A alpineVersion=(
-	#[17.09]='3.6'
+	[20.10]='3.14'
 )
 
 # bashbrew arch to docker-release-arch
@@ -21,7 +20,9 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
-	versions=( */ )
+	versions=( "${!alpineVersion[@]}" )
+	# try RC releases after doing the non-RCs so we can check whether they're newer (and thus whether we should care)
+	versions+=( "${versions[@]/%/-rc}" )
 	json='{}'
 else
 	json="$(< versions.json)"
@@ -70,7 +71,7 @@ dockerVersions="$(
 for version in "${versions[@]}"; do
 	rcVersion="${version%-rc}"
 	channel='stable'
-	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
+	alpine="${alpineVersion[$rcVersion]}"
 
 	versionOptions="$(grep "^$rcVersion[.]" <<<"$dockerVersions")"
 
@@ -82,8 +83,20 @@ for version in "${versions[@]}"; do
 
 	fullVersion="$(grep $rcGrepV -E -- '-(rc|tp|beta)' <<<"$versionOptions" | tail -1)"
 	if [ -z "$fullVersion" ]; then
-		echo >&2 "warning: cannot find full version for $version"
-		continue
+		echo >&2 "error: cannot find full version for $version"
+		exit 1
+	fi
+
+	# if this is a "-rc" release, let's make sure the release it contains isn't already GA (and thus something we should not publish anymore)
+	export version rcVersion
+	if [ "$rcVersion" != "$version" ] && rcFullVersion="$(jq <<<"$json" -r '.[env.rcVersion].version // ""')" && [ -n "$rcFullVersion" ]; then
+		latestVersion="$({ echo "$fullVersion"; echo "$rcFullVersion"; } | sort -V | tail -1)"
+		if [[ "$fullVersion" == "$rcFullVersion"* ]] || [ "$latestVersion" = "$rcFullVersion" ]; then
+			# "x.y.z-rc1" == x.y.z*
+			echo >&2 "warning: skipping/removing '$version' ('$rcVersion' is at '$rcFullVersion' which is newer than '$fullVersion')"
+			json="$(jq <<<"$json" -c '.[env.version] = null')"
+			continue
+		fi
 	fi
 
 	echo "$version: $fullVersion"
@@ -154,7 +167,6 @@ for version in "${versions[@]}"; do
 		doc="$(jq <<<"$doc" -c '.variants += [ env.variant ]')"
 	done
 
-	export version
 	json="$(jq <<<"$json" -c --argjson doc "$doc" '.[env.version] = $doc')"
 done
 

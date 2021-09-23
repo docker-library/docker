@@ -29,6 +29,12 @@ generated_warning() {
 for version; do
 	export version
 
+	if jq -e '.[env.version] | not' versions.json > /dev/null; then
+		echo "deleting $version ..."
+		rm -rf "$version"
+		continue
+	fi
+
 	variants="$(jq -r '.[env.version].variants | map(@sh) | join(" ")' versions.json)"
 	eval "variants=( $variants )"
 
