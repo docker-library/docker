@@ -159,7 +159,6 @@ for version in "${versions[@]}"; do
 		windows/windowsservercore-1809 \
 	; do
 		base="${variant%%/*}" # "buster", "windows", etc.
-		[ -d "$version/$base" ] || continue
 		if [ "$base" = 'windows' ] && [ -z "$hasWindows" ]; then
 			continue
 		fi
