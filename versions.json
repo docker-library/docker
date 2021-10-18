@@ -30,5 +30,35 @@
     ],
     "version": "20.10.9"
   },
-  "20.10-rc": null
+  "20.10-rc": {
+    "alpine": "3.14",
+    "arches": {
+      "amd64": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-20.10.10-rc1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-20.10.10-rc1.tgz"
+      },
+      "arm32v6": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-20.10.10-rc1.tgz"
+      },
+      "arm32v7": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-20.10.10-rc1.tgz"
+      },
+      "arm64v8": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-20.10.10-rc1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-20.10.10-rc1.tgz"
+      },
+      "windows-amd64": {
+        "dockerUrl": "https://download.docker.com/win/static/test/x86_64/docker-20.10.10-rc1.zip"
+      }
+    },
+    "dindCommit": "42b1175eda071c0e9121e1d64345928384a93df1",
+    "variants": [
+      "",
+      "dind",
+      "dind-rootless",
+      "git",
+      "windows/windowsservercore-1809"
+    ],
+    "version": "20.10.10-rc1"
+  }
 }
