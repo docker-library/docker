@@ -143,6 +143,13 @@ if [ "$1" = 'dockerd' ]; then
 		set -- docker-init -- "$@"
 	fi
 
+	if ! iptables -nL > /dev/null 2>&1; then
+		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using nftables with the translating "iptables" wrappers, for example)
+		# https://github.com/docker-library/docker/issues/350
+		# https://github.com/moby/moby/issues/26824
+		modprobe ip_tables || :
+	fi
+
 	uid="$(id -u)"
 	if [ "$uid" != '0' ]; then
 		# if we're not root, we must be trying to run rootless
