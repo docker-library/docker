@@ -68,6 +68,106 @@ dockerVersions="$(
 		'
 )"
 
+buildxVersions="$(
+	git ls-remote --tags https://github.com/docker/buildx.git \
+		| cut -d$'\t' -f2 \
+		| grep '^refs/tags/v[0-9].*$' \
+		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
+		| sort -ru
+)"
+buildx=
+buildxVersion=
+for buildxVersion in $buildxVersions; do
+	if checksums="$(curl -fsSL "https://github.com/docker/buildx/releases/download/v${buildxVersion}/checksums.txt")"; then
+		buildx="$(jq <<<"$checksums" -csR --arg version "$buildxVersion" '
+			rtrimstr("\n") | split("\n")
+			| map(
+				split(" ")
+				| {
+					sha256: .[0],
+					file: .[1],
+					url: ("https://github.com/docker/buildx/releases/download/v" + $version + "/" + .[1]),
+				}
+				| { (
+					.file
+					| capture("[.](?<os>linux|windows|darwin)-(?<arch>[^.]+)([.]|$)")
+					// error("failed to parse os-arch from filename: " + .[1])
+					| if .os == "linux" then "" else .os + "-" end
+					+ ({
+						"amd64": "amd64",
+						"arm-v6": "arm32v6",
+						"arm-v7": "arm32v7",
+						"arm64": "arm64v8",
+						"ppc64le": "ppc64le",
+						"riscv64": "riscv64",
+						"s390x": "s390x",
+					}[.arch] // error("unknown architecture: " + .arch))
+				): . }
+			)
+			| add
+			| {
+				version: $version,
+				arches: .,
+			}
+		')"
+		break
+	fi
+done
+if [ -z "$buildx" ]; then
+	echo >&2 'error: failed to determine buildx version!'
+	exit 1
+fi
+
+composeVersions="$(
+	git ls-remote --tags https://github.com/docker/compose.git \
+		| cut -d$'\t' -f2 \
+		| grep '^refs/tags/v[0-9].*$' \
+		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
+		| sort -ru
+)"
+compose=
+composeVersion=
+for composeVersion in $composeVersions; do
+	if checksums="$(curl -fsSL "https://github.com/docker/compose/releases/download/v${composeVersion}/checksums.txt")"; then
+		compose="$(jq <<<"$checksums" -csR --arg version "$composeVersion" '
+			rtrimstr("\n") | split("\n")
+			| map(
+				split(" *")
+				| {
+					sha256: .[0],
+					file: .[1],
+					url: ("https://github.com/docker/compose/releases/download/v" + $version + "/" + .[1]),
+				}
+				| { (
+					.file
+					| ltrimstr("docker-compose-")
+					| rtrimstr(".exe")
+					| split("-")
+					| if .[0] == "linux" then "" else .[0] + "-" end
+					+ ({
+						aarch64: "arm64v8",
+						armv6: "arm32v6",
+						armv7: "arm32v7",
+						ppc64le: "ppc64le",
+						s390x: "s390x",
+						x86_64: "amd64",
+					}[.[1]] // error("unknown architecture: " + .[1]))
+				): . }
+			)
+			| add
+			| {
+				version: $version,
+				arches: .,
+			}
+		')"
+		break
+	fi
+done
+if [ -z "$compose" ]; then
+	echo >&2 'error: failed to determine compose version!'
+	exit 1
+fi
+
 for version in "${versions[@]}"; do
 	rcVersion="${version%-rc}"
 	channel='stable'
@@ -99,15 +199,17 @@ for version in "${versions[@]}"; do
 		fi
 	fi
 
-	echo "$version: $fullVersion"
+	echo "$version: $fullVersion (buildx $buildxVersion, compose $composeVersion)"
 
 	export fullVersion alpine dindLatest
 	doc="$(
-		jq -nc '{
+		jq -nc --argjson buildx "$buildx" --argjson compose "$compose" '{
 			version: env.fullVersion,
 			arches: {},
 			alpine: env.alpine,
 			dindCommit: env.dindLatest,
+			buildx: $buildx,
+			compose: $compose,
 		}'
 	)"
 

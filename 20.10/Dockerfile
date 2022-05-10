@@ -55,6 +55,86 @@ RUN set -eux; \
 	dockerd --version; \
 	docker --version
 
+ENV DOCKER_BUILDX_VERSION 0.8.2
+RUN set -eux; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-amd64'; \
+			sha256='c64de4f3c30f7a73ff9db637660c7aa0f00234368105b0a09fa8e24eebe910c3'; \
+			;; \
+		'armhf') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-arm-v6'; \
+			sha256='d0e5d19cd67ea7a351e3bfe1de96f3d583a5b80f1bbadd61f7adcd61b147e5f5'; \
+			;; \
+		'armv7') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-arm-v7'; \
+			sha256='b5bb1e28e9413a75b2600955c486870aafd234f69953601eecc3664bd3af7463'; \
+			;; \
+		'aarch64') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-arm64'; \
+			sha256='304d3d9822c75f98ad9cf57f0c234bcf326bbb96d791d551728cadd72a7a377f'; \
+			;; \
+		'ppc64le') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-ppc64le'; \
+			sha256='32b317d86c700d920468f162f93ae2282777da556ee49b4329f6c72ee2b11b85'; \
+			;; \
+		'riscv64') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-riscv64'; \
+			sha256='76d5fcf92ffa31b3e470d8ec1ab11f7b6997729e5c94d543fec765ad79ad0630'; \
+			;; \
+		's390x') \
+			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-s390x'; \
+			sha256='ec4bb6f271f38dca5a377a70be24ee2108a85f6e6ba511ad3b805c4f1602a0d2'; \
+			;; \
+		*) echo >&2 "warning: unsupported buildx architecture ($apkArch); skipping"; exit 0 ;; \
+	esac; \
+	plugin='/usr/libexec/docker/cli-plugins/docker-buildx'; \
+	mkdir -p "$(dirname "$plugin")"; \
+	wget -O "$plugin" "$url"; \
+	echo "$sha256 *$plugin" | sha256sum -c -; \
+	chmod +x "$plugin"; \
+	docker buildx version
+
+ENV DOCKER_COMPOSE_VERSION 2.5.0
+RUN set -eux; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64'; \
+			sha256='6296d17268c77a7159f57f04ed26dd2989f909c58cca4d44d1865f28bd27dd67'; \
+			;; \
+		'armhf') \
+			url='https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-armv6'; \
+			sha256='92b423e2c4d0ca0a979d7b6a4fb13707612f8fa19b900bc6cd1c2cf83f2780c5'; \
+			;; \
+		'armv7') \
+			url='https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-armv7'; \
+			sha256='d728dcbe5e20103e9b025efdbb6bfbca9ea9866851e669f7775fe3ebb7ab945c'; \
+			;; \
+		'aarch64') \
+			url='https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-aarch64'; \
+			sha256='7efc61cc85fe712f14f04a6886d1481c96fe958be265f67482583b4b713b6a22'; \
+			;; \
+		'ppc64le') \
+			url='https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-ppc64le'; \
+			sha256='e40af00a5f3ef87d31372f949134411b574042b8c055b2e5da12b92192405cb6'; \
+			;; \
+		's390x') \
+			url='https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-s390x'; \
+			sha256='c36e48910f095d07d582b69363fb3f902bb6fab9e2bd3d5ed82a67d1b2279a39'; \
+			;; \
+		*) echo >&2 "warning: unsupported compose architecture ($apkArch); skipping"; exit 0 ;; \
+	esac; \
+	plugin='/usr/libexec/docker/cli-plugins/docker-compose'; \
+	mkdir -p "$(dirname "$plugin")"; \
+	wget -O "$plugin" "$url"; \
+	echo "$sha256 *$plugin" | sha256sum -c -; \
+	chmod +x "$plugin"; \
+	ln -sv "$plugin" /usr/local/bin/; \
+	docker-compose --version; \
+	docker compose version
+
 COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/
 

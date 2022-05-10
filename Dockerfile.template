@@ -18,6 +18,22 @@ ENV DOCKER_VERSION {{ .version }}
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
 
+{{
+	def apkArch:
+		{
+			# https://dl-cdn.alpinelinux.org/alpine/edge/main/
+			# https://wiki.alpinelinux.org/wiki/Architecture#Alpine_Hardware_Architecture_.28.22arch.22.29_Support
+			# https://pkgs.alpinelinux.org/packages ("Arch" dropdown)
+			amd64: "x86_64",
+			arm32v6: "armhf",
+			arm32v7: "armv7",
+			arm64v8: "aarch64",
+			i386: "x86",
+			ppc64le: "ppc64le",
+			riscv64: "riscv64",
+			s390x: "s390x",
+		}[.]
+-}}
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
@@ -25,18 +41,10 @@ RUN set -eux; \
 {{
 	[
 		.arches | to_entries[]
-		| select(.value.dockerUrl and (.key | startswith("windows-") | not))
 		| .key as $bashbrewArch
-		| (
-			{
-				amd64: "x86_64",
-				arm32v6: "armhf",
-				arm32v7: "armv7",
-				arm64v8: "aarch64",
-			}
-			| .[$bashbrewArch] // $bashbrewArch
-		) as $apkArch
+		| ($bashbrewArch | apkArch) as $apkArch
 		| .value
+		| select($apkArch and .dockerUrl)
 		| (
 -}}
 		{{ $apkArch | @sh }}) \
@@ -60,6 +68,52 @@ RUN set -eux; \
 	\
 	dockerd --version; \
 	docker --version
+{{
+	{
+		buildx: .buildx,
+		compose: .compose,
+	}
+	| to_entries | map(
+		.key as $key | .value | (
+-}}
+
+ENV DOCKER_{{ $key | ascii_upcase }}_VERSION {{ .version }}
+RUN set -eux; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+{{
+			.arches | to_entries | map(
+				.key as $bashbrewArch
+				| ($bashbrewArch | apkArch) as $apkArch
+				| .value
+				| select($apkArch and .url and .sha256)
+				| (
+-}}
+		{{ $apkArch | @sh }}) \
+			url={{ .url | @sh }}; \
+			sha256={{ .sha256 | @sh }}; \
+			;; \
+{{
+				)
+			) | add
+-}}
+		*) echo >&2 "warning: unsupported {{ $key }} architecture ($apkArch); skipping"; exit 0 ;; \
+	esac; \
+	plugin='/usr/libexec/docker/cli-plugins/docker-{{ $key }}'; \
+	mkdir -p "$(dirname "$plugin")"; \
+	wget -O "$plugin" "$url"; \
+	echo "$sha256 *$plugin" | sha256sum -c -; \
+	chmod +x "$plugin"; \
+{{ if $key == "compose" then ( -}}
+	ln -sv "$plugin" /usr/local/bin/; \
+	docker-{{ $key }} --version; \
+{{ ) else "" end -}}
+	docker {{ $key }} version
+{{
+		)
+	)
+	| add
+-}}
 
 COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/
