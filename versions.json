@@ -1,6 +1,6 @@
 {
   "20.10": {
-    "alpine": "3.15",
+    "alpine": "3.16",
     "arches": {
       "amd64": {
         "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.16.tgz",
