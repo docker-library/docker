@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 declare -A alpineVersion=(
-	[20.10]='3.15'
+	[20.10]='3.16'
 )
 
 # bashbrew arch to docker-release-arch
