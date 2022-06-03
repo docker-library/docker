@@ -164,6 +164,7 @@ fi
 
 for version in "${versions[@]}"; do
 	rcVersion="${version%-rc}"
+	export version rcVersion
 	channel='stable'
 
 	versionOptions="$(grep "^$rcVersion[.]" <<<"$dockerVersions")"
@@ -174,14 +175,17 @@ for version in "${versions[@]}"; do
 		channel='test'
 	fi
 
-	fullVersion="$(grep $rcGrepV -E -- '-(rc|tp|beta)' <<<"$versionOptions" | tail -1)"
-	if [ -z "$fullVersion" ]; then
+	if ! fullVersion="$(grep $rcGrepV -E -- '-(rc|tp|beta)' <<<"$versionOptions" | tail -1)" || [ -z "$fullVersion" ]; then
+		if currentNull="$(jq -r '.[env.version] == null' versions.json)" && [ "$currentNull" = 'true' ]; then
+			echo >&2 "warning: skipping '$version' (does not appear to be released yet)"
+			json="$(jq <<<"$json" -c '.[env.version] = null')"
+			continue
+		fi
 		echo >&2 "error: cannot find full version for $version"
 		exit 1
 	fi
 
 	# if this is a "-rc" release, let's make sure the release it contains isn't already GA (and thus something we should not publish anymore)
-	export version rcVersion
 	if [ "$rcVersion" != "$version" ] && rcFullVersion="$(jq <<<"$json" -r '.[env.rcVersion].version // ""')" && [ -n "$rcFullVersion" ]; then
 		latestVersion="$({ echo "$fullVersion"; echo "$rcFullVersion"; } | sort -V | tail -1)"
 		if [[ "$fullVersion" == "$rcFullVersion"* ]] || [ "$latestVersion" = "$rcFullVersion" ]; then
