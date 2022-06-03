@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-declare -A alpineVersion=(
-	[20.10]='3.16'
-)
-
 # bashbrew arch to docker-release-arch
 declare -A dockerArches=(
 	['amd64']='x86_64'
@@ -20,9 +16,7 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
-	versions=( "${!alpineVersion[@]}" )
-	# try RC releases after doing the non-RCs so we can check whether they're newer (and thus whether we should care)
-	versions+=( "${versions[@]/%/-rc}" )
+	versions=( */ )
 	json='{}'
 else
 	json="$(< versions.json)"
@@ -171,7 +165,6 @@ fi
 for version in "${versions[@]}"; do
 	rcVersion="${version%-rc}"
 	channel='stable'
-	alpine="${alpineVersion[$rcVersion]}"
 
 	versionOptions="$(grep "^$rcVersion[.]" <<<"$dockerVersions")"
 
@@ -201,12 +194,11 @@ for version in "${versions[@]}"; do
 
 	echo "$version: $fullVersion (buildx $buildxVersion, compose $composeVersion)"
 
-	export fullVersion alpine dindLatest
+	export fullVersion dindLatest
 	doc="$(
 		jq -nc --argjson buildx "$buildx" --argjson compose "$compose" '{
 			version: env.fullVersion,
 			arches: {},
-			alpine: env.alpine,
 			dindCommit: env.dindLatest,
 			buildx: $buildx,
 			compose: $compose,
@@ -269,7 +261,12 @@ for version in "${versions[@]}"; do
 		doc="$(jq <<<"$doc" -c '.variants += [ env.variant ]')"
 	done
 
-	json="$(jq <<<"$json" -c --argjson doc "$doc" '.[env.version] = $doc')"
+	json="$(jq <<<"$json" -c --argjson doc "$doc" '
+		.[env.version] = $doc
+		# make sure both "XX.YY" and "XX.YY-rc" always exist
+		| .[env.rcVersion] //= null
+		| .[env.rcVersion + "-rc"] //= null
+	')"
 done
 
 jq <<<"$json" -S . > versions.json
