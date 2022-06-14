@@ -22,7 +22,7 @@ jobs:
       - id: generate-jobs
         name: Generate Jobs
         run: |
-          git clone --depth 1 https://github.com/docker-library/bashbrew.git -b master ~/bashbrew
+          git clone --depth 1 https://github.com/infosiftr/bashbrew.git -b local-tests ~/bashbrew
           strategy="$(~/bashbrew/scripts/github-actions/generate.sh)"
           jq . <<<"$strategy" # sanity check / debugging aid
           echo "::set-output name=strategy::$strategy"
