@@ -1,5 +1,5 @@
-#!/bin/bash
-set -eu
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
@@ -72,7 +72,7 @@ versionArches() {
 	fi
 
 	local parent parentArches
-	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
+	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/cli/Dockerfile")"
 	parentArches="${parentRepoToArches[$parent]:-}"
 
 	comm -12 \
@@ -157,23 +157,35 @@ for version; do
 	variants="$(jq -r '.[env.version].variants | map(@sh) | join(" ")' versions.json)"
 	eval "variants=( $variants )"
 
+	case "$rcVersion" in
+		20.10) latestVariant='cli' ;;
+		*)     latestVariant='dind' ;;
+	esac
+
 	for v in "${variants[@]}"; do
-		dir="$version${v:+/$v}"
+		dir="$version/$v"
 		[ -f "$dir/Dockerfile" ] || continue
 
 		commit="$(dirCommit "$dir")"
 
 		variant="$(basename "$v")"
-		variantAliases=( "${versionAliases[@]/%/${variant:+-$variant}}" )
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
-		if [ "$variant" = '' ] || [ "$variant" = 'dind' ]; then
-			parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
+		if [ "$variant" = 'cli' ] || [ "$variant" = 'dind' ]; then
+			parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/cli/Dockerfile")"
 			alpine="${parent#*:}" # "3.14"
 			suiteAliases=( "${variantAliases[0]}" ) # only "X.Y.Z-foo"
 			suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
 			suiteAliases=( "${suiteAliases[@]//latest-/}" )
 			variantAliases+=( "${suiteAliases[@]}" )
+			if [ "$variant" = "$latestVariant" ]; then
+				# add "latest" aliases
+				suiteAliases=( "${versionAliases[0]}" ) # only "X.Y.Z-foo"
+				suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
+				suiteAliases=( "${suiteAliases[@]//latest-/}" )
+				variantAliases+=( "${versionAliases[@]}" "${suiteAliases[@]}" )
+			fi
 		fi
 
 		sharedTags=()

@@ -36,11 +36,13 @@ for version; do
 		continue
 	fi
 
+	rm -rf "$version"
+
 	variants="$(jq -r '.[env.version].variants | map(@sh) | join(" ")' versions.json)"
 	eval "variants=( $variants )"
 
 	for variant in "${variants[@]}"; do
-		dir="$version${variant:+/$variant}"
+		dir="$version/$variant"
 
 		case "$variant" in
 			windows/*)
@@ -53,7 +55,7 @@ for version; do
 				;;
 
 			*)
-				template="Dockerfile${variant:+-$variant}.template"
+				template="Dockerfile-$variant.template"
 				;;
 		esac
 
@@ -64,6 +66,6 @@ for version; do
 		} > "$dir/Dockerfile"
 	done
 
-	cp -a docker-entrypoint.sh modprobe.sh "$version/"
+	cp -a docker-entrypoint.sh modprobe.sh "$version/cli/"
 	cp -a dockerd-entrypoint.sh "$version/dind/"
 done
