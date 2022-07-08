@@ -1,3 +1,4 @@
+{{ include "shared" -}}
 FROM docker:{{ env.version }}-dind
 
 # busybox "ip" is insufficient:
@@ -15,36 +16,14 @@ RUN set -eux; \
 
 RUN set -eux; \
 	\
-	apkArch="$(apk --print-arch)"; \
-	case "$apkArch" in \
-{{
-	[
-		.arches | to_entries[]
-		| select(.value.rootlessExtrasUrl)
-		| .key as $bashbrewArch
-		| (
-			{
-				amd64: "x86_64",
-				arm32v6: "armhf",
-				arm32v7: "armv7",
-				arm64v8: "aarch64",
-			}
-			| .[$bashbrewArch] // $bashbrewArch
-		) as $apkArch
-		| .value
-		| (
--}}
-		{{ $apkArch | @sh }}) \
-			url={{ .rootlessExtrasUrl | @sh }}; \
-			;; \
-{{
-		)
-	] | add
--}}
-		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
-	esac; \
-	\
-	wget -O rootless.tgz "$url"; \
+	{{
+		download({
+			arches: .arches,
+			urlKey: "rootlessExtrasUrl",
+			# TODO sha256Key (once Docker publishes them 😭)
+			target: "rootless.tgz",
+		})
+	}}; \
 	\
 	tar --extract \
 		--file rootless.tgz \

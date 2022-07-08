@@ -1,3 +1,4 @@
+{{ include "shared" -}}
 FROM docker:{{ env.version }}-cli
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
@@ -30,6 +31,32 @@ RUN set -eux; \
 	adduser -S -G dockremap dockremap; \
 	echo 'dockremap:165536:65536' >> /etc/subuid; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
+
+RUN set -eux; \
+	\
+	{{
+		download({
+			arches: .arches,
+			urlKey: "dockerUrl",
+			# TODO sha256Key (once Docker publishes them 😭)
+			target: "docker.tgz",
+		})
+	}}; \
+	\
+	tar --extract \
+		--file docker.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+		--no-same-owner \
+# we exclude the CLI binary because we already extracted that over in the "docker:{{ env.version }}-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
+		--exclude 'docker/docker' \
+	; \
+	rm docker.tgz; \
+	\
+	dockerd --version; \
+	containerd --version; \
+	ctr --version; \
+	runc --version
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT {{ .dindCommit }}
