@@ -20,9 +20,6 @@ RUN apk add --no-cache \
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 ENV DOCKER_VERSION 22.06.0-beta.0
-# TODO ENV DOCKER_SHA256
-# https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
-# (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
 
 RUN set -eux; \
 	\
@@ -40,23 +37,25 @@ RUN set -eux; \
 		'aarch64') \
 			url='https://download.docker.com/linux/static/test/aarch64/docker-22.06.0-beta.0.tgz'; \
 			;; \
-		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
+		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
-	wget -O docker.tgz "$url"; \
+	wget -O 'docker.tgz' "$url"; \
 	\
 	tar --extract \
 		--file docker.tgz \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
+		--no-same-owner \
+		'docker/docker' \
 	; \
 	rm docker.tgz; \
 	\
-	dockerd --version; \
 	docker --version
 
 ENV DOCKER_BUILDX_VERSION 0.8.2
 RUN set -eux; \
+	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
@@ -87,17 +86,22 @@ RUN set -eux; \
 			url='https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-s390x'; \
 			sha256='ec4bb6f271f38dca5a377a70be24ee2108a85f6e6ba511ad3b805c4f1602a0d2'; \
 			;; \
-		*) echo >&2 "warning: unsupported buildx architecture ($apkArch); skipping"; exit 0 ;; \
+		*) echo >&2 "warning: unsupported 'docker-buildx' architecture ($apkArch); skipping"; exit 0 ;; \
 	esac; \
+	\
+	wget -O 'docker-buildx' "$url"; \
+	echo "$sha256 *"'docker-buildx' | sha256sum -c -; \
+	\
 	plugin='/usr/libexec/docker/cli-plugins/docker-buildx'; \
 	mkdir -p "$(dirname "$plugin")"; \
-	wget -O "$plugin" "$url"; \
-	echo "$sha256 *$plugin" | sha256sum -c -; \
+	mv -vT 'docker-buildx' "$plugin"; \
 	chmod +x "$plugin"; \
+	\
 	docker buildx version
 
 ENV DOCKER_COMPOSE_VERSION 2.7.0
 RUN set -eux; \
+	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
@@ -124,13 +128,17 @@ RUN set -eux; \
 			url='https://github.com/docker/compose/releases/download/v2.7.0/docker-compose-linux-s390x'; \
 			sha256='429498246e1d4778669e781a70e659ba59fa8bb3cdee45f8ce8e01a716a12aff'; \
 			;; \
-		*) echo >&2 "warning: unsupported compose architecture ($apkArch); skipping"; exit 0 ;; \
+		*) echo >&2 "warning: unsupported 'docker-compose' architecture ($apkArch); skipping"; exit 0 ;; \
 	esac; \
+	\
+	wget -O 'docker-compose' "$url"; \
+	echo "$sha256 *"'docker-compose' | sha256sum -c -; \
+	\
 	plugin='/usr/libexec/docker/cli-plugins/docker-compose'; \
 	mkdir -p "$(dirname "$plugin")"; \
-	wget -O "$plugin" "$url"; \
-	echo "$sha256 *$plugin" | sha256sum -c -; \
+	mv -vT 'docker-compose' "$plugin"; \
 	chmod +x "$plugin"; \
+	\
 	ln -sv "$plugin" /usr/local/bin/; \
 	docker-compose --version; \
 	docker compose version

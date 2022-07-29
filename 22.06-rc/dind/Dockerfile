@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:22.06-rc
+FROM docker:22.06-rc-cli
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
@@ -36,6 +36,42 @@ RUN set -eux; \
 	adduser -S -G dockremap dockremap; \
 	echo 'dockremap:165536:65536' >> /etc/subuid; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
+
+RUN set -eux; \
+	\
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-22.06.0-beta.0.tgz'; \
+			;; \
+		'armhf') \
+			url='https://download.docker.com/linux/static/test/armel/docker-22.06.0-beta.0.tgz'; \
+			;; \
+		'armv7') \
+			url='https://download.docker.com/linux/static/test/armhf/docker-22.06.0-beta.0.tgz'; \
+			;; \
+		'aarch64') \
+			url='https://download.docker.com/linux/static/test/aarch64/docker-22.06.0-beta.0.tgz'; \
+			;; \
+		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
+	esac; \
+	\
+	wget -O 'docker.tgz' "$url"; \
+	\
+	tar --extract \
+		--file docker.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+		--no-same-owner \
+# we exclude the CLI binary because we already extracted that over in the "docker:22.06-rc-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
+		--exclude 'docker/docker' \
+	; \
+	rm docker.tgz; \
+	\
+	dockerd --version; \
+	containerd --version; \
+	ctr --version; \
+	runc --version
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1

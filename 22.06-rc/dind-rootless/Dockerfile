@@ -29,10 +29,10 @@ RUN set -eux; \
 		'aarch64') \
 			url='https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-22.06.0-beta.0.tgz'; \
 			;; \
-		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
+		*) echo >&2 "error: unsupported 'rootless.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
-	wget -O rootless.tgz "$url"; \
+	wget -O 'rootless.tgz' "$url"; \
 	\
 	tar --extract \
 		--file rootless.tgz \

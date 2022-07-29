@@ -1,3 +1,4 @@
+{{ include "shared" -}}
 FROM alpine:3.16
 
 RUN apk add --no-cache \
@@ -14,59 +15,27 @@ RUN apk add --no-cache \
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 ENV DOCKER_VERSION {{ .version }}
-# TODO ENV DOCKER_SHA256
-# https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
-# (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
 
-{{
-	def apkArch:
-		{
-			# https://dl-cdn.alpinelinux.org/alpine/edge/main/
-			# https://wiki.alpinelinux.org/wiki/Architecture#Alpine_Hardware_Architecture_.28.22arch.22.29_Support
-			# https://pkgs.alpinelinux.org/packages ("Arch" dropdown)
-			amd64: "x86_64",
-			arm32v6: "armhf",
-			arm32v7: "armv7",
-			arm64v8: "aarch64",
-			i386: "x86",
-			ppc64le: "ppc64le",
-			riscv64: "riscv64",
-			s390x: "s390x",
-		}[.]
--}}
 RUN set -eux; \
 	\
-	apkArch="$(apk --print-arch)"; \
-	case "$apkArch" in \
-{{
-	[
-		.arches | to_entries[]
-		| .key as $bashbrewArch
-		| ($bashbrewArch | apkArch) as $apkArch
-		| .value
-		| select($apkArch and .dockerUrl)
-		| (
--}}
-		{{ $apkArch | @sh }}) \
-			url={{ .dockerUrl | @sh }}; \
-			;; \
-{{
-		)
-	] | add
--}}
-		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;; \
-	esac; \
-	\
-	wget -O docker.tgz "$url"; \
+	{{
+		download({
+			arches: .arches,
+			urlKey: "dockerUrl",
+			# TODO sha256Key (once Docker publishes them 😭)
+			target: "docker.tgz",
+		})
+	}}; \
 	\
 	tar --extract \
 		--file docker.tgz \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
+		--no-same-owner \
+		'docker/docker' \
 	; \
 	rm docker.tgz; \
 	\
-	dockerd --version; \
 	docker --version
 {{
 	{
@@ -79,31 +48,22 @@ RUN set -eux; \
 
 ENV DOCKER_{{ $key | ascii_upcase }}_VERSION {{ .version }}
 RUN set -eux; \
-	apkArch="$(apk --print-arch)"; \
-	case "$apkArch" in \
-{{
-			.arches | to_entries | map(
-				.key as $bashbrewArch
-				| ($bashbrewArch | apkArch) as $apkArch
-				| .value
-				| select($apkArch and .url and .sha256)
-				| (
--}}
-		{{ $apkArch | @sh }}) \
-			url={{ .url | @sh }}; \
-			sha256={{ .sha256 | @sh }}; \
-			;; \
-{{
-				)
-			) | add
--}}
-		*) echo >&2 "warning: unsupported {{ $key }} architecture ($apkArch); skipping"; exit 0 ;; \
-	esac; \
+	\
+	{{
+		download({
+			arches: .arches,
+			urlKey: "url",
+			sha256Key: "sha256",
+			target: ("docker-" + $key),
+			missingArchWarning: true,
+		})
+	}}; \
+	\
 	plugin='/usr/libexec/docker/cli-plugins/docker-{{ $key }}'; \
 	mkdir -p "$(dirname "$plugin")"; \
-	wget -O "$plugin" "$url"; \
-	echo "$sha256 *$plugin" | sha256sum -c -; \
+	mv -vT {{ "docker-" + $key | @sh }} "$plugin"; \
 	chmod +x "$plugin"; \
+	\
 {{ if $key == "compose" then ( -}}
 	ln -sv "$plugin" /usr/local/bin/; \
 	docker-{{ $key }} --version; \

@@ -250,7 +250,7 @@ for version in "${versions[@]}"; do
 
 	# order here controls the order of the library/ file
 	for variant in \
-		'' \
+		cli \
 		dind \
 		dind-rootless \
 		git \
