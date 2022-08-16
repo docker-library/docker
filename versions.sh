@@ -67,6 +67,7 @@ buildxVersions="$(
 		| cut -d$'\t' -f2 \
 		| grep '^refs/tags/v[0-9].*$' \
 		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
+		| grep -vE -- '-rc' \
 		| sort -ru
 )"
 buildx=
