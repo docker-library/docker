@@ -77,7 +77,7 @@ for buildxVersion in $buildxVersions; do
 		buildx="$(jq <<<"$checksums" -csR --arg version "$buildxVersion" '
 			rtrimstr("\n") | split("\n")
 			| map(
-				split(" ")
+				split(" [ *]?"; "")
 				| {
 					sha256: .[0],
 					file: .[1],
