@@ -68,7 +68,7 @@ buildxVersions="$(
 		| grep '^refs/tags/v[0-9].*$' \
 		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
 		| grep -vE -- '-rc' \
-		| sort -ru
+		| sort -ruV
 )"
 buildx=
 buildxVersion=
@@ -96,7 +96,7 @@ for buildxVersion in $buildxVersions; do
 						"ppc64le": "ppc64le",
 						"riscv64": "riscv64",
 						"s390x": "s390x",
-					}[.arch] // error("unknown architecture: " + .arch))
+					}[.arch] // error("unknown buildx architecture: " + .arch))
 				): . }
 			)
 			| add
@@ -118,7 +118,7 @@ composeVersions="$(
 		| cut -d$'\t' -f2 \
 		| grep '^refs/tags/v[0-9].*$' \
 		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
-		| sort -ru
+		| sort -ruV
 )"
 compose=
 composeVersion=
@@ -144,9 +144,10 @@ for composeVersion in $composeVersions; do
 						armv6: "arm32v6",
 						armv7: "arm32v7",
 						ppc64le: "ppc64le",
+						riscv64: "riscv64",
 						s390x: "s390x",
 						x86_64: "amd64",
-					}[.[1]] // error("unknown architecture: " + .[1]))
+					}[.[1]] // error("unknown compose architecture: " + .[1]))
 				): . }
 			)
 			| add
