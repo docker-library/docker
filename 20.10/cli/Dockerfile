@@ -19,23 +19,23 @@ RUN apk add --no-cache \
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
-ENV DOCKER_VERSION 20.10.19
+ENV DOCKER_VERSION 20.10.20
 
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.19.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.20.tgz'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/stable/armel/docker-20.10.19.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armel/docker-20.10.20.tgz'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/stable/armhf/docker-20.10.19.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armhf/docker-20.10.20.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-20.10.19.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-20.10.20.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
@@ -99,38 +99,38 @@ RUN set -eux; \
 	\
 	docker buildx version
 
-ENV DOCKER_COMPOSE_VERSION 2.11.2
+ENV DOCKER_COMPOSE_VERSION 2.12.0
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-x86_64'; \
-			sha256='1178848502b0771b96895febeb4b1736acd5019c4ed71a8efbabf6915185fe8a'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-x86_64'; \
+			sha256='2054f3a24cb6814b390bd22c95fa37af7675831e37776bb1473a29a912d48b4b'; \
 			;; \
 		'armhf') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-armv6'; \
-			sha256='3e863e83a2701b26e168118f30456c3bd2ec37886182fc3373a8fe460e714761'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-armv6'; \
+			sha256='81e1d70b82873145faf802d3c8c46d5c35373d3665586d263ecf28a9df25a308'; \
 			;; \
 		'armv7') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-armv7'; \
-			sha256='c133c194f36b3a6dcd552c4e32652f6ef7c22af258a6f14b414bf751aad3d2fd'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-armv7'; \
+			sha256='63f94bcea4f2b6e9abeba90ac81620b1b0cab116b40890f0a68619fd26e3eb3f'; \
 			;; \
 		'aarch64') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-aarch64'; \
-			sha256='eb65ae4a4dd4de7dc767935c2bc49e3641d265df1273ea8f577cadb6bd9b4ebf'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-aarch64'; \
+			sha256='3708946bf5d78db23502e95a7ef1f716c16060e098b28acbe604a38b3ab3a51a'; \
 			;; \
 		'ppc64le') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-ppc64le'; \
-			sha256='24f65d215a198e33f3f1646ebabd6cae00eb6d2d3442b86c97d8198331350785'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-ppc64le'; \
+			sha256='263c827f0222dee0738a38ada22d5a4776d4a46874f34c114d7975e24e8c7bbe'; \
 			;; \
 		'riscv64') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-riscv64'; \
-			sha256='14a3de648bfa75a33ee8ded1cc8d501cff10c9d1565aab3dd641cf7283e9b51a'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-riscv64'; \
+			sha256='65c7c1cda3ab6de7fb8f9b12d67d63b94a1355cc014e4ce5c7504809cb8db2e8'; \
 			;; \
 		's390x') \
-			url='https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-s390x'; \
-			sha256='08e8612dc7aa2d983c6c07c54e483cbc1ec089cfe9d7f790643dd8dbd30ee4f5'; \
+			url='https://github.com/docker/compose/releases/download/v2.12.0/docker-compose-linux-s390x'; \
+			sha256='b8087688da06c3c95e0cb518880053783951b47e3757be24788e34d5617128e4'; \
 			;; \
 		*) echo >&2 "warning: unsupported 'docker-compose' architecture ($apkArch); skipping"; exit 0 ;; \
 	esac; \
