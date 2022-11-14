@@ -13,11 +13,11 @@ RUN apk add --no-cache \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client
 
-# set up nsswitch.conf for Go's "netgo" implementation (which Docker explicitly uses)
-# - https://github.com/docker/docker-ce/blob/v17.09.0-ce/components/engine/hack/make.sh#L149
-# - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
+# ensure that nsswitch.conf is set up for Go's "netgo" implementation (which Docker explicitly uses)
+# - https://github.com/moby/moby/blob/v20.10.21/hack/make.sh#L115
+# - https://github.com/golang/go/blob/go1.19.3/src/net/conf.go#L227-L303
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
+RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
 
 ENV DOCKER_VERSION 20.10.21
 
