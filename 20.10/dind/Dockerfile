@@ -74,7 +74,7 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/docker/docker/tree/master/hack/dind
-ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
+ENV DIND_COMMIT 1f32e3c95d72a29b3eaacba156ed675dba976cb5
 
 RUN set -eux; \
 	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
