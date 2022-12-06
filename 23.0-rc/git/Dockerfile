@@ -4,6 +4,6 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:22.06-rc-cli
+FROM docker:23.0-rc-cli
 
 RUN apk add --no-cache git

@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:22.06-rc-cli
+FROM docker:23.0-rc-cli
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
@@ -42,16 +42,16 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/test/x86_64/docker-22.06.0-beta.0.tgz'; \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-23.0.0-beta.1.tgz'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/test/armel/docker-22.06.0-beta.0.tgz'; \
+			url='https://download.docker.com/linux/static/test/armel/docker-23.0.0-beta.1.tgz'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/test/armhf/docker-22.06.0-beta.0.tgz'; \
+			url='https://download.docker.com/linux/static/test/armhf/docker-23.0.0-beta.1.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/test/aarch64/docker-22.06.0-beta.0.tgz'; \
+			url='https://download.docker.com/linux/static/test/aarch64/docker-23.0.0-beta.1.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
@@ -63,7 +63,7 @@ RUN set -eux; \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		--no-same-owner \
-# we exclude the CLI binary because we already extracted that over in the "docker:22.06-rc-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
+# we exclude the CLI binary because we already extracted that over in the "docker:23.0-rc-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
 		--exclude 'docker/docker' \
 	; \
 	rm docker.tgz; \
