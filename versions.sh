@@ -23,7 +23,6 @@ else
 fi
 versions=( "${versions[@]%/}" )
 
-# "tac|tac" for http://stackoverflow.com/a/28879552/433558
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | grep -E 'id.*Commit')"
 dindLatest="$(awk <<<"$dindLatest" -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
