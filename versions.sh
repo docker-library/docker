@@ -83,10 +83,11 @@ for buildxVersion in $buildxVersions; do
 					file: .[1],
 					url: ("https://github.com/docker/buildx/releases/download/v" + $version + "/" + .[1]),
 				}
+				| select(.file | test("[.]json$") | not)
 				| { (
 					.file
-					| capture("[.](?<os>linux|windows|darwin)-(?<arch>[^.]+)([.]|$)")
-					// error("failed to parse os-arch from filename: " + .[1])
+					| capture("[.](?<os>linux|windows|darwin)-(?<arch>[^.]+)(?<ext>[.]exe)?$")
+					// error("failed to parse os-arch from filename: " + .)
 					| if .os == "linux" then "" else .os + "-" end
 					+ ({
 						"amd64": "amd64",
