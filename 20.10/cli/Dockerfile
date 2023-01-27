@@ -53,38 +53,38 @@ RUN set -eux; \
 	\
 	docker --version
 
-ENV DOCKER_BUILDX_VERSION 0.10.0
+ENV DOCKER_BUILDX_VERSION 0.10.1
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-amd64'; \
-			sha256='f76047e43cd2526a870b9cf385effc7c9642c1a17d144559c43545525415867d'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-amd64'; \
+			sha256='31be610820f12fdf5e1c310886e95856e659f647e26965f819bd728dcc94fe18'; \
 			;; \
 		'armhf') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-arm-v6'; \
-			sha256='dc037b64e14388cbf5441d3b23a3f1ccd9a56a47007555ce681d89b70d411d31'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-arm-v6'; \
+			sha256='60c0044dca2c82bc336af15c5529262a88ce4509e75ad5730db10bf688820b0e'; \
 			;; \
 		'armv7') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-arm-v7'; \
-			sha256='19b82ba259d83cc75b12bddb1cdc0712dd276f8763d0a65ded2048193973260b'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-arm-v7'; \
+			sha256='2ee39cf64dcf64505f1c7d6213052b8bda39b06e1410c21098d3ca5a3eb72fe7'; \
 			;; \
 		'aarch64') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-arm64'; \
-			sha256='abf375431775d46139312591aa9471cdf6909d8a4e8392b73940ca136c34eb4d'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-arm64'; \
+			sha256='1561306348d5ffd63b2fe5e32f3440dd4e8751faf94ffa3103364cb94818f5ef'; \
 			;; \
 		'ppc64le') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-ppc64le'; \
-			sha256='9850f6ad445d1014a156c33ac7f9074fffd3358db304ef5b4e4509355a4d9fb9'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-ppc64le'; \
+			sha256='1cf2e28fa82064bc05c8a69a2a0b798c7adbe572e53042a4dcd604ae9f0103ad'; \
 			;; \
 		'riscv64') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-riscv64'; \
-			sha256='07529564e5b2f1f6e33fbf947700f9118a727dde2d8486c3e2115bc4fb42d86a'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-riscv64'; \
+			sha256='46e2188c265b684f224a3fbdb11a40531057e278a580cd3ca01b2042f48c492b'; \
 			;; \
 		's390x') \
-			url='https://github.com/docker/buildx/releases/download/v0.10.0/buildx-v0.10.0.linux-s390x'; \
-			sha256='871b4a746765334a1a0b56700525d5ef7f83adcafbb193734e238c8ac102eccc'; \
+			url='https://github.com/docker/buildx/releases/download/v0.10.1/buildx-v0.10.1.linux-s390x'; \
+			sha256='e4cecfa4c4489385c4cb1ce6f9f518c9afce63705588088c5d32c7c286c9c41a'; \
 			;; \
 		*) echo >&2 "warning: unsupported 'docker-buildx' architecture ($apkArch); skipping"; exit 0 ;; \
 	esac; \
