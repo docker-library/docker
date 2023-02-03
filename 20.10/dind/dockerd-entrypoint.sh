@@ -108,12 +108,11 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	esac
 
 	# add our default arguments
-	if [ -n "${DOCKER_TLS_CERTDIR:-}" ] \
-		&& _tls_generate_certs "$DOCKER_TLS_CERTDIR" \
-		&& [ -s "$DOCKER_TLS_CERTDIR/server/ca.pem" ] \
-		&& [ -s "$DOCKER_TLS_CERTDIR/server/cert.pem" ] \
-		&& [ -s "$DOCKER_TLS_CERTDIR/server/key.pem" ] \
-	; then
+	if [ -n "${DOCKER_TLS_CERTDIR:-}" ]; then
+		_tls_generate_certs "$DOCKER_TLS_CERTDIR"
+		[ -s "$DOCKER_TLS_CERTDIR/server/ca.pem" ]
+		[ -s "$DOCKER_TLS_CERTDIR/server/cert.pem" ]
+		[ -s "$DOCKER_TLS_CERTDIR/server/key.pem" ]
 		# generate certs and use TLS if requested/possible (default in 19.03+)
 		set -- dockerd \
 			--host="$dockerSocket" \
