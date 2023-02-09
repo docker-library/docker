@@ -21,10 +21,16 @@ _tls_san() {
 _tls_generate_certs() {
 	local dir="$1"; shift
 
+	# if server/{ca,key,cert}.pem && !ca/key.pem, do NOTHING except verify (user likely managing CA themselves)
 	# if ca/key.pem || !ca/cert.pem, generate CA public if necessary
 	# if ca/key.pem, generate server public
 	# if ca/key.pem, generate client public
 	# (regenerating public certs every startup to account for SAN/IP changes and/or expiration)
+
+	if [ -s "$dir/server/ca.pem" ] && [ -s "$dir/server/cert.pem" ] && [ -s "$dir/server/key.pem" ] && [ ! "$dir/ca/key.pem" ]; then
+		openssl verify -CAfile "$dir/server/ca.pem" "$dir/server/cert.pem"
+		return 0
+	fi
 
 	# https://github.com/FiloSottile/mkcert/issues/174
 	local certValidDays='825'
@@ -110,9 +116,6 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	# add our default arguments
 	if [ -n "${DOCKER_TLS_CERTDIR:-}" ]; then
 		_tls_generate_certs "$DOCKER_TLS_CERTDIR"
-		[ -s "$DOCKER_TLS_CERTDIR/server/ca.pem" ]
-		[ -s "$DOCKER_TLS_CERTDIR/server/cert.pem" ]
-		[ -s "$DOCKER_TLS_CERTDIR/server/key.pem" ]
 		# generate certs and use TLS if requested/possible (default in 19.03+)
 		set -- dockerd \
 			--host="$dockerSocket" \
