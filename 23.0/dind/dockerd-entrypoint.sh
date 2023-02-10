@@ -27,7 +27,7 @@ _tls_generate_certs() {
 	# if ca/key.pem, generate client public
 	# (regenerating public certs every startup to account for SAN/IP changes and/or expiration)
 
-	if [ -s "$dir/server/ca.pem" ] && [ -s "$dir/server/cert.pem" ] && [ -s "$dir/server/key.pem" ] && [ ! "$dir/ca/key.pem" ]; then
+	if [ -s "$dir/server/ca.pem" ] && [ -s "$dir/server/cert.pem" ] && [ -s "$dir/server/key.pem" ] && [ ! -s "$dir/ca/key.pem" ]; then
 		openssl verify -CAfile "$dir/server/ca.pem" "$dir/server/cert.pem"
 		return 0
 	fi
