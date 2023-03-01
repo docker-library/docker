@@ -213,7 +213,7 @@ for version in "${versions[@]}"; do
 		}'
 	)"
 
-	hasWindows=
+	declare -A hasArches=()
 	for bashbrewArch in "${!dockerArches[@]}"; do
 		arch="${dockerArches[$bashbrewArch]}"
 		# check whether the given architecture is supported for this release
@@ -232,8 +232,9 @@ for version in "${versions[@]}"; do
 			continue
 		fi
 
+		hasArches["$bashbrewArch"]=1
+
 		if [ -n "$windows" ]; then
-			hasWindows=1
 			continue # Windows doesn't have rootless extras :)
 		fi
 
@@ -252,6 +253,13 @@ for version in "${versions[@]}"; do
 		esac
 	done
 
+	for alwaysExpectedArch in amd64 arm64v8; do
+		if [ -z "${hasArches["$alwaysExpectedArch"]:-}" ]; then
+			echo >&2 "error: missing '$alwaysExpectedArch' for '$version'; cowardly refusing to continue! (because this is almost always a scraping flake or similar bug)"
+			exit 1
+		fi
+	done
+
 	# order here controls the order of the library/ file
 	for variant in \
 		cli \
@@ -262,7 +270,7 @@ for version in "${versions[@]}"; do
 		windows/windowsservercore-1809 \
 	; do
 		base="${variant%%/*}" # "buster", "windows", etc.
-		if [ "$base" = 'windows' ] && [ -z "$hasWindows" ]; then
+		if [ "$base" = 'windows' ] && [ -z "${hasArches['windows-amd64']}" ]; then
 			continue
 		fi
 		export variant

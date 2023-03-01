@@ -41,6 +41,9 @@ RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
+		'x86_64') \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-20.10.23.tgz'; \
+			;; \
 		'armhf') \
 			url='https://download.docker.com/linux/static/stable/armel/docker-20.10.23.tgz'; \
 			;; \
