@@ -20,3 +20,18 @@ jobs:
         run: |
           status="$(git status --short)"
           [ -z "$status" ]
+- isim: Önbellek
+  kullanımlar: action/cache@v3.2.6
+  ile:
+    # Önbelleğe alınacak ve geri yüklenecek dosyaların, dizinlerin ve joker karakter kalıplarının bir listesi
+    yol:
+    # Önbelleği geri yüklemek ve kaydetmek için açık bir anahtar
+    anahtar:
+    # Anahtar için önbellek isabeti oluşmadıysa, eski önbelleği geri yüklemek için kullanılacak sıralı bir anahtar listesi. Not "cache-hit" bu durumda false değerini döndürür.
+    geri yükleme anahtarları: # isteğe bağlı
+    # Yükleme sırasında büyük dosyaları bayt olarak bölmek için kullanılan öbek boyutu
+    yükleme yığını boyutu: # isteğe bağlı
+    # Etkinleştirildiğinde isteğe bağlı bir boole, Windows çalıştırıcılarının diğer platformlarda sırasıyla geri yüklenebilen veya kaydedilebilen önbellekleri kaydetmesine veya geri yüklemesine olanak tanır
+    enableCrossOsArchive: # isteğe bağlı, varsayılan değer yanlış
+    # Önbellek girişi bulunamazsa iş akışı başarısız olur
+    önbellekte arıza: # isteğe bağlı, varsayılan değer yanlış
