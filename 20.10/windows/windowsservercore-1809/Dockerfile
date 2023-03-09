@@ -38,3 +38,54 @@ RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	docker --version; \
 	\
 	Write-Host 'Complete.';
+
+# https://github.com/docker-library/docker/issues/409#issuecomment-1462868414
+ENV DOCKER_BUILDX_VERSION 0.10.4
+ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.windows-amd64.exe
+ENV DOCKER_BUILDX_SHA256 e4bb5f70d98be80421bb26b78dd71fe9184a5f94315a6712f487e9eb252ad4f1
+RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
+	Write-Host ('Creating {0} ...' -f $dir); \
+	New-Item -ItemType Directory $dir -Force; \
+	\
+	$plugin = ('{0}\docker-buildx.exe' -f $dir); \
+	Write-Host ('Downloading {0} ...' -f $env:DOCKER_BUILDX_URL); \
+	Invoke-WebRequest -Uri $env:DOCKER_BUILDX_URL -OutFile $plugin; \
+	\
+	Write-Host ('Verifying sha256 ({0}) ...' -f $env:DOCKER_BUILDX_SHA256); \
+	if ((Get-FileHash $plugin -Algorithm sha256).Hash -ne $env:DOCKER_BUILDX_SHA256) { \
+		Write-Host 'FAILED!'; \
+		exit 1; \
+	}; \
+	\
+	Write-Host 'Verifying install ("docker buildx version") ...'; \
+	docker buildx version; \
+	\
+	Write-Host 'Complete.';
+ENV DOCKER_COMPOSE_VERSION 2.16.0
+ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-windows-x86_64.exe
+ENV DOCKER_COMPOSE_SHA256 a35d1188e796dbda914ddb9677059c654b445aa2921066e0b556ca9906bb603c
+RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
+	Write-Host ('Creating {0} ...' -f $dir); \
+	New-Item -ItemType Directory $dir -Force; \
+	\
+	$plugin = ('{0}\docker-compose.exe' -f $dir); \
+	Write-Host ('Downloading {0} ...' -f $env:DOCKER_COMPOSE_URL); \
+	Invoke-WebRequest -Uri $env:DOCKER_COMPOSE_URL -OutFile $plugin; \
+	\
+	Write-Host ('Verifying sha256 ({0}) ...' -f $env:DOCKER_COMPOSE_SHA256); \
+	if ((Get-FileHash $plugin -Algorithm sha256).Hash -ne $env:DOCKER_COMPOSE_SHA256) { \
+		Write-Host 'FAILED!'; \
+		exit 1; \
+	}; \
+	\
+	Write-Host 'Verifying install ("docker compose version") ...'; \
+	docker compose version; \
+	\
+	$link = ('{0}\docker\docker-compose.exe' -f $env:ProgramFiles); \
+	Write-Host ('Linking {0} to {1} ...' -f $plugin, $link); \
+	New-Item -ItemType SymbolicLink -Path $link -Target $plugin; \
+	\
+	Write-Host 'Verifying install ("docker-compose --version") ...'; \
+	docker-compose --version; \
+	\
+	Write-Host 'Complete.';
