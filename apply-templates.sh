@@ -59,6 +59,8 @@ for version; do
 				;;
 		esac
 
+		echo "processing $dir ..."
+
 		mkdir -p "$dir"
 		{
 			generated_warning

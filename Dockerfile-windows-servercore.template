@@ -32,3 +32,48 @@ RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	docker --version; \
 	\
 	Write-Host 'Complete.';
+
+# https://github.com/docker-library/docker/issues/409#issuecomment-1462868414
+{{
+	{
+		buildx: .buildx,
+		compose: .compose,
+	}
+	| to_entries | map(
+		.key as $key | ($key | ascii_upcase) as $KEY | .value | (
+-}}
+ENV DOCKER_{{ $KEY }}_VERSION {{ .version }}
+ENV DOCKER_{{ $KEY }}_URL {{ .arches["windows-amd64"].url }}
+ENV DOCKER_{{ $KEY }}_SHA256 {{ .arches["windows-amd64"].sha256 }}
+RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
+	Write-Host ('Creating {0} ...' -f $dir); \
+	New-Item -ItemType Directory $dir -Force; \
+	\
+	$plugin = ('{0}\docker-{{ $key }}.exe' -f $dir); \
+	Write-Host ('Downloading {0} ...' -f $env:DOCKER_{{ $KEY }}_URL); \
+	Invoke-WebRequest -Uri $env:DOCKER_{{ $KEY }}_URL -OutFile $plugin; \
+	\
+	Write-Host ('Verifying sha256 ({0}) ...' -f $env:DOCKER_{{ $KEY }}_SHA256); \
+	if ((Get-FileHash $plugin -Algorithm sha256).Hash -ne $env:DOCKER_{{ $KEY }}_SHA256) { \
+		Write-Host 'FAILED!'; \
+		exit 1; \
+	}; \
+	\
+	Write-Host 'Verifying install ("docker {{ $key }} version") ...'; \
+	docker {{ $key }} version; \
+{{ if $key == "compose" then ( -}}
+	\
+	$link = ('{0}\docker\docker-{{ $key }}.exe' -f $env:ProgramFiles); \
+	Write-Host ('Linking {0} to {1} ...' -f $plugin, $link); \
+	New-Item -ItemType SymbolicLink -Path $link -Target $plugin; \
+	\
+	Write-Host 'Verifying install ("docker-{{ $key }} --version") ...'; \
+	docker-{{ $key }} --version; \
+{{ ) else "" end -}}
+	\
+	Write-Host 'Complete.';
+{{
+		)
+	)
+	| add
+-}}
