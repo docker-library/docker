@@ -8,7 +8,7 @@ FROM alpine:3.17
 
 RUN apk add --no-cache \
 		ca-certificates \
-# Workaround for golang not producing a static ctr binary on Go 1.15 and up https://github.com/containerd/containerd/issues/5824
+# Workaround for golang not producing a static ctr binary on Go 1.15 and up https://github.com/containerd/containerd/issues/5824, https://github.com/docker-library/docker/issues/377
 		libc6-compat \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client
