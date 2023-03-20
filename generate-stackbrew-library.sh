@@ -95,6 +95,7 @@ cat <<-EOH
 Maintainers: Tianon Gravi <tianon@dockerproject.org> (@tianon),
              Joseph Ferguson <yosifkit@gmail.com> (@yosifkit)
 GitRepo: https://github.com/docker-library/docker.git
+Builder: buildkit
 EOH
 
 # prints "$2$1$3$1...$N"
@@ -204,6 +205,9 @@ for version; do
 			GitCommit: $commit
 			Directory: $dir
 		EOE
-		[ "$variant" = "$v" ] || echo "Constraints: $variant"
+		if [ "$variant" != "$v" ]; then
+			echo "Constraints: $variant"
+			echo 'Builder: classic' # no Windows support in BuildKit (yet)
+		fi
 	done
 done
