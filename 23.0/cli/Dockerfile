@@ -90,7 +90,7 @@ RUN set -eux; \
 	wget -O 'docker-buildx' "$url"; \
 	echo "$sha256 *"'docker-buildx' | sha256sum -c -; \
 	\
-	plugin='/usr/libexec/docker/cli-plugins/docker-buildx'; \
+	plugin='/usr/local/libexec/docker/cli-plugins/docker-buildx'; \
 	mkdir -p "$(dirname "$plugin")"; \
 	mv -vT 'docker-buildx' "$plugin"; \
 	chmod +x "$plugin"; \
@@ -136,7 +136,7 @@ RUN set -eux; \
 	wget -O 'docker-compose' "$url"; \
 	echo "$sha256 *"'docker-compose' | sha256sum -c -; \
 	\
-	plugin='/usr/libexec/docker/cli-plugins/docker-compose'; \
+	plugin='/usr/local/libexec/docker/cli-plugins/docker-compose'; \
 	mkdir -p "$(dirname "$plugin")"; \
 	mv -vT 'docker-compose' "$plugin"; \
 	chmod +x "$plugin"; \
