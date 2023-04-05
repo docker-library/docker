@@ -17,23 +17,23 @@ RUN apk add --no-cache \
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
 RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
 
-ENV DOCKER_VERSION 23.0.2
+ENV DOCKER_VERSION 23.0.3
 
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-23.0.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-23.0.3.tgz'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/stable/armel/docker-23.0.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armel/docker-23.0.3.tgz'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/stable/armhf/docker-23.0.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armhf/docker-23.0.3.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-23.0.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-23.0.3.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
