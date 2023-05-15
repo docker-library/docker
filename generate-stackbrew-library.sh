@@ -158,11 +158,6 @@ for version; do
 	variants="$(jq -r '.[env.version].variants | map(@sh) | join(" ")' versions.json)"
 	eval "variants=( $variants )"
 
-	case "$rcVersion" in
-		20.10) latestVariant='cli' ;;
-		*)     latestVariant='dind' ;;
-	esac
-
 	for v in "${variants[@]}"; do
 		dir="$version/$v"
 		[ -f "$dir/Dockerfile" ] || continue
@@ -180,7 +175,7 @@ for version; do
 			suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
 			suiteAliases=( "${suiteAliases[@]//latest-/}" )
 			variantAliases+=( "${suiteAliases[@]}" )
-			if [ "$variant" = "$latestVariant" ]; then
+			if [ "$variant" = 'dind' ]; then
 				# add "latest" aliases
 				suiteAliases=( "${versionAliases[0]}" ) # only "X.Y.Z-foo"
 				suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
