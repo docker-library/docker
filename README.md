@@ -2,7 +2,7 @@
 
 ## Maintained by: [Tianon (of the Docker Project)](https://github.com/docker-library/docker)
 
-This is the Git repo of the [Docker "Official Image"](https://github.com/docker-library/official-images#what-are-official-images) for [`docker`](https://hub.docker.com/_/docker/) (not to be confused with any official `docker` image provided by `docker` upstream). See [the Docker Hub page](https://hub.docker.com/_/docker/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
+This is the Git repo of the [Docker "Official Image"](https://github.com/docker-library/official-images#what-are-official-images) for [`docker`](https://hub.docker.com/_/docker/). See [the Docker Hub page](https://hub.docker.com/_/docker/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
 
 The [full image description on Docker Hub](https://hub.docker.com/_/docker/) is generated/maintained over in [the docker-library/docs repository](https://github.com/docker-library/docs), specifically in [the `docker` directory](https://github.com/docker-library/docs/tree/master/docker).
 
