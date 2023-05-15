@@ -1,3 +1,3 @@
-FROM docker:{{ env.version }}-{{ if env.version | rtrimstr("-rc") == "20.10" then "cli" else "dind" end }}
+FROM docker:{{ env.version }}-dind
 
 RUN apk add --no-cache git
