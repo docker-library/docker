@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:24-rc-dind
+FROM docker:23-dind
 
 # busybox "ip" is insufficient:
 #   [rootlesskit:child ] error: executing [[ip tuntap add name tap0 mode tap] [ip link set tap0 address 02:50:00:00:00:01]]: exit status 1
@@ -24,10 +24,10 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-24.0.0-rc.4.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-23.0.6.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-24.0.0-rc.4.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-23.0.6.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'rootless.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
