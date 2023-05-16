@@ -127,9 +127,11 @@ for version; do
 	else
 		versionAliases+=( $fullVersion )
 	fi
-	versionAliases+=(
-		$version
-	)
+	if [ "$fullVersion" != "$version" ]; then
+		versionAliases+=(
+			$version
+		)
+	fi
 
 	# add a few channel/version-related aliases
 	majorVersion="${version%%.*}"

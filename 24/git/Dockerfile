@@ -4,6 +4,6 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM docker:24-rc-dind
+FROM docker:24-dind
 
 RUN apk add --no-cache git
