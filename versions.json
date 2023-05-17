@@ -215,61 +215,61 @@
       "arches": {
         "amd64": {
           "file": "docker-compose-linux-x86_64",
-          "sha256": "02b69f1f23167fce126b16d9d6b645362f5a6fa7fc9a073d3d080e45e12d32fc",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-x86_64"
+          "sha256": "b4e6aff14c30f82ce26e94d37686b5598b3f870ce1e053927c853b4f4b128575",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-x86_64"
         },
         "arm32v6": {
           "file": "docker-compose-linux-armv6",
-          "sha256": "58cabf4745c8878a178e4283b5f272eb46fc4cb42b12ac47a487085838ae4a6c",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-armv6"
+          "sha256": "34430890fe8ab68fe091a2907ebff174d1d6dcfc3d4e87f8c50bb105a2ac8b5f",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-armv6"
         },
         "arm32v7": {
           "file": "docker-compose-linux-armv7",
-          "sha256": "9e2dc7e0f7d572e6733ba9d66d8ffa063c66c00a262e138a1df5b324c4580e9d",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-armv7"
+          "sha256": "cced34fc17c3689b5e0760b115ef481014eb004370a7b9380fc25eeef55570bb",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-armv7"
         },
         "arm64v8": {
           "file": "docker-compose-linux-aarch64",
-          "sha256": "60444f990cd2e87cb1f3b5093d88afa6c8f58cb9c5477fdb31ff894deaee17c6",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-aarch64"
+          "sha256": "6d1784542f74806ef0ed4e798d31c91604453eb06b86448b4c60d7df5d5b7afb",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-aarch64"
         },
         "darwin-amd64": {
           "file": "docker-compose-darwin-x86_64",
-          "sha256": "42036608e33e8e905f0683693109d0a8f126a66d2e534611b15919e0ea32b35c",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-darwin-x86_64"
+          "sha256": "57fd6629ab54629df2208adb726aa196e16ca6bb154b21794d4f1151fd66e81b",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-darwin-x86_64"
         },
         "darwin-arm64v8": {
           "file": "docker-compose-darwin-aarch64",
-          "sha256": "6b22a7f04ebc4693a60e3e6ae248c2cee715b69cef740d1ad39e520fbc632922",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-darwin-aarch64"
+          "sha256": "1885bf6e3d443123590bc2aa8de510f8f5bd33d605b75d233eb798f409dd3289",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-darwin-aarch64"
         },
         "ppc64le": {
           "file": "docker-compose-linux-ppc64le",
-          "sha256": "18a29f9f67ce1c3afbfc4720194db1002feae681d78469ed0cd39e04da009761",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-ppc64le"
+          "sha256": "baa21ead951f0b0a0dc191e4dc7718e584961d0fcbb5969004bdcf1950203cde",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-ppc64le"
         },
         "riscv64": {
           "file": "docker-compose-linux-riscv64",
-          "sha256": "c5ef1f3cb9bf2ab9f232f993d640c3f872d573494ad6b3081e6b8bc45bc58fe1",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-riscv64"
+          "sha256": "2e84879a8677bcebda18d7772a86fa107f3745ba693f7c9c397b9fede355e3f2",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-riscv64"
         },
         "s390x": {
           "file": "docker-compose-linux-s390x",
-          "sha256": "51af79cf31b0916f40ed3d0bef30a71a03dea1d794458a5c62770c3d8e1efce5",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-linux-s390x"
+          "sha256": "e8d5669b5f11212310d080d239348fe293b783c7357bb1085728fbed69e519c9",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-s390x"
         },
         "windows-amd64": {
           "file": "docker-compose-windows-x86_64.exe",
-          "sha256": "a98df8912c7a5cc7be00c1819a920e0ecdd5e2a7402bb390606c7f3f3b28b24e",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-windows-x86_64.exe"
+          "sha256": "6083a9057010a6a048d83c94318d254657abee48600baca2402fbe887d0b7ec4",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-windows-x86_64.exe"
         },
         "windows-arm64v8": {
           "file": "docker-compose-windows-aarch64.exe",
-          "sha256": "a20adfd1ba8fd1c16873fe28c3637ca7c5bca68cbd928038574b343417f46b56",
-          "url": "https://github.com/docker/compose/releases/download/v2.18.0/docker-compose-windows-aarch64.exe"
+          "sha256": "4eec95300145a51c69ca5f0a8c87309fc7eabce70034d4f58021841d1fadd6fc",
+          "url": "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-windows-aarch64.exe"
         }
       },
-      "version": "2.18.0"
+      "version": "2.18.1"
     },
     "dindCommit": "1f32e3c95d72a29b3eaacba156ed675dba976cb5",
     "variants": [
