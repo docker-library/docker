@@ -144,21 +144,21 @@
   "24": {
     "arches": {
       "amd64": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-24.0.3.tgz",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-24.0.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-24.0.4.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-24.0.4.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-24.0.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-24.0.4.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-24.0.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-24.0.4.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-24.0.3.tgz",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-24.0.3.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-24.0.4.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-24.0.4.tgz"
       },
       "windows-amd64": {
-        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-24.0.3.zip"
+        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-24.0.4.zip"
       }
     },
     "buildx": {
@@ -280,7 +280,7 @@
       "windows/windowsservercore-ltsc2022",
       "windows/windowsservercore-1809"
     ],
-    "version": "24.0.3"
+    "version": "24.0.4"
   },
   "24-rc": null
 }
