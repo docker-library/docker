@@ -148,6 +148,7 @@ if [ "$1" = 'dockerd' ]; then
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
 		modprobe ip_tables || :
+		modprobe nf_tables || :
 	fi
 
 	uid="$(id -u)"
