@@ -33,7 +33,7 @@ RUN set -eux; \
 RUN for command in iptables iptables-restore iptables-restore-translate iptables-save iptables-translate; \
 	do \
 		ln -sf /sbin/xtables-nft-multi /sbin/$command; \
-done
+	done
 
 # TODO aufs-tools
 
