@@ -95,6 +95,21 @@ _tls_generate_certs() {
 	fi
 }
 
+# Ensure that a bridge exists with the given name and IP range specified in the format "name:ip_range" e.g. "dind0:10.32.0.1/16"
+if [ -n "${DOCKER_ENSURE_BRIDGE:-}" ]
+then
+    bridge="${DOCKER_ENSURE_BRIDGE%%:*}"
+    ip_range="${DOCKER_ENSURE_BRIDGE#*:}"
+    if ! ip link show "${bridge}" &>/dev/null
+    then
+		ip link add "${bridge}" type bridge
+		ip addr add "${ip_range}" dev "${bridge}"
+		ip link set "${bridge}" up
+    fi
+	echo "Bridge ${bridge} exists:"
+    ip addr show "${bridge}"
+fi
+
 # no arguments passed
 # or first arg is `-f` or `--some-option`
 if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
