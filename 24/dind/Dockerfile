@@ -28,6 +28,13 @@ RUN set -eux; \
 		apk add --no-cache zfs; \
 	fi
 
+# Ensure we use nftables backend for iptables since legacy is the default on Alpine
+# which breaks when dind is used with host networking: https://github.com/docker-library/docker/issues/443
+RUN for command in iptables iptables-restore iptables-restore-translate iptables-save iptables-translate; \
+	do \
+		ln -sf /sbin/xtables-nft-multi /sbin/$command; \
+done
+
 # TODO aufs-tools
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
