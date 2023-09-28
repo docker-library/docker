@@ -81,9 +81,6 @@ versionArches() {
 				.[env.version].arches | to_entries[]
 				| select(.value.'"$selector"')
 				| .key
-				# all arm32 builds are broken:
-				# https://github.com/docker-library/docker/issues/260
-				| select(startswith("arm32") | not)
 			' versions.json | sort
 		) \
 		<(xargs -n1 <<<"$parentArches" | sort)
