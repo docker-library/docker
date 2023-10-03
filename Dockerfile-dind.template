@@ -1,4 +1,5 @@
 {{ include "shared" -}}
+{{ include ".template-helper-functions" -}}
 FROM docker:{{ env.version }}-cli
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
@@ -56,7 +57,22 @@ RUN set -eux; \
 	dockerd --version; \
 	containerd --version; \
 	ctr --version; \
-	runc --version
+	runc --version; \
+{{ .version as $version | ["dockerd", "docker-init", "docker-proxy"] | map( . as $binary | ( -}}
+	echo {{
+		{
+			name: $binary,
+			version: $version,
+			supplier: "Organization: Docker, Inc",
+			params: {
+				os_name: "alpine",
+				os_version: "3.18"
+			},
+			licenses: [
+				"Apache-2.0"
+			]
+		} | sbom | tostring | @sh
+	}} > /usr/local/{{ $binary }}.spdx.json;  {{ )) | join("\\\n") }}
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT {{ .dindCommit }}

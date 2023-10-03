@@ -44,6 +44,10 @@ RUN set -eux; \
 	; \
 	rm rootless.tgz; \
 	\
+	dockerd --version; \
+	containerd --version; \
+	ctr --version; \
+	runc --version; \
 	rootlesskit --version; \
 	vpnkit --version
 

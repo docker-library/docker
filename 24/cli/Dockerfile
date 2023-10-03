@@ -49,7 +49,9 @@ RUN set -eux; \
 	; \
 	rm docker.tgz; \
 	\
-	docker --version
+	docker --version; \
+	\
+	echo '{"spdxVersion":"SPDX-2.3","SPDXID":"SPDXRef-DOCUMENT","name":"docker-sbom","packages":[{"name":"docker","versionInfo":"24.0.7","SPDXID":"SPDXRef-Package--docker","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:generic/docker@24.0.7?os_name=alpine&os_version=3.18"}],"licenseDeclared":"Apache-2.0"}]}' > /usr/local/docker.spdx.json ;
 
 ENV DOCKER_BUILDX_VERSION 0.11.2
 RUN set -eux; \
@@ -95,7 +97,9 @@ RUN set -eux; \
 	mv -vT 'docker-buildx' "$plugin"; \
 	chmod +x "$plugin"; \
 	\
-	docker buildx version
+	docker buildx version; \
+	\
+	echo '{"spdxVersion":"SPDX-2.3","SPDXID":"SPDXRef-DOCUMENT","name":"buildx-sbom","packages":[{"name":"buildx","versionInfo":"0.11.2","SPDXID":"SPDXRef-Package--buildx","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:generic/buildx@0.11.2?os_name=alpine&os_version=3.18"}],"licenseDeclared":"Apache-2.0"}]}' > /usr/local/docker-buildx.spdx.json ;
 
 ENV DOCKER_COMPOSE_VERSION 2.23.0
 RUN set -eux; \
@@ -143,7 +147,9 @@ RUN set -eux; \
 	\
 	ln -sv "$plugin" /usr/local/bin/; \
 	docker-compose --version; \
-	docker compose version
+	docker compose version; \
+	\
+	echo '{"spdxVersion":"SPDX-2.3","SPDXID":"SPDXRef-DOCUMENT","name":"compose-sbom","packages":[{"name":"compose","versionInfo":"2.23.0","SPDXID":"SPDXRef-Package--compose","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:generic/compose@2.23.0?os_name=alpine&os_version=3.18"}],"licenseDeclared":"Apache-2.0"}]}' > /usr/local/docker-compose.spdx.json ;
 
 COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/

@@ -71,7 +71,10 @@ RUN set -eux; \
 	dockerd --version; \
 	containerd --version; \
 	ctr --version; \
-	runc --version
+	runc --version; \
+	echo '{"spdxVersion":"SPDX-2.3","SPDXID":"SPDXRef-DOCUMENT","name":"dockerd-sbom","packages":[{"name":"dockerd","versionInfo":"24.0.7","SPDXID":"SPDXRef-Package--dockerd","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:generic/dockerd@24.0.7?os_name=alpine&os_version=3.18"}],"licenseDeclared":"Apache-2.0"}]}' > /usr/local/dockerd.spdx.json;  \
+	echo '{"spdxVersion":"SPDX-2.3","SPDXID":"SPDXRef-DOCUMENT","name":"docker-init-sbom","packages":[{"name":"docker-init","versionInfo":"24.0.7","SPDXID":"SPDXRef-Package--docker-init","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:generic/docker-init@24.0.7?os_name=alpine&os_version=3.18"}],"licenseDeclared":"Apache-2.0"}]}' > /usr/local/docker-init.spdx.json;  \
+	echo '{"spdxVersion":"SPDX-2.3","SPDXID":"SPDXRef-DOCUMENT","name":"docker-proxy-sbom","packages":[{"name":"docker-proxy","versionInfo":"24.0.7","SPDXID":"SPDXRef-Package--docker-proxy","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:generic/docker-proxy@24.0.7?os_name=alpine&os_version=3.18"}],"licenseDeclared":"Apache-2.0"}]}' > /usr/local/docker-proxy.spdx.json;  
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT d58df1fc6c866447ce2cd129af10e5b507705624

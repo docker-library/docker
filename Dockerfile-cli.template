@@ -1,5 +1,6 @@
 {{ include "shared" -}}
-FROM alpine:3.18
+{{ include ".template-helper-functions" -}}
+FROM alpine:{{ .alpine }}
 
 RUN apk add --no-cache \
 		ca-certificates \
@@ -34,7 +35,22 @@ RUN set -eux; \
 	; \
 	rm docker.tgz; \
 	\
-	docker --version
+	docker --version; \
+	\
+	echo {{
+		{
+			name: "docker",
+			version: .version,
+			supplier: "Organization: Docker, Inc",
+			params: {
+				os_name: "alpine",
+				os_version: .alpine
+			},
+			licenses: [
+				"Apache-2.0"
+			]
+		} | sbom | tostring | @sh
+	}} > /usr/local/docker.spdx.json ;
 {{
 	{
 		buildx: .buildx,
@@ -66,7 +82,22 @@ RUN set -eux; \
 	ln -sv "$plugin" /usr/local/bin/; \
 	docker-{{ $key }} --version; \
 {{ ) else "" end -}}
-	docker {{ $key }} version
+	docker {{ $key }} version; \
+	\
+	echo {{
+		{
+			name: $key,
+			version: .version,
+			supplier: "Organization: Docker, Inc",
+			params: {
+				os_name: "alpine",
+				os_version: "3.18"
+			},
+			licenses: [
+				"Apache-2.0"
+			]
+		} | sbom | tostring | @sh
+	}} > /usr/local/docker-{{ $key }}.spdx.json ;
 {{
 		)
 	)

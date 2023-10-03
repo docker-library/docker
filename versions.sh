@@ -14,6 +14,8 @@ declare -A dockerArches=(
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
+defaultAlpine='3.18'
+
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
 	versions=( */ )
@@ -203,9 +205,11 @@ for version in "${versions[@]}"; do
 	echo "$version: $fullVersion (buildx $buildxVersion, compose $composeVersion)"
 
 	export fullVersion dindLatest
+	export defaultAlpine
 	doc="$(
 		jq -nc --argjson buildx "$buildx" --argjson compose "$compose" '{
 			version: env.fullVersion,
+			alpine: env.defaultAlpine,
 			arches: {},
 			dindCommit: env.dindLatest,
 			buildx: $buildx,
