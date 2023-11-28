@@ -129,7 +129,7 @@
       },
       "version": "2.23.3"
     },
-    "dindCommit": "d58df1fc6c866447ce2cd129af10e5b507705624",
+    "dindCommit": "65cfcc28ab37cb75e1560e4b4738719c07c6618e",
     "variants": [
       "cli",
       "dind",
