@@ -147,7 +147,7 @@ if [ "$1" = 'dockerd' ]; then
 		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using nftables with the translating "iptables" wrappers, for example)
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
-		modprobe ip_tables || :
+		# https://github.com/docker-library/docker/pull/437#issuecomment-1854900620
 		modprobe nf_tables || :
 	fi
 
