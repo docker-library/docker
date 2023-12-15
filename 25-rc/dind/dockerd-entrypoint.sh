@@ -144,11 +144,15 @@ if [ "$1" = 'dockerd' ]; then
 	set -- docker-init -- "$@"
 
 	if ! iptables -nL > /dev/null 2>&1; then
-		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using nftables with the translating "iptables" wrappers, for example)
+		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using xtables, for example)
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
 		# https://github.com/docker-library/docker/pull/437#issuecomment-1854900620
-		modprobe nf_tables || :
+		if ! modprobe nf_tables; then
+			modprobe ip_tables || :
+			# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
+			export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
+		fi
 	fi
 
 	uid="$(id -u)"

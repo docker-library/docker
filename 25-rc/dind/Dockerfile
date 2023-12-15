@@ -30,6 +30,31 @@ RUN set -eux; \
 
 # TODO aufs-tools
 
+# dind might be used on systems where the nf_tables kernel module isn't available. In that case,
+# we need to switch over to xtables-legacy. See https://github.com/docker-library/docker/issues/463
+RUN set -eux; \
+	apk add --no-cache iptables-legacy; \
+# set up a symlink farm we can use PATH to switch to legacy with
+	mkdir -p /usr/local/sbin/.iptables-legacy; \
+# https://git.alpinelinux.org/aports/tree/main/iptables/APKBUILD?id=b215d54de159eacafecb13c68dfadce6eefd9ec9#n73
+	for f in \
+		iptables \
+		iptables-save \
+		iptables-restore \
+		ip6tables \
+		ip6tables-save \
+		ip6tables-restore \
+	; do \
+# "iptables-save" -> "iptables-legacy-save", "ip6tables" -> "ip6tables-legacy", etc.
+# https://pkgs.alpinelinux.org/contents?branch=v3.19&name=iptables-legacy&arch=x86_64
+		b="/sbin/${f/tables/tables-legacy}"; \
+		"$b" --version; \
+		ln -svT "$b" "/usr/local/sbin/.iptables-legacy/$f"; \
+	done; \
+# verify it works (and gets us legacy)
+	export PATH="/usr/local/sbin/.iptables-legacy:$PATH"; \
+	iptables --version | grep legacy
+
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -eux; \
 	addgroup -S dockremap; \
