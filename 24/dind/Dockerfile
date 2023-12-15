@@ -14,6 +14,9 @@ RUN set -eux; \
 		e2fsprogs-extra \
 		ip6tables \
 		iptables \
+# dind might be used on systems where the nf_tables kernel module isn't available. In that case,
+# we need to switch over to xtables-legacy. See https://github.com/docker-library/docker/issues/463
+		iptables-legacy \
 		openssl \
 		shadow-uidmap \
 		xfsprogs \

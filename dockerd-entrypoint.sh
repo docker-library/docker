@@ -143,12 +143,22 @@ if [ "$1" = 'dockerd' ]; then
 	# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
 	set -- docker-init -- "$@"
 
+	use_xtables_legacy=false
 	if ! iptables -nL > /dev/null 2>&1; then
 		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using nftables with the translating "iptables" wrappers, for example)
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
 		# https://github.com/docker-library/docker/pull/437#issuecomment-1854900620
-		modprobe nf_tables || :
+		if ! modprobe nf_tables; then
+			modprobe ip_tables || :
+			use_xtables_legacy=true
+		fi
+	fi
+	if [ "$use_xtables_legacy" = "true" ]; then
+		ln -fs /sbin/iptables-legacy /sbin/iptables
+		# iptables-restore and iptables-save aren't used by dockerd currently, but let's not ship a half broken image.
+		ln -fs /sbin/iptables-legacy-restore /sbin/iptables-restore
+		ln -fs /sbin/iptables-legacy-save /sbin/iptables-save
 	fi
 
 	uid="$(id -u)"
