@@ -148,10 +148,14 @@ if [ "$1" = 'dockerd' ]; then
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
 		# https://github.com/docker-library/docker/pull/437#issuecomment-1854900620
-		if ! modprobe nf_tables; then
+		modprobe nf_tables || :
+		if ! iptables -nL > /dev/null 2>&1; then
+			# might be host has no nf_tables, but Alpine is all-in now (so let's try a legacy fallback)
 			modprobe ip_tables || :
-			# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
-			export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
+			if /usr/local/sbin/.iptables-legacy/iptables -nL > /dev/null 2>&1; then
+				# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
+				export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
+			fi
 		fi
 	fi
 
