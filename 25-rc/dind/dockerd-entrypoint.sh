@@ -144,7 +144,15 @@ if [ "$1" = 'dockerd' ]; then
 	set -- docker-init -- "$@"
 
 	iptablesLegacy=
-	if (
+	if [ -n "${DOCKER_IPTABLES_LEGACY+x}" ]; then
+		# let users choose explicitly to legacy or not to legacy
+		iptablesLegacy="$DOCKER_IPTABLES_LEGACY"
+		if [ -n "$iptablesLegacy" ]; then
+			modprobe ip_tables || :
+		else
+			modprobe nf_tables || :
+		fi
+	elif (
 		# https://git.netfilter.org/iptables/tree/iptables/nft-shared.c?id=f5cf76626d95d2c491a80288bccc160c53b44e88#n420
 		# https://github.com/docker-library/docker/pull/468#discussion_r1442131459
 		for f in /proc/net/ip_tables_names /proc/net/ip6_tables_names /proc/net/arp_tables_names; do
@@ -174,6 +182,7 @@ if [ "$1" = 'dockerd' ]; then
 		# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
 		export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
 	fi
+	iptables --version # so users can see whether it's legacy or not
 
 	uid="$(id -u)"
 	if [ "$uid" != '0' ]; then
