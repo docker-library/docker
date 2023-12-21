@@ -17,6 +17,10 @@ RUN apk add --no-cache \
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
 RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
 
+# pre-add a "docker" group for socket usage
+RUN set -eux; \
+	addgroup -g 2375 -S docker
+
 ENV DOCKER_VERSION 25.0.0-beta.3
 
 RUN set -eux; \
