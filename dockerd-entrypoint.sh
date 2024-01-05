@@ -143,17 +143,46 @@ if [ "$1" = 'dockerd' ]; then
 	# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
 	set -- docker-init -- "$@"
 
-	if ! iptables -nL > /dev/null 2>&1; then
+	iptablesLegacy=
+	if [ -n "${DOCKER_IPTABLES_LEGACY+x}" ]; then
+		# let users choose explicitly to legacy or not to legacy
+		iptablesLegacy="$DOCKER_IPTABLES_LEGACY"
+		if [ -n "$iptablesLegacy" ]; then
+			modprobe ip_tables || :
+		else
+			modprobe nf_tables || :
+		fi
+	elif (
+		# https://git.netfilter.org/iptables/tree/iptables/nft-shared.c?id=f5cf76626d95d2c491a80288bccc160c53b44e88#n420
+		# https://github.com/docker-library/docker/pull/468#discussion_r1442131459
+		for f in /proc/net/ip_tables_names /proc/net/ip6_tables_names /proc/net/arp_tables_names; do
+			if b="$(cat "$f")" && [ -n "$b" ]; then
+				exit 0
+			fi
+		done
+		exit 1
+	); then
+		# if we already have any "legacy" iptables rules, we should always use legacy
+		iptablesLegacy=1
+	elif ! iptables -nL > /dev/null 2>&1; then
 		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using xtables, for example)
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
 		# https://github.com/docker-library/docker/pull/437#issuecomment-1854900620
-		if ! modprobe nf_tables; then
+		modprobe nf_tables || :
+		if ! iptables -nL > /dev/null 2>&1; then
+			# might be host has no nf_tables, but Alpine is all-in now (so let's try a legacy fallback)
 			modprobe ip_tables || :
-			# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
-			export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
+			if /usr/local/sbin/.iptables-legacy/iptables -nL > /dev/null 2>&1; then
+				iptablesLegacy=1
+			fi
 		fi
 	fi
+	if [ -n "$iptablesLegacy" ]; then
+		# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
+		export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
+	fi
+	iptables --version # so users can see whether it's legacy or not
 
 	uid="$(id -u)"
 	if [ "$uid" != '0' ]; then
