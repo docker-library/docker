@@ -23,8 +23,10 @@ else
 fi
 versions=( "${versions[@]%/}" )
 
-dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom' | grep -E 'id.*Commit')"
-dindLatest="$(awk <<<"$dindLatest" -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
+dindLatest="$(
+	curl -fsSL -H 'Accept: application/json' 'https://github.com/docker/docker/commits/master/hack/dind.atom' \
+		| jq -r '.payload | first(.commitGroups[].commits[].oid)'
+)"
 
 dockerVersions="$(
 	git ls-remote --tags https://github.com/docker/docker.git \
