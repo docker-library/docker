@@ -3,6 +3,7 @@
     "build": "^0.1.4",
     "enabled": "github:3rd-Eden/enabled",
     "fibo": "^1.0.0",
-    "package.json": "^0.0.0"
+    "package.json": "^0.0.0",
+    "registry.npmjs.org": "^1.0.1"
   }
 }

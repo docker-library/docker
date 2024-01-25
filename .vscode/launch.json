@@ -10,7 +10,32 @@
             "type": "PowerShell",
             "request": "launch",
             "script": "${file}",
-            "args": []
+            "args": [INFO[0000] Scanning Image: docker:24.0.7  Scan SessionID: 93cd28e6-8965-4bb2-a67f-50abac57581c
+
+Vulnerabilities
+===============
+  CVE               Severity    CVSS    Package Name              Package Version    Fixed In Version    Description
+  ---               --------    ----    ------------              ---------------    ----------------    -----------
+  CVE-2023-44487    high        7.5     google.golang.org/grpc    v1.50.1            1.56.3              https://security.snyk.io/vuln?search=CVE-2023-44487
+  CVE-2023-44487    high        7.5     golang.org/x/net/http2    v0.14.0            0.17.0              https://security.snyk.io/vuln?search=CVE-2023-44487
+  CVE-2023-44487    high        7.5     golang.org/x/net/http2    v0.8.0             0.17.0              https://security.snyk.io/vuln?search=CVE-2023-44487
+  CVE-2023-44487    high        7.5     google.golang.org/grpc    v1.53.0            1.56.3              https://security.snyk.io/vuln?search=CVE-2023-44487
+
+Image Scan Results
+==================
+  Image Name:    docker:24.0.7
+  ImageID:       sha256:5b912308540a3c49177b012c400f71cbb53ff56c4ee79f36323fdff7527f9f44
+  Digest:        docker@sha256:1dfc375736e448806602211e09a9b1390eb110548dcb839eef374da357ca5f5d
+
+  Certification:   silver
+  Image Published: false
+
+  Vulnerability
+    Critical: 0
+    High:     4
+    Medium:   0
+    Low:      0
+    Total:    4]
         }
     ]
 }
