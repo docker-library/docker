@@ -1,0 +1,21 @@
+{
+  "author": "Jonathan Bomgardner <jon@solagratiadesigns.com> (http://solagratiadesigns.com)",
+  "name": "jxLoader",
+  "description": "A javascript loader designed for specifically for JxLib but generic enough to work with any JS library adhering to the MooTools header standard",
+  "version": "0.1.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonlb/node-jxLoader.git"
+  },
+  "main": "./jxLoader.js",
+  "engines": {
+    "node": ">v0.4.10"
+  },
+  "dependencies": {
+    "promised-io": "*",
+    "walker": "1.x",
+    "moo-server": "1.3.x",
+    "js-yaml": "0.3.x"
+  },
+  "devDependencies": {}
+}

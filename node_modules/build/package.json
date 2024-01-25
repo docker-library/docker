@@ -1,0 +1,27 @@
+{
+  "author": "Jonathan Bomgardner <jon@solagratiadesigns.com> (http://solagratiadesigns.com)",
+  "name": "build",
+  "description": "An ant-like build program for node",
+  "version": "0.1.4",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonlb/node-build.git"
+  },
+  "main": "./builder.js",
+  "engines": {
+    "node": ">v0.4.12"
+  },
+  "dependencies": {
+    "jxLoader": "*",
+    "moo-server": "*",
+    "promised-io": "*",
+    "walker": "1.x",
+    "winston": "*",
+    "jsmin": "1.x",
+    "cssmin": "0.3.x",
+    "uglify-js": "1.x",
+    "wrench": "1.3.x",
+    "timespan": "2.x"
+  },
+  "devDependencies": {}
+}

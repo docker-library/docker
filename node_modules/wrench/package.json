@@ -1,0 +1,39 @@
+{
+  "name": "wrench",
+  "description": "Recursive filesystem (and other) operations that Node *should* have.",
+  "version": "1.3.9",
+  "author": "Ryan McGrath <ryan@venodesigns.net>",
+
+  "repository": {
+    "type" : "git",
+    "url": "https://ryanmcgrath@github.com/ryanmcgrath/wrench-js.git"
+  },
+
+  "bugs": {
+    "url": "http://github.com/ryanmcgrath/wrench-js/issues"
+  },
+
+  "directories": {
+    "lib": "./lib/"
+  },
+
+  "dependencies": {
+  },
+
+  "devDependencies": {
+      "nodeunit": ">= 0.6.4"
+  },
+
+  "main": "./lib/wrench",
+
+  "engines": { 
+    "node": ">=0.1.97"
+  },
+  
+  "scripts": { "test": "nodeunit tests/runner.js" },
+
+  "licenses": [{
+    "type" : "MIT",
+    "url" : "http://github.com/ryanmcgrath/wrench-js/raw/master/LICENSE"
+  }]
+}

@@ -1,0 +1,76 @@
+#! /usr/bin/env node
+
+var fs = require('fs')
+  , jsmin = require('jsmin').jsmin
+
+var options = {
+  output: true
+, overwrite: false
+, level: null
+, comment: null
+}
+
+var args = Array.prototype.slice.call(process.argv, 2)
+  , filename
+
+out: while (args.length > 0) {
+  var v = args.shift();
+  switch (v) {
+    case '-l':
+    case '--level':
+      options.level = parseInt(args.shift(), 10)
+      break
+    case '-c':
+    case '--comment':
+      options.comment = args.shift()
+      break
+    case '-o':
+    case '--output':
+      options.output = args.shift()
+      break
+    case '--overwrite':
+      options.overwrite = true
+      break
+    default:
+      filename = v
+      break out
+  }
+}
+
+if (filename) {
+  fs.readFile(filename, 'utf8', function(err, text) {
+    if (err) throw err
+    output(jsmin(text, options.level, options.comment))
+  })
+}
+else {
+  var stdin = process.openStdin()
+  stdin.setEncoding('utf8')
+  var text = ''
+  stdin.on('data', function(chunk) {
+    text += chunk
+  })
+  stdin.on('end', function() {
+    output(jsmin(text, options.level, options.comment))
+  })
+}
+
+function output(text) {
+  var out
+  if (options.overwrite && filename) {
+    options.output = filename
+  }
+  if (options.output === true) {
+    out = process.stdout
+  }
+  else {
+    out = fs.createWriteStream(options.output, { flags: 'w'
+                                               , encoding: 'utf8'
+                                               , mode: 0644
+                                               })
+  }
+  out.write(text)
+  if (options.output !== true) {
+    out.end()
+  }
+}

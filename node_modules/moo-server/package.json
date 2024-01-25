@@ -1,0 +1,15 @@
+{
+  "author": "Jonathan Bomgardner",
+  "name": "moo-server",
+  "description": "a server version of mootools",
+  "version": "1.3.0",
+  "repository": {
+    "url": ""
+  },
+  "main": "./mootools.js",
+  "engines": {
+    "node": ">v0.4.10"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
