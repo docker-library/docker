@@ -77,9 +77,9 @@ versionArches() {
 
 	comm -12 \
 		<(
-			version="$version" jq -r '
+			version="$version" jq -r --arg selector "$selector" '
 				.[env.version].arches | to_entries[]
-				| select(.value.'"$selector"')
+				| select(.value[$selector])
 				| .key
 			' versions.json | sort
 		) \
@@ -175,6 +175,12 @@ for version; do
 			suiteAliases=( "${suiteAliases[@]//latest-/}" )
 			variantAliases+=( "${suiteAliases[@]}" )
 			if [ "$variant" = 'dind' ]; then
+				# add "git" aliases https://github.com/docker-library/docker/issues/482#issuecomment-1955609423
+				if [ "$version" = '24' ] || [ "$version" = '25' ]; then
+					gitAliases=( "${versionAliases[@]/%/-git}" )
+					gitAliases=( "${gitAliases[@]//latest-/}" )
+					variantAliases+=( "${gitAliases[@]}" )
+				fi
 				# add "latest" aliases
 				suiteAliases=( "${versionAliases[0]}" ) # only "X.Y.Z-foo"
 				suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
