@@ -1,3 +1,0 @@
-FROM docker:{{ env.version }}-dind
-
-RUN apk add --no-cache git

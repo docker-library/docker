@@ -1,29 +1,23 @@
 {{ include "shared" -}}
 FROM docker:{{ env.version }}-cli
 
-# https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
+# https://github.com/moby/moby/blob/0eecd59153c03ced5f5ddd79cc98f29e4d86daec/project/PACKAGERS.md#runtime-dependencies
+# https://github.com/docker/docker-ce-packaging/blob/963aa02666035d4e268f33c63d7868d6cdd1d34c/deb/common/control#L28-L41
 RUN set -eux; \
 	apk add --no-cache \
 		btrfs-progs \
 		e2fsprogs \
 		e2fsprogs-extra \
+		git \
 		ip6tables \
 		iptables \
 		openssl \
+		pigz \
 		shadow-uidmap \
 		xfsprogs \
 		xz \
-# pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
-		pigz \
-	; \
-# only install zfs if it's available for the current architecture
-# https://git.alpinelinux.org/cgit/aports/tree/main/zfs/APKBUILD?h=3.6-stable#n9 ("all !armhf !ppc64le" as of 2017-11-01)
-# "apk info XYZ" exits with a zero exit code but no output when the package exists but not for this arch
-	if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
-		apk add --no-cache zfs; \
-	fi
-
-# TODO aufs-tools
+		zfs \
+	;
 
 # dind might be used on systems where the nf_tables kernel module isn't available. In that case,
 # we need to switch over to xtables-legacy. See https://github.com/docker-library/docker/issues/463
