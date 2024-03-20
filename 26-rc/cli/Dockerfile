@@ -21,23 +21,23 @@ RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
 RUN set -eux; \
 	addgroup -g 2375 -S docker
 
-ENV DOCKER_VERSION 26.0.0-rc2
+ENV DOCKER_VERSION 26.0.0-rc3
 
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/test/x86_64/docker-26.0.0-rc2.tgz'; \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-26.0.0-rc3.tgz'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/test/armel/docker-26.0.0-rc2.tgz'; \
+			url='https://download.docker.com/linux/static/test/armel/docker-26.0.0-rc3.tgz'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/test/armhf/docker-26.0.0-rc2.tgz'; \
+			url='https://download.docker.com/linux/static/test/armhf/docker-26.0.0-rc3.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/test/aarch64/docker-26.0.0-rc2.tgz'; \
+			url='https://download.docker.com/linux/static/test/aarch64/docker-26.0.0-rc3.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
