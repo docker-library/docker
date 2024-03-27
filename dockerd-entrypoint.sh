@@ -127,10 +127,12 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 			"$@"
 		DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS="${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} -p 0.0.0.0:2376:2376/tcp"
 	else
-		# TLS disabled (-e DOCKER_TLS_CERTDIR='') or missing certs
+		# TLS disabled (-e DOCKER_TLS_CERTDIR=''). # --tls=false silences the "Binding to IP address without --tlsverify is insecure" warning and
+		# slowdown.
 		set -- dockerd \
 			--host="$dockerSocket" \
 			--host=tcp://0.0.0.0:2375 \
+			--tls=false \
 			"$@"
 		DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS="${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} -p 0.0.0.0:2375:2375/tcp"
 	fi
