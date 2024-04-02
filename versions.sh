@@ -23,8 +23,22 @@ else
 fi
 versions=( "${versions[@]%/}" )
 
+scriptPid="$$" # so we can kill the script even from a subshell
+_curl() {
+	exec 42>&1
+	local code
+	code="$(curl --silent --location -o /dev/fd/42 --write-out '%{http_code}' "$@")"
+	case "$code" in
+		200) return 0 ;;
+		404) return 1 ;;
+	esac
+	echo >&2 "error: unexpected status code $code while fetching: $*"
+	kill "$scriptPid"
+	exit 1
+}
+
 dindLatest="$(
-	curl -fsSL -H 'Accept: application/json' 'https://github.com/docker/docker/commits/master/hack/dind.atom' \
+	_curl -H 'Accept: application/json' 'https://github.com/docker/docker/commits/master/hack/dind.atom' \
 		| jq -r '.payload | first(.commitGroups[].commits[].oid)'
 )"
 
@@ -75,7 +89,7 @@ buildxVersions="$(
 buildx=
 buildxVersion=
 for buildxVersion in $buildxVersions; do
-	if checksums="$(curl -fsSL "https://github.com/docker/buildx/releases/download/v${buildxVersion}/checksums.txt")"; then
+	if checksums="$(_curl "https://github.com/docker/buildx/releases/download/v${buildxVersion}/checksums.txt")"; then
 		buildx="$(jq <<<"$checksums" -csR --arg version "$buildxVersion" '
 			rtrimstr("\n") | split("\n")
 			| map(
@@ -127,7 +141,7 @@ composeVersions="$(
 compose=
 composeVersion=
 for composeVersion in $composeVersions; do
-	if checksums="$(curl -fsSL "https://github.com/docker/compose/releases/download/v${composeVersion}/checksums.txt")"; then
+	if checksums="$(_curl "https://github.com/docker/compose/releases/download/v${composeVersion}/checksums.txt")"; then
 		compose="$(jq <<<"$checksums" -csR --arg version "$composeVersion" '
 			rtrimstr("\n") | split("\n")
 			| map(
@@ -223,7 +237,7 @@ for version in "${versions[@]}"; do
 			windows-*) url="https://download.docker.com/win/static/$channel/$arch/docker-$fullVersion.zip"; windows=1 ;;
 			*) url="https://download.docker.com/linux/static/$channel/$arch/docker-$fullVersion.tgz"; windows= ;;
 		esac
-		if wget --quiet --spider "$url" &> /dev/null; then
+		if _curl --head "$url" > /dev/null; then
 			export bashbrewArch url
 			doc="$(
 				jq <<<"$doc" -c '.arches[env.bashbrewArch] = {
@@ -245,7 +259,7 @@ for version in "${versions[@]}"; do
 		case "$bashbrewArch" in
 			amd64 | arm64v8)
 				rootlessExtrasUrl="https://download.docker.com/linux/static/$channel/$arch/docker-rootless-extras-$fullVersion.tgz"
-				if wget --quiet --spider "$rootlessExtrasUrl" &> /dev/null; then
+				if _curl --head "$rootlessExtrasUrl" > /dev/null; then
 					export rootlessExtrasUrl
 					doc="$(jq <<<"$doc" -c '
 						.arches[env.bashbrewArch].rootlessExtrasUrl = env.rootlessExtrasUrl
