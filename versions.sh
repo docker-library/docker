@@ -8,6 +8,7 @@ declare -A dockerArches=(
 	['arm32v7']='armhf'
 	['arm64v8']='aarch64'
 	['ppc64le']='ppc64le'
+	['riscv64']='riscv64'
 	['s390x']='s390x'
 	['windows-amd64']='x86_64'
 )
