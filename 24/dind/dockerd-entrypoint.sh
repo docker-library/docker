@@ -149,6 +149,7 @@ if [ "$1" = 'dockerd' ]; then
 		iptablesLegacy="$DOCKER_IPTABLES_LEGACY"
 		if [ -n "$iptablesLegacy" ]; then
 			modprobe ip_tables || :
+			modprobe ip6_tables || :
 		else
 			modprobe nf_tables || :
 		fi
@@ -173,6 +174,7 @@ if [ "$1" = 'dockerd' ]; then
 		if ! iptables -nL > /dev/null 2>&1; then
 			# might be host has no nf_tables, but Alpine is all-in now (so let's try a legacy fallback)
 			modprobe ip_tables || :
+			modprobe ip6_tables || :
 			if /usr/local/sbin/.iptables-legacy/iptables -nL > /dev/null 2>&1; then
 				iptablesLegacy=1
 			fi
