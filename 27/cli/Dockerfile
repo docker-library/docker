@@ -103,38 +103,38 @@ RUN set -eux; \
 	\
 	docker buildx version
 
-ENV DOCKER_COMPOSE_VERSION 2.30.1
+ENV DOCKER_COMPOSE_VERSION 2.30.2
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-x86_64'; \
-			sha256='bd976a501e471c14b320876686f1628db3c37ab223405d2a815022fc711e704e'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-x86_64'; \
+			sha256='64b798329464b7553bdf4706c5fb1a97dc9504b360f29d30479ac126017d3944'; \
 			;; \
 		'armhf') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-armv6'; \
-			sha256='2c70bd6e01ceb550d81a1bb0981f8f24c58ec301ac0c1432db132e07842544fe'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-armv6'; \
+			sha256='a22f58dfc94fd1f8e86dee81e1378ae648c14a3bf0604d3a5434b53650619140'; \
 			;; \
 		'armv7') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-armv7'; \
-			sha256='205f947e00fdfb2d4787fb5d38267d56e68bbf07757d8e30d7b1c9c1086c8477'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-armv7'; \
+			sha256='9fb8f299c55451c08ea04dd7770fd698f45e31ab12df99dd582f0fa0984f5364'; \
 			;; \
 		'aarch64') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-aarch64'; \
-			sha256='f869d0900f8744b3f295c5bf8ed68488110598891d3db1d93db7203db9fa535b'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-aarch64'; \
+			sha256='2c7c902a845288c5733f6d13910ef65e17283f25b3519dee704d6d74de2ec78b'; \
 			;; \
 		'ppc64le') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-ppc64le'; \
-			sha256='93e47b53fcaaa366555cfa92ff49c77c16e2d76ccf26f816db24683b6bdb36ac'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-ppc64le'; \
+			sha256='a3778d98118d408620eeed110a9bf85c77460601384899566293e8e90e21e206'; \
 			;; \
 		'riscv64') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-riscv64'; \
-			sha256='0431d523628c26e74308be72205d13866bc978970b2e98efc60f5ecf23089ed2'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-riscv64'; \
+			sha256='9d3215288f9e9626c4e720576582fedbb4dfa3c728e53e3bb7151eca0251fa5c'; \
 			;; \
 		's390x') \
-			url='https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-s390x'; \
-			sha256='afed38f2f18219d3fe79f2f0bc11d21458195c7f19d812c3ecd1a2608094fa84'; \
+			url='https://github.com/docker/compose/releases/download/v2.30.2/docker-compose-linux-s390x'; \
+			sha256='797f3d346f53ffc751eb0bebc9c8f610503bdea84ec993d00ee15e77ed2f0eb9'; \
 			;; \
 		*) echo >&2 "warning: unsupported 'docker-compose' architecture ($apkArch); skipping"; exit 0 ;; \
 	esac; \
