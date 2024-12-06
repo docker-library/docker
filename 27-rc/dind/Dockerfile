@@ -30,7 +30,7 @@ RUN set -eux; \
 	apk add --no-cache iptables-legacy; \
 # set up a symlink farm we can use PATH to switch to legacy with
 	mkdir -p /usr/local/sbin/.iptables-legacy; \
-# https://git.alpinelinux.org/aports/tree/main/iptables/APKBUILD?id=b215d54de159eacafecb13c68dfadce6eefd9ec9#n73
+# https://gitlab.alpinelinux.org/alpine/aports/-/blob/a7e1610a67a46fc52668528efe01cee621c2ba6c/main/iptables/APKBUILD#L77
 	for f in \
 		iptables \
 		iptables-save \
@@ -40,8 +40,8 @@ RUN set -eux; \
 		ip6tables-restore \
 	; do \
 # "iptables-save" -> "iptables-legacy-save", "ip6tables" -> "ip6tables-legacy", etc.
-# https://pkgs.alpinelinux.org/contents?branch=v3.19&name=iptables-legacy&arch=x86_64
-		b="/sbin/${f/tables/tables-legacy}"; \
+# https://pkgs.alpinelinux.org/contents?branch=v3.21&name=iptables-legacy&arch=x86_64
+		b="$(command -v "${f/tables/tables-legacy}")"; \
 		"$b" --version; \
 		ln -svT "$b" "/usr/local/sbin/.iptables-legacy/$f"; \
 	done; \
