@@ -159,5 +159,164 @@
     ],
     "version": "27.4.1"
   },
-  "27-rc": null
+  "27-rc": {
+    "arches": {
+      "amd64": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-27.5.0-rc.1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-27.5.0-rc.1.tgz"
+      },
+      "arm32v6": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-27.5.0-rc.1.tgz"
+      },
+      "arm32v7": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-27.5.0-rc.1.tgz"
+      },
+      "arm64v8": {
+        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-27.5.0-rc.1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-27.5.0-rc.1.tgz"
+      },
+      "windows-amd64": {
+        "dockerUrl": "https://download.docker.com/win/static/test/x86_64/docker-27.5.0-rc.1.zip"
+      }
+    },
+    "buildx": {
+      "arches": {
+        "amd64": {
+          "file": "buildx-v0.19.3.linux-amd64",
+          "sha256": "32ed111e941e385c2fb8261eba06a4056915718fd606f8278834ac1931d261a2",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-amd64"
+        },
+        "arm32v6": {
+          "file": "buildx-v0.19.3.linux-arm-v6",
+          "sha256": "744352489292ab1439e4b4facfd49f81cbe25e71e205908bd9ec44618759739c",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-arm-v6"
+        },
+        "arm32v7": {
+          "file": "buildx-v0.19.3.linux-arm-v7",
+          "sha256": "5a83e1663b595147ac0225d876fc77e3b441e62dac7a59523ba7003eb6733b8b",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-arm-v7"
+        },
+        "arm64v8": {
+          "file": "buildx-v0.19.3.linux-arm64",
+          "sha256": "138b587399b27bb61945a36d67866177b85dea1155101a2be63c7ab715f18a2e",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-arm64"
+        },
+        "freebsd-amd64": {
+          "file": "buildx-v0.19.3.freebsd-amd64",
+          "sha256": "dc8de077eda0f3d8d1433d790286ef7b88cb8bda01f6a83f2e6fd23d66a8e483",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.freebsd-amd64"
+        },
+        "freebsd-arm64v8": {
+          "file": "buildx-v0.19.3.freebsd-arm64",
+          "sha256": "e846d4f727bb6f6fccd186b1325866aa26c281361cbaa43a6760ae9af7ade1dc",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.freebsd-arm64"
+        },
+        "openbsd-amd64": {
+          "file": "buildx-v0.19.3.openbsd-amd64",
+          "sha256": "9cb27ed38bad3b61f4a50ea7411391aec13b278fc6af37230fdaee709706a5a2",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.openbsd-amd64"
+        },
+        "openbsd-arm64v8": {
+          "file": "buildx-v0.19.3.openbsd-arm64",
+          "sha256": "d16ebd5bf33f9c98bed2019fa5fb8778ea77e3bb472737a2e23ab6737e2ea599",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.openbsd-arm64"
+        },
+        "ppc64le": {
+          "file": "buildx-v0.19.3.linux-ppc64le",
+          "sha256": "b9eb337b16a75ad45ff846134d34599169bc6dfdb168fb51303fc6b08ed9f31e",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-ppc64le"
+        },
+        "riscv64": {
+          "file": "buildx-v0.19.3.linux-riscv64",
+          "sha256": "de8151fe6ced7118f2d680e1d1e7c5cb00496ca0e8b0f8b261450c6636d86978",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-riscv64"
+        },
+        "s390x": {
+          "file": "buildx-v0.19.3.linux-s390x",
+          "sha256": "422a9a0250d52dfdd6b78c8152fbf9df41993be4c7add93438c22122ff6c7da8",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.linux-s390x"
+        },
+        "windows-amd64": {
+          "file": "buildx-v0.19.3.windows-amd64.exe",
+          "sha256": "fc24c33d547764ffc67ed430f5561c4d1bcbbee73df47648668331fa1cc2f289",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.windows-amd64.exe"
+        },
+        "windows-arm64v8": {
+          "file": "buildx-v0.19.3.windows-arm64.exe",
+          "sha256": "f799675f89cdff20c76bc0b17953045df2cea47d09613779c4bcfd63ebee7bd9",
+          "url": "https://github.com/docker/buildx/releases/download/v0.19.3/buildx-v0.19.3.windows-arm64.exe"
+        }
+      },
+      "version": "0.19.3"
+    },
+    "compose": {
+      "arches": {
+        "amd64": {
+          "file": "docker-compose-linux-x86_64",
+          "sha256": "ec81c40f138db0ca3aee71c2fffb0075636bea5a02109c75177f66e1b8f568b9",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-x86_64"
+        },
+        "arm32v6": {
+          "file": "docker-compose-linux-armv6",
+          "sha256": "a570825379639804e406c07fe73d052e7909e74c976c3a5cc6cad74a871e405d",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-armv6"
+        },
+        "arm32v7": {
+          "file": "docker-compose-linux-armv7",
+          "sha256": "bd6a7456eb94e3bb7df31be43f84af9882149abe417f5b7a2635108325e7e604",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-armv7"
+        },
+        "arm64v8": {
+          "file": "docker-compose-linux-aarch64",
+          "sha256": "7aa6406406be13c075e92cfbf322470318a9ad7a58c93a9fb3a215dc14aed8bd",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-aarch64"
+        },
+        "darwin-amd64": {
+          "file": "docker-compose-darwin-x86_64",
+          "sha256": "371f0be73773cc7f3d076b69fb7d06ec8beb874cf937710cc12d0914ef1cd774",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-darwin-x86_64"
+        },
+        "darwin-arm64v8": {
+          "file": "docker-compose-darwin-aarch64",
+          "sha256": "bc8864301641f9e301fc5efc0c44dfe5d4a4085bf9a564a7a151d8f91aa76f4c",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-darwin-aarch64"
+        },
+        "ppc64le": {
+          "file": "docker-compose-linux-ppc64le",
+          "sha256": "4e56b1e8f5d5e68ce66d5a156a96597b1d7534a94dd2d846d288797008e044eb",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-ppc64le"
+        },
+        "riscv64": {
+          "file": "docker-compose-linux-riscv64",
+          "sha256": "686bba58b9c2cad3edc4045dadb36ed2e2d4b0b72ada8eed832b6a9561fdb50d",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-riscv64"
+        },
+        "s390x": {
+          "file": "docker-compose-linux-s390x",
+          "sha256": "a40fdae1e4a3b90186bc06712b0b19079877bf408f39b3425bf65048e19bd8aa",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-linux-s390x"
+        },
+        "windows-amd64": {
+          "file": "docker-compose-windows-x86_64.exe",
+          "sha256": "5dc7ac86e8d3972c2c68066c6ac370daf0a42b7c8d3338336c9dbde34af06213",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-windows-x86_64.exe"
+        },
+        "windows-arm64v8": {
+          "file": "docker-compose-windows-aarch64.exe",
+          "sha256": "ec2abd5a9fd34057adce68f824b45f2551f1f39ad0d9e6a3df7ab811c10a0b20",
+          "url": "https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-windows-aarch64.exe"
+        }
+      },
+      "version": "2.32.1"
+    },
+    "dindCommit": "65cfcc28ab37cb75e1560e4b4738719c07c6618e",
+    "variants": [
+      "cli",
+      "dind",
+      "dind-rootless",
+      "windows/windowsservercore-ltsc2022",
+      "windows/windowsservercore-1809"
+    ],
+    "version": "27.5.0-rc.1"
+  }
 }
