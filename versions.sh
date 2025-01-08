@@ -152,12 +152,12 @@ for composeVersion in $composeVersions; do
 					file: .[1],
 					url: ("https://github.com/docker/compose/releases/download/v" + $version + "/" + .[1]),
 				}
+				| select(.file | test("[.]json$") | not)
 				| { (
 					.file
-					| ltrimstr("docker-compose-")
-					| rtrimstr(".exe")
-					| split("-")
-					| if .[0] == "linux" then "" else .[0] + "-" end
+					| capture("-(?<os>linux|windows|darwin|freebsd|openbsd)-(?<arch>[^.]+)(?<ext>[.]exe)?$")
+					// error("failed to parse os-arch from filename: " + .)
+					| if .os == "linux" then "" else .os + "-" end
 					+ ({
 						aarch64: "arm64v8",
 						armv6: "arm32v6",
@@ -166,7 +166,7 @@ for composeVersion in $composeVersions; do
 						riscv64: "riscv64",
 						s390x: "s390x",
 						x86_64: "amd64",
-					}[.[1]] // error("unknown compose architecture: " + .[1]))
+					}[.arch] // error("unknown compose architecture: " + .arch))
 				): . }
 			)
 			| add
