@@ -15,8 +15,8 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine);
 # doing this first to share cache across versions more aggressively
 
-ENV DOCKER_VERSION 27.5.0-rc.1
-ENV DOCKER_URL https://download.docker.com/win/static/test/x86_64/docker-27.5.0-rc.1.zip
+ENV DOCKER_VERSION 27.5.0-rc.2
+ENV DOCKER_URL https://download.docker.com/win/static/test/x86_64/docker-27.5.0-rc.2.zip
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
@@ -61,9 +61,9 @@ RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	docker buildx version; \
 	\
 	Write-Host 'Complete.';
-ENV DOCKER_COMPOSE_VERSION 2.32.1
-ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v2.32.1/docker-compose-windows-x86_64.exe
-ENV DOCKER_COMPOSE_SHA256 5dc7ac86e8d3972c2c68066c6ac370daf0a42b7c8d3338336c9dbde34af06213
+ENV DOCKER_COMPOSE_VERSION 2.32.2
+ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v2.32.2/docker-compose-windows-x86_64.exe
+ENV DOCKER_COMPOSE_SHA256 f384ad29e5187745cad4c18a14ddafd5e7a748c68b5bd991599b1756e36d3bec
 RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	Write-Host ('Creating {0} ...' -f $dir); \
 	New-Item -ItemType Directory $dir -Force; \
