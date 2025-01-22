@@ -282,6 +282,7 @@ for version in "${versions[@]}"; do
 		cli \
 		dind \
 		dind-rootless \
+		windows/windowsservercore-ltsc2025 \
 		windows/windowsservercore-ltsc2022 \
 		windows/windowsservercore-1809 \
 	; do
