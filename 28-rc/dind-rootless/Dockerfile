@@ -1,5 +1,10 @@
-{{ include "shared" -}}
-FROM docker:{{ env.version }}-dind
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM docker:28-rc-dind
 
 # busybox "ip" is insufficient:
 #   [rootlesskit:child ] error: executing [[ip tuntap add name tap0 mode tap] [ip link set tap0 address 02:50:00:00:00:01]]: exit status 1
@@ -16,23 +21,24 @@ RUN set -eux; \
 
 RUN set -eux; \
 	\
-	{{
-		download({
-			arches: .arches,
-			urlKey: "rootlessExtrasUrl",
-			# TODO sha256Key (once Docker publishes them 😭)
-			target: "rootless.tgz",
-		})
-	}}; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-28.0.0-rc.1.tgz'; \
+			;; \
+		'aarch64') \
+			url='https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-28.0.0-rc.1.tgz'; \
+			;; \
+		*) echo >&2 "error: unsupported 'rootless.tgz' architecture ($apkArch)"; exit 1 ;; \
+	esac; \
+	\
+	wget -O 'rootless.tgz' "$url"; \
 	\
 	tar --extract \
 		--file rootless.tgz \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		'docker-rootless-extras/rootlesskit' \
-{{ if env.version | rtrimstr("-rc") | IN("27") then ( -}}
-		'docker-rootless-extras/rootlesskit-docker-proxy' \
-{{ ) else "" end -}}
 		'docker-rootless-extras/vpnkit' \
 	; \
 	rm rootless.tgz; \
