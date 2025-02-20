@@ -30,9 +30,6 @@ RUN set -eux; \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		'docker-rootless-extras/rootlesskit' \
-{{ if env.version | rtrimstr("-rc") | IN("27") then ( -}}
-		'docker-rootless-extras/rootlesskit-docker-proxy' \
-{{ ) else "" end -}}
 		'docker-rootless-extras/vpnkit' \
 	; \
 	rm rootless.tgz; \
