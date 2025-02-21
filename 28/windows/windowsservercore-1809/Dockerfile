@@ -40,9 +40,9 @@ RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	Write-Host 'Complete.';
 
 # https://github.com/docker-library/docker/issues/409#issuecomment-1462868414
-ENV DOCKER_BUILDX_VERSION 0.21.0
-ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.21.0/buildx-v0.21.0.windows-amd64.exe
-ENV DOCKER_BUILDX_SHA256 a8e63d104cfb4b1441d6eb429639851758902c6caf1ef5e3d4dfb3964683a26d
+ENV DOCKER_BUILDX_VERSION 0.21.1
+ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.21.1/buildx-v0.21.1.windows-amd64.exe
+ENV DOCKER_BUILDX_SHA256 ab3eba3acbfa6b6612690af075795254f29762efc8abace5f636b8e7628b1851
 RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	Write-Host ('Creating {0} ...' -f $dir); \
 	New-Item -ItemType Directory $dir -Force; \
@@ -61,9 +61,9 @@ RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	docker buildx version; \
 	\
 	Write-Host 'Complete.';
-ENV DOCKER_COMPOSE_VERSION 2.33.0
-ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v2.33.0/docker-compose-windows-x86_64.exe
-ENV DOCKER_COMPOSE_SHA256 1324e382e1a79efaee4be288aae847f8a2862acf270d5621c17dff3a10d5ee83
+ENV DOCKER_COMPOSE_VERSION 2.33.1
+ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-windows-x86_64.exe
+ENV DOCKER_COMPOSE_SHA256 01bce3456228d8e1e4b0ba056f4b9730b7fd2c1a7113c8a985144c0fdee797b0
 RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	Write-Host ('Creating {0} ...' -f $dir); \
 	New-Item -ItemType Directory $dir -Force; \
