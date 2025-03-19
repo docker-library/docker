@@ -15,8 +15,8 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine);
 # doing this first to share cache across versions more aggressively
 
-ENV DOCKER_VERSION 28.0.1
-ENV DOCKER_URL https://download.docker.com/win/static/stable/x86_64/docker-28.0.1.zip
+ENV DOCKER_VERSION 28.0.2
+ENV DOCKER_URL https://download.docker.com/win/static/stable/x86_64/docker-28.0.2.zip
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
@@ -40,9 +40,9 @@ RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	Write-Host 'Complete.';
 
 # https://github.com/docker-library/docker/issues/409#issuecomment-1462868414
-ENV DOCKER_BUILDX_VERSION 0.21.3
-ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.21.3/buildx-v0.21.3.windows-amd64.exe
-ENV DOCKER_BUILDX_SHA256 f9ccbfaf42c68e61833f7031e0bdb4b71931cf5ef54d132b39f9faccda02ec7c
+ENV DOCKER_BUILDX_VERSION 0.22.0
+ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.22.0/buildx-v0.22.0.windows-amd64.exe
+ENV DOCKER_BUILDX_SHA256 446acafb777dc8e8b458a56ce5af3c216260e5170a3e89382b8e4b1dd5853778
 RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	Write-Host ('Creating {0} ...' -f $dir); \
 	New-Item -ItemType Directory $dir -Force; \
