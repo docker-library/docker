@@ -103,7 +103,7 @@ for buildxVersion in $buildxVersions; do
 				| select(.file | test("[.]json$") | not)
 				| { (
 					.file
-					| capture("[.](?<os>linux|windows|darwin|freebsd|openbsd)-(?<arch>[^.]+)(?<ext>[.]exe)?$")
+					| capture("[.](?<os>linux|windows|darwin|[a-z0-9]*bsd)-(?<arch>[^.]+)(?<ext>[.]exe)?$")
 					// error("failed to parse os-arch from filename: " + .)
 					| if .os == "linux" then "" else .os + "-" end
 					+ ({
