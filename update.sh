@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eo pipefail
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
