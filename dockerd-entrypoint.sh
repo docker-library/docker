@@ -53,6 +53,7 @@ _tls_generate_certs() {
 			-subj '/CN=docker:dind server'
 		cat > "$dir/server/openssl.cnf" <<-EOF
 			[ x509_exts ]
+			extendedKeyUsage = serverAuth
 			subjectAltName = $(_tls_san)
 		EOF
 		openssl x509 -req \
