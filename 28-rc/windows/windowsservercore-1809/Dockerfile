@@ -15,8 +15,8 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine);
 # doing this first to share cache across versions more aggressively
 
-ENV DOCKER_VERSION 28.2.0-rc.1
-ENV DOCKER_URL https://download.docker.com/win/static/test/x86_64/docker-28.2.0-rc.1.zip
+ENV DOCKER_VERSION 28.2.0-rc.2
+ENV DOCKER_URL https://download.docker.com/win/static/test/x86_64/docker-28.2.0-rc.2.zip
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
