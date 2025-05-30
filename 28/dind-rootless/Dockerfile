@@ -24,10 +24,10 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-28.2.1.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-28.2.2.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-28.2.1.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-28.2.2.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'rootless.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
