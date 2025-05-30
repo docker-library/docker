@@ -165,8 +165,7 @@
       "dind",
       "dind-rootless",
       "windows/windowsservercore-ltsc2025",
-      "windows/windowsservercore-ltsc2022",
-      "windows/windowsservercore-1809"
+      "windows/windowsservercore-ltsc2022"
     ],
     "version": "28.2.2"
   },
