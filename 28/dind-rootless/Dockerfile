@@ -8,7 +8,8 @@ FROM docker:28-dind
 
 # busybox "ip" is insufficient:
 #   [rootlesskit:child ] error: executing [[ip tuntap add name tap0 mode tap] [ip link set tap0 address 02:50:00:00:00:01]]: exit status 1
-RUN apk add --no-cache iproute2 fuse-overlayfs
+# slirp4netns can be selected as rootlesskit's net driver using "-e DOCKERD_ROOTLESS_ROOTLESSKIT_NET=slirp4netns"
+RUN apk add --no-cache iproute2 fuse-overlayfs slirp4netns
 
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
