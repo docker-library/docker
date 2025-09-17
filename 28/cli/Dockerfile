@@ -11,7 +11,9 @@ RUN apk add --no-cache \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client \
 # https://github.com/docker-library/docker/issues/482#issuecomment-2197116408
-		git
+		git \
+# https://github.com/docker-library/busybox/issues/230
+		mount
 
 # ensure that nsswitch.conf is set up for Go's "netgo" implementation (which Docker explicitly uses)
 # - https://github.com/moby/moby/blob/v24.0.6/hack/make.sh#L111

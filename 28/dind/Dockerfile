@@ -22,6 +22,7 @@ RUN set -eux; \
 		xfsprogs \
 		xz \
 		zfs \
+		mount \
 	;
 
 # dind might be used on systems where the nf_tables kernel module isn't available. In that case,
