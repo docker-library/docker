@@ -40,9 +40,9 @@ RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	Write-Host 'Complete.';
 
 # https://github.com/docker-library/docker/issues/409#issuecomment-1462868414
-ENV DOCKER_BUILDX_VERSION 0.28.0
-ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.28.0/buildx-v0.28.0.windows-amd64.exe
-ENV DOCKER_BUILDX_SHA256 0e8d520269cbd3401de6fee5c5fe48d5a9750805aa0a04d5443eba6b33ba63ee
+ENV DOCKER_BUILDX_VERSION 0.29.0
+ENV DOCKER_BUILDX_URL https://github.com/docker/buildx/releases/download/v0.29.0/buildx-v0.29.0.windows-amd64.exe
+ENV DOCKER_BUILDX_SHA256 d58e5a3eeef59fff460cc2a7f3b501222ce137e6afeb4cc528c658d9363cac26
 RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	Write-Host ('Creating {0} ...' -f $dir); \
 	New-Item -ItemType Directory $dir -Force; \
