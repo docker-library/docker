@@ -2,21 +2,21 @@
   "28": {
     "arches": {
       "amd64": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-28.5.0.tgz",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-28.5.0.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-28.5.1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-28.5.1.tgz"
       },
       "arm32v6": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-28.5.0.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-28.5.1.tgz"
       },
       "arm32v7": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-28.5.0.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-28.5.1.tgz"
       },
       "arm64v8": {
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-28.5.0.tgz",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-28.5.0.tgz"
+        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-28.5.1.tgz",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-28.5.1.tgz"
       },
       "windows-amd64": {
-        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-28.5.0.zip"
+        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-28.5.1.zip"
       }
     },
     "buildx": {
@@ -167,7 +167,7 @@
       "windows/windowsservercore-ltsc2025",
       "windows/windowsservercore-ltsc2022"
     ],
-    "version": "28.5.0"
+    "version": "28.5.1"
   },
   "28-rc": null
 }
