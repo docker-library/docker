@@ -46,8 +46,8 @@ dindLatest="$(
 dockerVersions="$(
 	git ls-remote --tags https://github.com/docker/docker.git \
 		| cut -d$'\t' -f2 \
-		| grep '^refs/tags/v[0-9].*$' \
-		| sed 's!^refs/tags/v!!; s!\^{}$!!' \
+		| grep '^refs/tags/\(docker-\)\?v[0-9].*$' \
+		| sed 's!^refs/tags/\(docker-\)\?v!!; s!\^{}$!!' \
 		| sort -u \
 		| gawk '
 			{ data[lines++] = $0 }
