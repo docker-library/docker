@@ -35,7 +35,7 @@ RUN set -eux; \
 		ip6tables-restore \
 	; do \
 # "iptables-save" -> "iptables-legacy-save", "ip6tables" -> "ip6tables-legacy", etc.
-# https://pkgs.alpinelinux.org/contents?branch=v3.22&name=iptables-legacy&arch=x86_64
+# https://pkgs.alpinelinux.org/contents?branch=v3.23&name=iptables-legacy&arch=x86_64
 		b="$(command -v "${f/tables/tables-legacy}")"; \
 		"$b" --version; \
 		ln -svT "$b" "/usr/local/sbin/.iptables-legacy/$f"; \
