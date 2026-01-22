@@ -192,82 +192,82 @@
     "buildx": {
       "arches": {
         "amd64": {
-          "file": "buildx-v0.30.1.linux-amd64",
-          "sha256": "c37114fcd034025ec68e224657c8a5a850df472ded3ddcbca75ad3a7ebb9710d",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-amd64"
+          "file": "buildx-v0.31.0.linux-amd64",
+          "sha256": "39cc424a730d8b7364c23a137582cb29e7f024b175bb595001ff6f90121b005b",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-amd64"
         },
         "arm32v6": {
-          "file": "buildx-v0.30.1.linux-arm-v6",
-          "sha256": "348d17c7cc881e9268255d6f404669ae29789003575d1da9d97b51cd6ca7f0dd",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-arm-v6"
+          "file": "buildx-v0.31.0.linux-arm-v6",
+          "sha256": "fad601a520d9da32ff72d5f844c08318bb66db7a9c150e01541170e4e275a724",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm-v6"
         },
         "arm32v7": {
-          "file": "buildx-v0.30.1.linux-arm-v7",
-          "sha256": "32646cb57c43640a71c81f206897b78a8f1abe6b6db62bab115b5940fc5be884",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-arm-v7"
+          "file": "buildx-v0.31.0.linux-arm-v7",
+          "sha256": "68f3aff3e29d9c013a90bec8cd841a86d57670394870fe0aaaceafcdd28f4071",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm-v7"
         },
         "arm64v8": {
-          "file": "buildx-v0.30.1.linux-arm64",
-          "sha256": "31d012d52d6df68aef4b55db62330967b562811f0de30cdfaa4505f314797c76",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-arm64"
+          "file": "buildx-v0.31.0.linux-arm64",
+          "sha256": "3192d6deafed620132da1acd7c68499e163c814bc2be988a3eb2c5302764a30a",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm64"
         },
         "freebsd-amd64": {
-          "file": "buildx-v0.30.1.freebsd-amd64",
-          "sha256": "a5e3b8ebb9e1eec8db470dfe8e9a02971bc76c7f7152310247ff619645335b2c",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.freebsd-amd64"
+          "file": "buildx-v0.31.0.freebsd-amd64",
+          "sha256": "4093af8a217fc492409d54b495cb77718a209678aef25f86c64b244fca5c9a34",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.freebsd-amd64"
         },
         "freebsd-arm64v8": {
-          "file": "buildx-v0.30.1.freebsd-arm64",
-          "sha256": "e2665c6eab1dfe3c7294a7799370a26469c170761bf30f6c28b9858c529deb0c",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.freebsd-arm64"
+          "file": "buildx-v0.31.0.freebsd-arm64",
+          "sha256": "c3d7c338a9c4cfd859094b5a65cbb99bcc76f0ecc8920daa83ecd3b360261f56",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.freebsd-arm64"
         },
         "netbsd-amd64": {
-          "file": "buildx-v0.30.1.netbsd-amd64",
-          "sha256": "94e3c850a2593cbf5d18b87caf6b28063048b00f86f5c7991e6ca3b95eb78af8",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.netbsd-amd64"
+          "file": "buildx-v0.31.0.netbsd-amd64",
+          "sha256": "72889de9e57a968c611b9cdee8fee9a65b5fd8e4eb98100e7239cf9a747d07bf",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.netbsd-amd64"
         },
         "netbsd-arm64v8": {
-          "file": "buildx-v0.30.1.netbsd-arm64",
-          "sha256": "495b84d03440cd5494de87b21a8f109d4924ed3191975bf335f0520c77beee55",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.netbsd-arm64"
+          "file": "buildx-v0.31.0.netbsd-arm64",
+          "sha256": "f8cc61c794c24fb53001514dd63805a703becd3c06ddcdc217f417d5bdb21340",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.netbsd-arm64"
         },
         "openbsd-amd64": {
-          "file": "buildx-v0.30.1.openbsd-amd64",
-          "sha256": "65f26756f30e0d5f1d6dc93cf4f870fb84811d2728585ff27d7fb77c0c8facd5",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.openbsd-amd64"
+          "file": "buildx-v0.31.0.openbsd-amd64",
+          "sha256": "32d996e2702e8612d3d6569ce421036e538d5c37f385f4a0dddd450826007a17",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.openbsd-amd64"
         },
         "openbsd-arm64v8": {
-          "file": "buildx-v0.30.1.openbsd-arm64",
-          "sha256": "a63c1fb292f0d79a9bc11880d13270a3cdbcb5fd50fc8cbf8ce3d558ce91bdec",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.openbsd-arm64"
+          "file": "buildx-v0.31.0.openbsd-arm64",
+          "sha256": "f810e0b1203f5101f4c84d0f0377b350f90142dc8effb8f0ae3f2714dc80740e",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.openbsd-arm64"
         },
         "ppc64le": {
-          "file": "buildx-v0.30.1.linux-ppc64le",
-          "sha256": "13523e8d1820019f404df31c7ec17c7a76c16f638dd04acc33f5d141f683247c",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-ppc64le"
+          "file": "buildx-v0.31.0.linux-ppc64le",
+          "sha256": "fe18282ceb82368e3b7fd79277e34d9904dfbfd0318a3c9fa2e4a2ab12f932e6",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-ppc64le"
         },
         "riscv64": {
-          "file": "buildx-v0.30.1.linux-riscv64",
-          "sha256": "86af30811ceaad9fc34a6bc02e5d093d1460ec24f125c47e639ed1fac9effe83",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-riscv64"
+          "file": "buildx-v0.31.0.linux-riscv64",
+          "sha256": "bb01f095fb6b3734e352c4f58b7ef294f054d990c899fbfcaf5aa3fe1efbd83c",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-riscv64"
         },
         "s390x": {
-          "file": "buildx-v0.30.1.linux-s390x",
-          "sha256": "b752c6824bcc355b012d6f595987706fef15243792fe755f50de76c979bc592d",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-s390x"
+          "file": "buildx-v0.31.0.linux-s390x",
+          "sha256": "b03b64ab619c073edbaa310d83f275c52b7380abf080d35ea936696eab42aba1",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-s390x"
         },
         "windows-amd64": {
-          "file": "buildx-v0.30.1.windows-amd64.exe",
-          "sha256": "3c48e2da717c55518cf22a5b372f48f54cf3a58c9fae675b818a3311775e1b71",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.windows-amd64.exe"
+          "file": "buildx-v0.31.0.windows-amd64.exe",
+          "sha256": "4718e18d07e96b87c21ad7a025d21ac1b5d2caf91448c864623dbd2f778fd192",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.windows-amd64.exe"
         },
         "windows-arm64v8": {
-          "file": "buildx-v0.30.1.windows-arm64.exe",
-          "sha256": "a5270fa6b53604cdc510300e9752e1e15afdfba7b2cea2aea5b6d4b609034e74",
-          "url": "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.windows-arm64.exe"
+          "file": "buildx-v0.31.0.windows-arm64.exe",
+          "sha256": "a261a1a5c1fedcc937c7db96234bab0ad0e7e0d5578815520b574dcb505e76d3",
+          "url": "https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.windows-arm64.exe"
         }
       },
-      "version": "0.30.1"
+      "version": "0.31.0"
     },
     "compose": {
       "arches": {
