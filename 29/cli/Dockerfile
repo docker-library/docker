@@ -105,7 +105,7 @@ RUN set -eux; \
 
 ENV DOCKER_COMPOSE_VERSION 5.0.2
 
-COPY modprobe.sh /usr/local/bin/modprobe
+#COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/
 
 # https://github.com/docker-library/docker/pull/166
