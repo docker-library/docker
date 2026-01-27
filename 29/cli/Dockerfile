@@ -147,8 +147,6 @@ RUN set -eux; \
 	mv -vT 'docker-compose' "$plugin"; \
 	chmod +x "$plugin"; \
 	\
-	ln -sv "$plugin" /usr/local/bin/; \
-	docker-compose --version; \
 	docker compose version
 
 # COPY modprobe.sh /usr/local/bin/modprobe
