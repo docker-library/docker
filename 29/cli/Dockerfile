@@ -25,6 +25,8 @@ RUN set -eux; \
 
 ENV DOCKER_VERSION 29.2.0
 
+RUN set -eux
+
 ENV DOCKER_COMPOSE_VERSION 5.0.2
 
 COPY modprobe.sh /usr/local/bin/modprobe
