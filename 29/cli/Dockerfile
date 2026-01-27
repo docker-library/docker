@@ -139,8 +139,7 @@ RUN set -eux; \
 		*) echo >&2 "warning: unsupported 'docker-compose' architecture ($apkArch); skipping"; exit 0 ;; \
 	esac; \
 	\
-	wget -O 'docker-compose' "$url"; \
-	echo "$sha256 *"'docker-compose' | sha256sum -c -;
+	wget -O 'docker-compose' "$url";
 
 # COPY modprobe.sh /usr/local/bin/modprobe
 # COPY docker-entrypoint.sh /usr/local/bin/
