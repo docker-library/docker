@@ -25,7 +25,7 @@ RUN set -eux; \
 
 ENV DOCKER_VERSION 29.2.0
 
-RUN set -eux
+RUN echo hello
 
 ENV DOCKER_COMPOSE_VERSION 5.0.2
 
