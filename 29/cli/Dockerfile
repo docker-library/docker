@@ -17,7 +17,7 @@ RUN apk add --no-cache \
 # - https://github.com/moby/moby/blob/v24.0.6/hack/make.sh#L111
 # - https://github.com/golang/go/blob/go1.19.13/src/net/conf.go#L227-L303
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
-# RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
+RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
 
 # pre-add a "docker" group for socket usage
 RUN set -eux; \
