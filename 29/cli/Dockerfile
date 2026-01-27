@@ -143,8 +143,7 @@ RUN set -eux; \
 	echo "$sha256 *"'docker-compose' | sha256sum -c -; \
 	\
 	plugin='/usr/local/libexec/docker/cli-plugins/docker-compose'; \
-	mkdir -p "$(dirname "$plugin")"; \
-	mv -vT 'docker-compose' "$plugin";
+	mkdir -p "$(dirname "$plugin")";
 
 # COPY modprobe.sh /usr/local/bin/modprobe
 # COPY docker-entrypoint.sh /usr/local/bin/
