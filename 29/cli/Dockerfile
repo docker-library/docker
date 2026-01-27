@@ -144,8 +144,7 @@ RUN set -eux; \
 	\
 	plugin='/usr/local/libexec/docker/cli-plugins/docker-compose'; \
 	mkdir -p "$(dirname "$plugin")"; \
-	mv -vT 'docker-compose' "$plugin"; \
-	chmod +x "$plugin";
+	mv -vT 'docker-compose' "$plugin";
 
 # COPY modprobe.sh /usr/local/bin/modprobe
 # COPY docker-entrypoint.sh /usr/local/bin/
