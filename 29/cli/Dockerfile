@@ -104,9 +104,6 @@ RUN set -eux; \
 	docker buildx version
 
 ENV DOCKER_COMPOSE_VERSION 5.0.2
-RUN set -eux; \
-	\
-	apkArch="$(apk --print-arch)";
 
 # COPY modprobe.sh /usr/local/bin/modprobe
 # COPY docker-entrypoint.sh /usr/local/bin/
