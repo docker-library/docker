@@ -140,10 +140,7 @@ RUN set -eux; \
 	esac; \
 	\
 	wget -O 'docker-compose' "$url"; \
-	echo "$sha256 *"'docker-compose' | sha256sum -c -; \
-	\
-	plugin='/usr/local/libexec/docker/cli-plugins/docker-compose'; \
-	mkdir -p "$(dirname "$plugin")";
+	echo "$sha256 *"'docker-compose' | sha256sum -c -;
 
 # COPY modprobe.sh /usr/local/bin/modprobe
 # COPY docker-entrypoint.sh /usr/local/bin/
