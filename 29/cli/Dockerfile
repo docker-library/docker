@@ -25,38 +25,6 @@ RUN set -eux; \
 
 ENV DOCKER_VERSION 29.2.0
 
-RUN set -eux; \
-	\
-	apkArch="$(apk --print-arch)"; \
-	case "$apkArch" in \
-		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-29.2.0.tgz'; \
-			;; \
-		'armhf') \
-			url='https://download.docker.com/linux/static/stable/armel/docker-29.2.0.tgz'; \
-			;; \
-		'armv7') \
-			url='https://download.docker.com/linux/static/stable/armhf/docker-29.2.0.tgz'; \
-			;; \
-		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-29.2.0.tgz'; \
-			;; \
-		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
-	esac; \
-	\
-	wget -O 'docker.tgz' "$url"; \
-	\
-	tar --extract \
-		--file docker.tgz \
-		--strip-components 1 \
-		--directory /usr/local/bin/ \
-		--no-same-owner \
-		'docker/docker' \
-	; \
-	rm docker.tgz; \
-	\
-	docker --version
-
 ENV DOCKER_COMPOSE_VERSION 5.0.2
 
 COPY modprobe.sh /usr/local/bin/modprobe
