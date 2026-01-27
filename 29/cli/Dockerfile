@@ -57,51 +57,51 @@ RUN set -eux; \
 	\
 	docker --version
 
-#ENV DOCKER_BUILDX_VERSION 0.31.0
-#RUN set -eux; \
-#	\
-#	apkArch="$(apk --print-arch)"; \
-#	case "$apkArch" in \
-#		'x86_64') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-amd64'; \
-#			sha256='39cc424a730d8b7364c23a137582cb29e7f024b175bb595001ff6f90121b005b'; \
-#			;; \
-#		'armhf') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm-v6'; \
-#			sha256='fad601a520d9da32ff72d5f844c08318bb66db7a9c150e01541170e4e275a724'; \
-#			;; \
-#		'armv7') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm-v7'; \
-#			sha256='68f3aff3e29d9c013a90bec8cd841a86d57670394870fe0aaaceafcdd28f4071'; \
-#			;; \
-#		'aarch64') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm64'; \
-#			sha256='3192d6deafed620132da1acd7c68499e163c814bc2be988a3eb2c5302764a30a'; \
-#			;; \
-#		'ppc64le') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-ppc64le'; \
-#			sha256='fe18282ceb82368e3b7fd79277e34d9904dfbfd0318a3c9fa2e4a2ab12f932e6'; \
-#			;; \
-#		'riscv64') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-riscv64'; \
-#			sha256='bb01f095fb6b3734e352c4f58b7ef294f054d990c899fbfcaf5aa3fe1efbd83c'; \
-#			;; \
-#		's390x') \
-#			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-s390x'; \
-#			sha256='b03b64ab619c073edbaa310d83f275c52b7380abf080d35ea936696eab42aba1'; \
-#			;; \
-#		*) echo >&2 "warning: unsupported 'docker-buildx' architecture ($apkArch); skipping"; exit 0 ;; \
-#	esac; \
-#	\
-#	wget -O 'docker-buildx' "$url"; \
-#	echo "$sha256 *"'docker-buildx' | sha256sum -c -; \
-#	\
-#	plugin='/usr/local/libexec/docker/cli-plugins/docker-buildx'; \
-#	mkdir -p "$(dirname "$plugin")"; \
-#	mv -vT 'docker-buildx' "$plugin"; \
-#	chmod +x "$plugin"; \
-#	\
-#	docker buildx version
+ENV DOCKER_BUILDX_VERSION 0.31.0
+RUN set -eux; \
+	\
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-amd64'; \
+			sha256='39cc424a730d8b7364c23a137582cb29e7f024b175bb595001ff6f90121b005b'; \
+			;; \
+		'armhf') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm-v6'; \
+			sha256='fad601a520d9da32ff72d5f844c08318bb66db7a9c150e01541170e4e275a724'; \
+			;; \
+		'armv7') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm-v7'; \
+			sha256='68f3aff3e29d9c013a90bec8cd841a86d57670394870fe0aaaceafcdd28f4071'; \
+			;; \
+		'aarch64') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-arm64'; \
+			sha256='3192d6deafed620132da1acd7c68499e163c814bc2be988a3eb2c5302764a30a'; \
+			;; \
+		'ppc64le') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-ppc64le'; \
+			sha256='fe18282ceb82368e3b7fd79277e34d9904dfbfd0318a3c9fa2e4a2ab12f932e6'; \
+			;; \
+		'riscv64') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-riscv64'; \
+			sha256='bb01f095fb6b3734e352c4f58b7ef294f054d990c899fbfcaf5aa3fe1efbd83c'; \
+			;; \
+		's390x') \
+			url='https://github.com/docker/buildx/releases/download/v0.31.0/buildx-v0.31.0.linux-s390x'; \
+			sha256='b03b64ab619c073edbaa310d83f275c52b7380abf080d35ea936696eab42aba1'; \
+			;; \
+		*) echo >&2 "warning: unsupported 'docker-buildx' architecture ($apkArch); skipping"; exit 0 ;; \
+	esac; \
+	\
+	wget -O 'docker-buildx' "$url"; \
+	echo "$sha256 *"'docker-buildx' | sha256sum -c -; \
+	\
+	plugin='/usr/local/libexec/docker/cli-plugins/docker-buildx'; \
+	mkdir -p "$(dirname "$plugin")"; \
+	mv -vT 'docker-buildx' "$plugin"; \
+	chmod +x "$plugin"; \
+	\
+	docker buildx version
 #
 #ENV DOCKER_COMPOSE_VERSION 5.0.2
 #RUN set -eux; \
