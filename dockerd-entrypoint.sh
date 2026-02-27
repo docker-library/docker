@@ -1,4 +1,10 @@
 #!/bin/sh
+#
+# Recognized environment variables:
+# * DOCKERD_ROOTLESS_ROOTLESSKIT_NET=(slirp4netns|vpnkit): the rootlesskit network driver. Defaults to "vpnkit".
+# * DOCKERD_ROOTLESS_ROOTLESSKIT_MTU=NUM: the MTU value for the rootlesskit network driver. Defaults to 1500.
+# * DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK=(true|false): prohibit connections to 127.0.0.1 on the host (including via 10.0.2.2, in the case of slirp4netns). Defaults to "true".
+
 set -eu
 
 _tls_ensure_private() {
@@ -216,11 +222,18 @@ if [ "$1" = 'dockerd' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need 'user.max_user_namespaces' (/proc/sys/user/max_user_namespaces) set to a sufficiently large value"
 			exit 1
 		fi
+
+		DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK=${DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK:-true}
+		host_loopback="--disable-host-loopback"
+		if [ "$DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK" = "false" ]; then
+			host_loopback=""
+		fi
+
 		# TODO overlay support detection?
 		exec rootlesskit \
 			--net="${DOCKERD_ROOTLESS_ROOTLESSKIT_NET:-vpnkit}" \
 			--mtu="${DOCKERD_ROOTLESS_ROOTLESSKIT_MTU:-1500}" \
-			--disable-host-loopback \
+			$host_loopback \
 			--port-driver=builtin \
 			--copy-up=/etc \
 			--copy-up=/run \
