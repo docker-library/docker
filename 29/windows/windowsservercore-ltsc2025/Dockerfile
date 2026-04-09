@@ -61,9 +61,9 @@ RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	docker buildx version; \
 	\
 	Write-Host 'Complete.';
-ENV DOCKER_COMPOSE_VERSION 5.1.1
-ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v5.1.1/docker-compose-windows-x86_64.exe
-ENV DOCKER_COMPOSE_SHA256 f7ad2f6965c88153e4902019ec86e95414f0025cba0b6440f328f935a1f8b12b
+ENV DOCKER_COMPOSE_VERSION 5.1.2
+ENV DOCKER_COMPOSE_URL https://github.com/docker/compose/releases/download/v5.1.2/docker-compose-windows-x86_64.exe
+ENV DOCKER_COMPOSE_SHA256 00e839301ca18ee5109b3ef086788f3a281c317c0b77ba42a06fc6f806401255
 RUN $dir = ('{0}\docker\cli-plugins' -f $env:ProgramFiles); \
 	Write-Host ('Creating {0} ...' -f $dir); \
 	New-Item -ItemType Directory $dir -Force; \
