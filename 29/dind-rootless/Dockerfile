@@ -8,7 +8,8 @@ FROM docker:29-dind
 
 # busybox "ip" is insufficient:
 #   [rootlesskit:child ] error: executing [[ip tuntap add name tap0 mode tap] [ip link set tap0 address 02:50:00:00:00:01]]: exit status 1
-# slirp4netns can be selected as rootlesskit's net driver using "-e DOCKERD_ROOTLESS_ROOTLESSKIT_NET=slirp4netns"
+# slirp4netns is recommended as rootlesskit's net driver
+# https://github.com/rootless-containers/rootlesskit/blob/be156df0429551f5c23dc61dd07201b33076ff1d/docs/network.md#--netslirp4netns-recommended
 RUN apk add --no-cache iproute2 fuse-overlayfs slirp4netns
 
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
@@ -25,10 +26,10 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-29.4.3.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-29.5.0.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-29.4.3.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-29.5.0.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'rootless.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
@@ -40,12 +41,10 @@ RUN set -eux; \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		'docker-rootless-extras/rootlesskit' \
-		'docker-rootless-extras/vpnkit' \
 	; \
 	rm rootless.tgz; \
 	\
-	rootlesskit --version; \
-	vpnkit --version
+	rootlesskit --version
 
 # pre-create "/var/lib/docker" for our rootless user
 RUN set -eux; \
