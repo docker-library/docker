@@ -218,7 +218,7 @@ if [ "$1" = 'dockerd' ]; then
 		fi
 		# TODO overlay support detection?
 		exec rootlesskit \
-			--net="${DOCKERD_ROOTLESS_ROOTLESSKIT_NET:-vpnkit}" \
+			--net="${DOCKERD_ROOTLESS_ROOTLESSKIT_NET:-slirp4netns}" \
 			--mtu="${DOCKERD_ROOTLESS_ROOTLESSKIT_MTU:-1500}" \
 			--disable-host-loopback \
 			--port-driver=builtin \
