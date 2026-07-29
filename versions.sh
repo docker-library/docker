@@ -63,7 +63,14 @@ buildxVersions="$(
 buildx=
 buildxVersion=
 for buildxVersion in $buildxVersions; do
-	if checksums="$(_curl "https://github.com/docker/buildx/releases/download/v${buildxVersion}/checksums.txt")"; then
+	# checksums.txt -> linux + *bsd checksums
+	# checksums-signed.txt -> windows + darwin checksums (see also https://github.com/docker/buildx/pull/3978)
+	# fail if one is missing
+	if \
+		checksums="$(_curl "https://github.com/docker/buildx/releases/download/v${buildxVersion}/checksums.txt")" \
+		&& checksums+=$'\n' \
+		&& checksums+="$(_curl "https://github.com/docker/buildx/releases/download/v${buildxVersion}/checksums-signed.txt")" \
+	; then
 		buildx="$(jq <<<"$checksums" -csR --arg version "$buildxVersion" '
 			rtrimstr("\n") | split("\n")
 			| map(
