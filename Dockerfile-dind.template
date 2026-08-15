@@ -64,11 +64,17 @@ RUN set -eux; \
 		--no-same-owner \
 # we exclude the CLI binary because we already extracted that over in the "docker:{{ env.version }}-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
 		--exclude 'docker/docker' \
+{{ if .version == "29.8.2" then "" else ( -}}
+# exclude containerd, relying on the "embedded containerd" instead: https://github.com/moby/moby/pull/53388 (makes for a smaller image)
+		--exclude 'docker/containerd' \
+{{ ) end -}}
 	; \
 	rm docker.tgz; \
 	\
 	dockerd --version; \
+{{ if .version == "29.8.2" then ( -}}
 	containerd --version; \
+{{ ) else "" end -}}
 	ctr --version; \
 	runc --version
 
