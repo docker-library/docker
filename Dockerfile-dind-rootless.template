@@ -5,7 +5,7 @@ FROM docker:{{ env.version }}-dind
 #   [rootlesskit:child ] error: executing [[ip tuntap add name tap0 mode tap] [ip link set tap0 address 02:50:00:00:00:01]]: exit status 1
 # slirp4netns is recommended as rootlesskit's net driver
 # https://github.com/rootless-containers/rootlesskit/blob/be156df0429551f5c23dc61dd07201b33076ff1d/docs/network.md#--netslirp4netns-recommended
-RUN apk add --no-cache iproute2 fuse-overlayfs slirp4netns
+RUN apk add --no-cache iproute2 fuse-overlayfs slirp4netns passt
 
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
