@@ -16,6 +16,7 @@ RUN set -eux; \
 		openssl \
 		pigz \
 		shadow-uidmap \
+		util-linux-misc \
 		xz \
 	;
 
