@@ -161,7 +161,7 @@ if [ "$1" = 'dockerd' ]; then
 		# https://git.netfilter.org/iptables/tree/iptables/nft-shared.c?id=f5cf76626d95d2c491a80288bccc160c53b44e88#n420
 		# https://github.com/docker-library/docker/pull/468#discussion_r1442131459
 		for f in /proc/net/ip_tables_names /proc/net/ip6_tables_names /proc/net/arp_tables_names; do
-			if b="$(cat "$f")" && [ -n "$b" ]; then
+			if [ -r "$f" ] && b="$(cat "$f")" && [ -n "$b" ]; then
 				exit 0
 			fi
 		done
