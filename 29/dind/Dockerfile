@@ -56,16 +56,16 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-29.8.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-29.9.0.tgz'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/stable/armel/docker-29.8.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armel/docker-29.9.0.tgz'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/stable/armhf/docker-29.8.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armhf/docker-29.9.0.tgz'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-29.8.2.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-29.9.0.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
@@ -79,11 +79,12 @@ RUN set -eux; \
 		--no-same-owner \
 # we exclude the CLI binary because we already extracted that over in the "docker:29-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
 		--exclude 'docker/docker' \
+# exclude containerd, relying on the "embedded containerd" instead: https://github.com/moby/moby/pull/53388 (makes for a smaller image)
+		--exclude 'docker/containerd' \
 	; \
 	rm docker.tgz; \
 	\
 	dockerd --version; \
-	containerd --version; \
 	ctr --version; \
 	runc --version
 
