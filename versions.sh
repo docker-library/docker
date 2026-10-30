@@ -39,12 +39,12 @@ _curl() {
 }
 
 dindLatest="$(
-	_curl -H 'Accept: application/json' 'https://github.com/docker/docker/commits/master/hack/dind.atom' \
+	_curl -H 'Accept: application/json' 'https://github.com/moby/moby/commits/master/hack/dind.atom' \
 		| jq -r '.payload | first(.. | .commits?[]?.oid)'
 )"
 
 dockerVersions="$(
-	git ls-remote --tags https://github.com/docker/docker.git \
+	git ls-remote --tags https://github.com/moby/moby.git \
 		| jq --raw-input --null-input --raw-output '
 			[ inputs | capture("refs/tags/(docker-)?v(?<version>[0-9.a-z-]+)($|\\^)") | .version ]
 			| unique_by( split(".") | map(tonumber? // .) )
