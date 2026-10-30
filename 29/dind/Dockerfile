@@ -88,11 +88,11 @@ RUN set -eux; \
 	ctr --version; \
 	runc --version
 
-# https://github.com/docker/docker/tree/master/hack/dind
+# https://github.com/moby/moby/tree/master/hack/dind
 ENV DIND_COMMIT 8d9e3502aba39127e4d12196dae16d306f76993d
 
 RUN set -eux; \
-	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/moby/moby/${DIND_COMMIT}/hack/dind"; \
 	chmod +x /usr/local/bin/dind
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
