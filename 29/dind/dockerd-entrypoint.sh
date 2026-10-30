@@ -230,6 +230,24 @@ if [ "$1" = 'dockerd' ]; then
 		# if we have the (mostly defunct now) Docker-in-Docker wrapper script, use it
 		set -- '/usr/local/bin/dind' "$@"
 	fi
+
+	# cgroup v2: make sure we are at the root of our own cgroup namespace
+	# Kubernetes runs privileged containers in the host's cgroup namespace (https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/2254-cgroup-v2#cgroup-namespace), so "dind" would set up nesting at the *host's* cgroup root and dockerd would create its containers in "/docker/<id>" next to "kubepods" -- outside the pod's cgroup, and thus outside its limits and accounting
+	# see https://github.com/moby/moby/issues/45378 (and https://github.com/moby/buildkit/pull/6368 for the same fix in buildkit's image)
+	if [ -f /sys/fs/cgroup/cgroup.controllers ] && [ "$(sed -n 's/^0:://p' /proc/self/cgroup)" != '/' ]; then
+		# re-mount /sys/fs/cgroup so it is rooted at the new namespace, keeping the existing mount options (the kernel applies them to the whole hierarchy)
+		cgroupns='
+			opts="$(grep " /sys/fs/cgroup cgroup2 " /proc/self/mounts | tail -n1 | cut -d" " -f4)"
+			umount /sys/fs/cgroup
+			mount -t cgroup2 -o "$opts" cgroup2 /sys/fs/cgroup
+			exec "$@"
+		'
+		if unshare --cgroup --mount sh -ec "$cgroupns" sh true 2>/dev/null; then
+			set -- unshare --cgroup --mount sh -ec "$cgroupns" sh "$@"
+		else
+			echo >&2 'warning: unable to create a cgroup namespace; containers will be created outside of the cgroup of this container'
+		fi
+	fi
 else
 	# if it isn't `dockerd` we're trying to run, pass it through `docker-entrypoint.sh` so it gets `DOCKER_HOST` set appropriately too
 	set -- docker-entrypoint.sh "$@"
