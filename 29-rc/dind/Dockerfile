@@ -83,7 +83,9 @@ RUN set -eux; \
 	esac; \
 	\
 	wget -O 'docker.tgz' "$url"; \
-	echo "$sha256 *"'docker.tgz' | sha256sum -c -; \
+	if [ -n "${sha256:-}" ]; then \
+		echo "$sha256 *"'docker.tgz' | sha256sum -c -; \
+	fi; \
 	\
 	tar --extract \
 		--file docker.tgz \
