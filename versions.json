@@ -182,26 +182,35 @@
   "29-rc": {
     "arches": {
       "amd64": {
+        "dockerSha256": "d023bcab935f045548c5df79ea96d1f3fccbc091cf9a8347139154859f4767b8",
         "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-29.10.0-rc.1.tgz",
+        "rootlessExtrasSha256": "e63ea3c6e4a28575be61bae88303b335c9637198d79a1b1aaae17ad0f955abc9",
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-29.10.0-rc.1.tgz"
       },
       "arm32v6": {
+        "dockerSha256": "55aedd3f6b42d8dd3e397358f0ca4fb321cb89cce325b9a239842866ecee3f8f",
         "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-29.10.0-rc.1.tgz"
       },
       "arm32v7": {
+        "dockerSha256": "d244956ea5ba6b9ca88acd24b6cc67ee5bd56c39f1d870a8d317ec472b0cc223",
         "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-29.10.0-rc.1.tgz"
       },
       "arm64v8": {
+        "dockerSha256": "48348b68501015c3d9cc2c2a0344588eb0676cf68c38dd4ffd881a75e2d8662c",
         "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-29.10.0-rc.1.tgz",
+        "rootlessExtrasSha256": "2db6e2f180b66a4b5f6555f56041c85e55537230aaf939fdf18d60e1cea59c9e",
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-29.10.0-rc.1.tgz"
       },
       "ppc64le": {
+        "dockerSha256": "1db34bee3e77a4af021631a5492b9385c3aafedd1b2aa3f693a60ca6760a3315",
         "dockerUrl": "https://download.docker.com/linux/static/test/ppc64le/docker-29.10.0-rc.1.tgz"
       },
       "s390x": {
+        "dockerSha256": "78546fc2dcf04c7844e3e3f54b05485da64c852fceee453f2c8bac7b4ecd896b",
         "dockerUrl": "https://download.docker.com/linux/static/test/s390x/docker-29.10.0-rc.1.tgz"
       },
       "windows-amd64": {
+        "dockerSha256": "d3f21d8d1487ee8a0bc936cb65c5149b1f5bebe2d05499c6bcfdcd8b81030c7b",
         "dockerUrl": "https://download.docker.com/win/static/test/x86_64/docker-29.10.0-rc.1.zip"
       }
     },

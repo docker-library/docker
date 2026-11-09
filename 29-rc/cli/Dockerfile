@@ -31,26 +31,33 @@ RUN set -eux; \
 	case "$apkArch" in \
 		'x86_64') \
 			url='https://download.docker.com/linux/static/test/x86_64/docker-29.10.0-rc.1.tgz'; \
+			sha256='d023bcab935f045548c5df79ea96d1f3fccbc091cf9a8347139154859f4767b8'; \
 			;; \
 		'armhf') \
 			url='https://download.docker.com/linux/static/test/armel/docker-29.10.0-rc.1.tgz'; \
+			sha256='55aedd3f6b42d8dd3e397358f0ca4fb321cb89cce325b9a239842866ecee3f8f'; \
 			;; \
 		'armv7') \
 			url='https://download.docker.com/linux/static/test/armhf/docker-29.10.0-rc.1.tgz'; \
+			sha256='d244956ea5ba6b9ca88acd24b6cc67ee5bd56c39f1d870a8d317ec472b0cc223'; \
 			;; \
 		'aarch64') \
 			url='https://download.docker.com/linux/static/test/aarch64/docker-29.10.0-rc.1.tgz'; \
+			sha256='48348b68501015c3d9cc2c2a0344588eb0676cf68c38dd4ffd881a75e2d8662c'; \
 			;; \
 		'ppc64le') \
 			url='https://download.docker.com/linux/static/test/ppc64le/docker-29.10.0-rc.1.tgz'; \
+			sha256='1db34bee3e77a4af021631a5492b9385c3aafedd1b2aa3f693a60ca6760a3315'; \
 			;; \
 		's390x') \
 			url='https://download.docker.com/linux/static/test/s390x/docker-29.10.0-rc.1.tgz'; \
+			sha256='78546fc2dcf04c7844e3e3f54b05485da64c852fceee453f2c8bac7b4ecd896b'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
 	wget -O 'docker.tgz' "$url"; \
+	echo "$sha256 *"'docker.tgz' | sha256sum -c -; \
 	\
 	tar --extract \
 		--file docker.tgz \

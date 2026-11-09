@@ -17,12 +17,16 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 
 ENV DOCKER_VERSION 29.10.0-rc.1
 ENV DOCKER_URL https://download.docker.com/win/static/test/x86_64/docker-29.10.0-rc.1.zip
-# TODO ENV DOCKER_SHA256
-# https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
-# (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
+ENV DOCKER_SHA256 d3f21d8d1487ee8a0bc936cb65c5149b1f5bebe2d05499c6bcfdcd8b81030c7b
 
 RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	Invoke-WebRequest -Uri $env:DOCKER_URL -OutFile 'docker.zip'; \
+	\
+	Write-Host ('Verifying sha256 ({0}) ...' -f $env:DOCKER_SHA256); \
+	if ((Get-FileHash docker.zip -Algorithm sha256).Hash -ne $env:DOCKER_SHA256) { \
+		Write-Host 'FAILED!'; \
+		exit 1; \
+	}; \
 	\
 	Write-Host 'Expanding ...'; \
 	Expand-Archive docker.zip -DestinationPath $env:ProgramFiles; \
