@@ -40,11 +40,11 @@ def download(opts):
 		| .value
 		| .[opts.urlKey] as $url
 		| (if $notSha256 then "none" else .[opts.sha256Key] end) as $sha256
-		| select($apkArch and $url and $sha256)
+		| select($apkArch and $url)
 		| ("
 		\($apkArch | @sh))
 			url=\($url | @sh);"
-			+ if $notSha256 then "" else "
+			+ if $notSha256 or ($sha256 == null) then "" else "
 			sha256=\($sha256 | @sh);"
 			end + "
 			;;"
@@ -58,7 +58,9 @@ def download(opts):
 	wget -O \(opts.target | @sh) \"$url\";"
 	,
 	if $notSha256 then "" else "
-	echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;"
+	if [ -n \"${sha256:-}\" ]; then
+		echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;
+	fi;"
 	end
 	] | add
 	| rtrimstr(";")
