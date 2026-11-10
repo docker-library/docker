@@ -269,7 +269,7 @@ for version in "${versions[@]}"; do
 							| if env.rootlessExtrasSha256 != "" then
 								.rootlessExtrasSha256 = env.rootlessExtrasSha256
 							end
-					)
+						)
 					')"
 				fi
 				;;
