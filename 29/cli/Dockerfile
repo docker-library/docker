@@ -45,9 +45,6 @@ RUN set -eux; \
 	esac; \
 	\
 	wget -O 'docker.tgz' "$url"; \
-	if [ -n "${sha256:-}" ]; then \
-		echo "$sha256 *"'docker.tgz' | sha256sum -c -; \
-	fi; \
 	\
 	tar --extract \
 		--file docker.tgz \
@@ -97,9 +94,7 @@ RUN set -eux; \
 	esac; \
 	\
 	wget -O 'docker-buildx' "$url"; \
-	if [ -n "${sha256:-}" ]; then \
-		echo "$sha256 *"'docker-buildx' | sha256sum -c -; \
-	fi; \
+	echo "$sha256 *"'docker-buildx' | sha256sum -c -; \
 	\
 	plugin='/usr/local/libexec/docker/cli-plugins/docker-buildx'; \
 	mkdir -p "$(dirname "$plugin")"; \
@@ -145,9 +140,7 @@ RUN set -eux; \
 	esac; \
 	\
 	wget -O 'docker-compose' "$url"; \
-	if [ -n "${sha256:-}" ]; then \
-		echo "$sha256 *"'docker-compose' | sha256sum -c -; \
-	fi; \
+	echo "$sha256 *"'docker-compose' | sha256sum -c -; \
 	\
 	plugin='/usr/local/libexec/docker/cli-plugins/docker-compose'; \
 	mkdir -p "$(dirname "$plugin")"; \

@@ -57,11 +57,9 @@ def download(opts):
 	
 	wget -O \(opts.target | @sh) \"$url\";"
 	,
-	if $notSha256 then "" else "
-	if [ -n \"${sha256:-}\" ]; then
-		echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;
-	fi;"
-	end
+	if opts.sha256Key and all(opts.arches[]; has(opts.sha256Key)) then "
+	echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;"
+	else "" end
 	] | add
 	| rtrimstr(";")
 	| gsub("(?<=[^[:space:]])\n"; " \\\n")

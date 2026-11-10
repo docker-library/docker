@@ -35,9 +35,6 @@ RUN set -eux; \
 	esac; \
 	\
 	wget -O 'rootless.tgz' "$url"; \
-	if [ -n "${sha256:-}" ]; then \
-		echo "$sha256 *"'rootless.tgz' | sha256sum -c -; \
-	fi; \
 	\
 	tar --extract \
 		--file rootless.tgz \
