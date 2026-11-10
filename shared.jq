@@ -57,8 +57,10 @@ def download(opts):
 	
 	wget -O \(opts.target | @sh) \"$url\";"
 	,
-	if $notSha256 or ($sha256 == null) then "" else "
-	echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;"
+	if $notSha256 then "" else "
+	if [ -n \"${sha256:-}\" ]; then
+		echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;
+	fi;"
 	end
 	] | add
 	| rtrimstr(";")

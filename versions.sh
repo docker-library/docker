@@ -266,10 +266,10 @@ for version in "${versions[@]}"; do
 					doc="$(jq <<<"$doc" -c '
 						.arches[env.bashbrewArch] |= (
 							.rootlessExtrasUrl = env.rootlessExtrasUrl
-							| if env.rootlessExtrasSha256 then
+							| if env.rootlessExtrasSha256 != "" then
 								.rootlessExtrasSha256 = env.rootlessExtrasSha256
 							end
-						}
+					)
 					')"
 				fi
 				;;
