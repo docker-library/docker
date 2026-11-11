@@ -228,7 +228,18 @@ for version in "${versions[@]}"; do
 		else
 			continue
 		fi
+		if sha256="$(_curl "$url.sha256")"; then
+			sha256="${sha256%% *}"
+			if [[ ! "$sha256" =~ ^[[:xdigit:]]{64}$ ]]; then
+				echo >&2 "error: invalid checksum for $url: '$sha256'"
+				exit 1
+			fi
 
+			export sha256
+			doc="$(jq <<<"$doc" -c '
+				.arches[env.bashbrewArch].dockerSha256 = env.sha256
+			')"
+		fi
 		hasArches["$bashbrewArch"]=1
 
 		if [ -n "$windows" ]; then
@@ -241,9 +252,24 @@ for version in "${versions[@]}"; do
 			amd64 | arm64v8)
 				rootlessExtrasUrl="https://download.docker.com/linux/static/$channel/$arch/docker-rootless-extras-$fullVersion.tgz"
 				if _curl --head "$rootlessExtrasUrl" > /dev/null; then
-					export rootlessExtrasUrl
+					if rootlessExtrasSha256="$(_curl "$rootlessExtrasUrl.sha256")"; then
+						rootlessExtrasSha256="${rootlessExtrasSha256%% *}"
+						if [[ ! "$rootlessExtrasSha256" =~ ^[[:xdigit:]]{64}$ ]]; then
+							echo >&2 "error: invalid checksum for $rootlessExtrasUrl: '$rootlessExtrasSha256'"
+							exit 1
+						fi
+					else
+						rootlessExtrasSha256=
+					fi
+
+					export rootlessExtrasUrl rootlessExtrasSha256
 					doc="$(jq <<<"$doc" -c '
-						.arches[env.bashbrewArch].rootlessExtrasUrl = env.rootlessExtrasUrl
+						.arches[env.bashbrewArch] |= (
+							.rootlessExtrasUrl = env.rootlessExtrasUrl
+							| if env.rootlessExtrasSha256 != "" then
+								.rootlessExtrasSha256 = env.rootlessExtrasSha256
+							end
+						)
 					')"
 				fi
 				;;

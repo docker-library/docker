@@ -22,7 +22,7 @@ RUN set -eux; \
 		download({
 			arches: .arches,
 			urlKey: "rootlessExtrasUrl",
-			# TODO sha256Key (once Docker publishes them 😭)
+			sha256Key: "rootlessExtrasSha256",
 			target: "rootless.tgz",
 		})
 	}}; \
