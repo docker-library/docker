@@ -56,28 +56,28 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/test/x86_64/docker-29.10.0-rc.1.tgz'; \
-			sha256='d023bcab935f045548c5df79ea96d1f3fccbc091cf9a8347139154859f4767b8'; \
+			url='https://download.docker.com/linux/static/test/x86_64/docker-29.10.0-rc.2.tgz'; \
+			sha256='f6960ea6a13bbac1a4bfdde08b13d937753d82dd083d8f29a5f855e4d157e1ee'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/test/armel/docker-29.10.0-rc.1.tgz'; \
-			sha256='55aedd3f6b42d8dd3e397358f0ca4fb321cb89cce325b9a239842866ecee3f8f'; \
+			url='https://download.docker.com/linux/static/test/armel/docker-29.10.0-rc.2.tgz'; \
+			sha256='69caab6e31d38ab4a0bfc2161d7284ea54d69a6f7d92747f03018d761ffd89f7'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/test/armhf/docker-29.10.0-rc.1.tgz'; \
-			sha256='d244956ea5ba6b9ca88acd24b6cc67ee5bd56c39f1d870a8d317ec472b0cc223'; \
+			url='https://download.docker.com/linux/static/test/armhf/docker-29.10.0-rc.2.tgz'; \
+			sha256='f0585679cc4214a6ba3c71a8def4386808de14e24b9d05f3a64e9e0107a7ae86'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/test/aarch64/docker-29.10.0-rc.1.tgz'; \
-			sha256='48348b68501015c3d9cc2c2a0344588eb0676cf68c38dd4ffd881a75e2d8662c'; \
+			url='https://download.docker.com/linux/static/test/aarch64/docker-29.10.0-rc.2.tgz'; \
+			sha256='cb4a05dd5a1f3f9812e7f2d122fdd8bea30cc182b98d9559a013573f2443474c'; \
 			;; \
 		'ppc64le') \
-			url='https://download.docker.com/linux/static/test/ppc64le/docker-29.10.0-rc.1.tgz'; \
-			sha256='1db34bee3e77a4af021631a5492b9385c3aafedd1b2aa3f693a60ca6760a3315'; \
+			url='https://download.docker.com/linux/static/test/ppc64le/docker-29.10.0-rc.2.tgz'; \
+			sha256='b075ac18d0323a28e9189dcdbf1a8875803ff2cda55899041dddbed238ebbdfc'; \
 			;; \
 		's390x') \
-			url='https://download.docker.com/linux/static/test/s390x/docker-29.10.0-rc.1.tgz'; \
-			sha256='78546fc2dcf04c7844e3e3f54b05485da64c852fceee453f2c8bac7b4ecd896b'; \
+			url='https://download.docker.com/linux/static/test/s390x/docker-29.10.0-rc.2.tgz'; \
+			sha256='bf396b9a56b35e9bdc7c7b4eaa0049b4b4d9e82684e9317921763d5c4790cf1c'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \

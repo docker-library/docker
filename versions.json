@@ -182,36 +182,36 @@
   "29-rc": {
     "arches": {
       "amd64": {
-        "dockerSha256": "d023bcab935f045548c5df79ea96d1f3fccbc091cf9a8347139154859f4767b8",
-        "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-29.10.0-rc.1.tgz",
-        "rootlessExtrasSha256": "e63ea3c6e4a28575be61bae88303b335c9637198d79a1b1aaae17ad0f955abc9",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-29.10.0-rc.1.tgz"
+        "dockerSha256": "f6960ea6a13bbac1a4bfdde08b13d937753d82dd083d8f29a5f855e4d157e1ee",
+        "dockerUrl": "https://download.docker.com/linux/static/test/x86_64/docker-29.10.0-rc.2.tgz",
+        "rootlessExtrasSha256": "6770d56b342c26542aabbc32fd27e1848aa6b53f840dc61a6c35342aefa08cfc",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/x86_64/docker-rootless-extras-29.10.0-rc.2.tgz"
       },
       "arm32v6": {
-        "dockerSha256": "55aedd3f6b42d8dd3e397358f0ca4fb321cb89cce325b9a239842866ecee3f8f",
-        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-29.10.0-rc.1.tgz"
+        "dockerSha256": "69caab6e31d38ab4a0bfc2161d7284ea54d69a6f7d92747f03018d761ffd89f7",
+        "dockerUrl": "https://download.docker.com/linux/static/test/armel/docker-29.10.0-rc.2.tgz"
       },
       "arm32v7": {
-        "dockerSha256": "d244956ea5ba6b9ca88acd24b6cc67ee5bd56c39f1d870a8d317ec472b0cc223",
-        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-29.10.0-rc.1.tgz"
+        "dockerSha256": "f0585679cc4214a6ba3c71a8def4386808de14e24b9d05f3a64e9e0107a7ae86",
+        "dockerUrl": "https://download.docker.com/linux/static/test/armhf/docker-29.10.0-rc.2.tgz"
       },
       "arm64v8": {
-        "dockerSha256": "48348b68501015c3d9cc2c2a0344588eb0676cf68c38dd4ffd881a75e2d8662c",
-        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-29.10.0-rc.1.tgz",
-        "rootlessExtrasSha256": "2db6e2f180b66a4b5f6555f56041c85e55537230aaf939fdf18d60e1cea59c9e",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-29.10.0-rc.1.tgz"
+        "dockerSha256": "cb4a05dd5a1f3f9812e7f2d122fdd8bea30cc182b98d9559a013573f2443474c",
+        "dockerUrl": "https://download.docker.com/linux/static/test/aarch64/docker-29.10.0-rc.2.tgz",
+        "rootlessExtrasSha256": "8f215560516e21c1bad7bc0dafd220e86bfef141060725d2b5263ac3426558ca",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/test/aarch64/docker-rootless-extras-29.10.0-rc.2.tgz"
       },
       "ppc64le": {
-        "dockerSha256": "1db34bee3e77a4af021631a5492b9385c3aafedd1b2aa3f693a60ca6760a3315",
-        "dockerUrl": "https://download.docker.com/linux/static/test/ppc64le/docker-29.10.0-rc.1.tgz"
+        "dockerSha256": "b075ac18d0323a28e9189dcdbf1a8875803ff2cda55899041dddbed238ebbdfc",
+        "dockerUrl": "https://download.docker.com/linux/static/test/ppc64le/docker-29.10.0-rc.2.tgz"
       },
       "s390x": {
-        "dockerSha256": "78546fc2dcf04c7844e3e3f54b05485da64c852fceee453f2c8bac7b4ecd896b",
-        "dockerUrl": "https://download.docker.com/linux/static/test/s390x/docker-29.10.0-rc.1.tgz"
+        "dockerSha256": "bf396b9a56b35e9bdc7c7b4eaa0049b4b4d9e82684e9317921763d5c4790cf1c",
+        "dockerUrl": "https://download.docker.com/linux/static/test/s390x/docker-29.10.0-rc.2.tgz"
       },
       "windows-amd64": {
-        "dockerSha256": "d3f21d8d1487ee8a0bc936cb65c5149b1f5bebe2d05499c6bcfdcd8b81030c7b",
-        "dockerUrl": "https://download.docker.com/win/static/test/x86_64/docker-29.10.0-rc.1.zip"
+        "dockerSha256": "1c9067b9ff433a94ff85507e5ba822936cfac615861684f76bc8cae6edc72451",
+        "dockerUrl": "https://download.docker.com/win/static/test/x86_64/docker-29.10.0-rc.2.zip"
       }
     },
     "buildx": {
@@ -372,6 +372,6 @@
       "windows/windowsservercore-ltsc2025",
       "windows/windowsservercore-ltsc2022"
     ],
-    "version": "29.10.0-rc.1"
+    "version": "29.10.0-rc.2"
   }
 }
