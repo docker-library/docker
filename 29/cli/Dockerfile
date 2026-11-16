@@ -23,28 +23,41 @@ RUN [ -e /etc/nsswitch.conf ] && grep '^hosts: files dns' /etc/nsswitch.conf
 RUN set -eux; \
 	addgroup -g 2375 -S docker
 
-ENV DOCKER_VERSION 29.9.3
+ENV DOCKER_VERSION 29.10.0
 
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-29.9.3.tgz'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-29.10.0.tgz'; \
+			sha256='7c1ebadc65c716cdc6d35fc78759ed0e4317debf43c21dd12f066f2006999def'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/stable/armel/docker-29.9.3.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armel/docker-29.10.0.tgz'; \
+			sha256='b3e626f7560728eb601687da86c27edf9b7dd71f6a0f00737baeeb607c0f1d68'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/stable/armhf/docker-29.9.3.tgz'; \
+			url='https://download.docker.com/linux/static/stable/armhf/docker-29.10.0.tgz'; \
+			sha256='08757af1f923c25d170211a1de8acc4e69e9cfbe7b5af63dd787afe2057efd5f'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-29.9.3.tgz'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-29.10.0.tgz'; \
+			sha256='6e5159e8b5615e0c0c2954a2a1a2a12bc65f5d9b603595dba24a10cb367408cd'; \
+			;; \
+		'ppc64le') \
+			url='https://download.docker.com/linux/static/stable/ppc64le/docker-29.10.0.tgz'; \
+			sha256='f07fe44072d1614de38effa6492f840653dfbf9e5a7d3a0a1dab4c2dad257190'; \
+			;; \
+		's390x') \
+			url='https://download.docker.com/linux/static/stable/s390x/docker-29.10.0.tgz'; \
+			sha256='09c4a2ec475121fe9c1485c65e9f54f1fa20aa4d68d0c4b271005db3943a763b'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
 	\
 	wget -O 'docker.tgz' "$url"; \
+	echo "$sha256 *"'docker.tgz' | sha256sum -c -; \
 	\
 	tar --extract \
 		--file docker.tgz \
