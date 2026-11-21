@@ -144,7 +144,7 @@ if [ "$1" = 'dockerd' ]; then
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete || :
 
-	# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
+	# containerd-shim is orphaned by design (so that it can outlive containerd) and relies on PID 1 to reap it, so we need a real init ("docker-init" is tini) or every container leaves a zombie "containerd-shim" behind -- https://github.com/docker-library/docker/issues/318#issuecomment-7059930088
 	set -- docker-init -- "$@"
 
 	iptablesLegacy=
