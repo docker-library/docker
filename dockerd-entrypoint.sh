@@ -145,7 +145,8 @@ if [ "$1" = 'dockerd' ]; then
 	find /run /var/run -iname 'docker*.pid' -delete || :
 
 	# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
-	set -- docker-init -- "$@"
+	# use -s so docker-init also registers as a subreaper and reaps orphaned processes (e.g. containerd-shim) even when it isn't PID 1, which is the case in rootless mode where rootlesskit does not create a PID namespace by default
+	set -- docker-init -s -- "$@"
 
 	iptablesLegacy=
 	if [ -n "${DOCKER_IPTABLES_LEGACY+x}" ]; then
