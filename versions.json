@@ -2,40 +2,64 @@
   "29": {
     "arches": {
       "amd64": {
-        "dockerSha256": "061642059fa7f2ed9b2f04a327a951cff4249585cf04b2661c2a6539197c9962",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-29.10.1.tgz",
+        "cliSha256": "27f08878ebbe062e4cf32f2b7c14f7a40b0fb93b92570fcd750c75de77a2fcaa",
+        "cliUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-cli_29.10.1.tgz",
+        "engineSha256": "c530efff9498c33227043061563e390739bd4cee626a958357ea0abc0d53a2a0",
+        "engineUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-engine_29.10.1.tgz",
         "rootlessExtrasSha256": "11eb5fa9a88e5971e71713aa277dbd916b7d368c6625844cacffa1c42b8df60c",
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-29.10.1.tgz"
       },
       "arm32v6": {
-        "dockerSha256": "0a5d05059d3d82099a35ec7326120f4789f43b1b238ecc318242b178b986f09c",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-29.10.1.tgz"
+        "cliSha256": "14fa0513f407ac7ea3a1eb7d6a9ad88f07f8a64e26665490ad75913bae9fcee3",
+        "cliUrl": "https://download.docker.com/linux/static/stable/armel/docker-cli_29.10.1.tgz",
+        "engineSha256": "5d399af1c9f3f29ea4765c44b888bb7bbda9f254e8bf2230fa628e65a40f3e8c",
+        "engineUrl": "https://download.docker.com/linux/static/stable/armel/docker-engine_29.10.1.tgz",
+        "rootlessExtrasSha256": "976e508d9a256322921948933798732c7b2eca875dcd8182678468b57572be0a",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/armel/docker-rootless-extras-29.10.1.tgz"
       },
       "arm32v7": {
-        "dockerSha256": "64e904668b30def335d933d5318b6310927a90a68570073d81741af78e71b1fd",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-29.10.1.tgz"
+        "cliSha256": "0c2e7e9e264f740d59895617bd539bd6e17b29a9e94e847921571cc609e13fab",
+        "cliUrl": "https://download.docker.com/linux/static/stable/armhf/docker-cli_29.10.1.tgz",
+        "engineSha256": "55105b9e8da700112ed93f40199d58862f5376c85344cbeab0622b8c124a8756",
+        "engineUrl": "https://download.docker.com/linux/static/stable/armhf/docker-engine_29.10.1.tgz",
+        "rootlessExtrasSha256": "be4c104a5b99b568671bdf29be129fcb23a08f9f0c7e3fcacd311a4593cfbff7",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/armhf/docker-rootless-extras-29.10.1.tgz"
       },
       "arm64v8": {
-        "dockerSha256": "a38c8a9ef6d17bce07499bfd3a3688542274769dc3b4f75c06ea2705fe65053e",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-29.10.1.tgz",
+        "cliSha256": "866fd254309313bf714eb8116f8ea058ada51401d2d183e7670b00bef2f2d941",
+        "cliUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-cli_29.10.1.tgz",
+        "engineSha256": "7fbc252bfacb3685d244dfbef701048de7640eb981f24033623f0a3af4fc48b5",
+        "engineUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-engine_29.10.1.tgz",
         "rootlessExtrasSha256": "9b677eb3bb0ce21c4e6aae3e44678309250f1aa6fbc95f66a94de7b88b04e45b",
         "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-29.10.1.tgz"
       },
       "ppc64le": {
-        "dockerSha256": "431f36bea426544239e95019e85a1d491b1b4817fd393fc5258fb2f000577791",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/ppc64le/docker-29.10.1.tgz"
+        "cliSha256": "c7b3761fb9b799e034071547f8ef976f0b70690c10a51835f1b9d4a696a499d5",
+        "cliUrl": "https://download.docker.com/linux/static/stable/ppc64le/docker-cli_29.10.1.tgz",
+        "engineSha256": "755c3d51f4377d9269f72198293f34e4ca8a58af7716085426c4f50c85d88fc1",
+        "engineUrl": "https://download.docker.com/linux/static/stable/ppc64le/docker-engine_29.10.1.tgz",
+        "rootlessExtrasSha256": "725aeeb0858684127197ca8bb5fc2a8132f1adb4a2597dd9502fd954d39a5ed0",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/ppc64le/docker-rootless-extras-29.10.1.tgz"
       },
       "riscv64": {
-        "dockerSha256": "f30e9d9f642feaf4bc175d8c114f4b0bd4fa0032f2352ffbc1d3269592b9c6bf",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/riscv64/docker-29.10.1.tgz"
+        "cliSha256": "19c956d1330598ef980c4e9d4065890e61d3c7154b801679792be8a37171f3ef",
+        "cliUrl": "https://download.docker.com/linux/static/stable/riscv64/docker-cli_29.10.1.tgz",
+        "engineSha256": "09161e18d14c1cfea30e15f56a5535ebf0eef29fd641c8d70017ba21ad7ee873",
+        "engineUrl": "https://download.docker.com/linux/static/stable/riscv64/docker-engine_29.10.1.tgz",
+        "rootlessExtrasSha256": "8e7aa270a82cdf4ae7b96f3672053cf65617da2a575e636d0e51d03a846fe0c2",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/riscv64/docker-rootless-extras-29.10.1.tgz"
       },
       "s390x": {
-        "dockerSha256": "c161754580a9e74a8af85a78b9ee7c79a5971676c28113b88f117cafd8036728",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/s390x/docker-29.10.1.tgz"
+        "cliSha256": "34f35ed000bf32125ff6ed6e62e2fe48f3f459da35fdd65f8a4e48a144521574",
+        "cliUrl": "https://download.docker.com/linux/static/stable/s390x/docker-cli_29.10.1.tgz",
+        "engineSha256": "ff4e6aa4f1c513862667d52facea19da235b0704404d5a52dee27059e49ecc73",
+        "engineUrl": "https://download.docker.com/linux/static/stable/s390x/docker-engine_29.10.1.tgz",
+        "rootlessExtrasSha256": "2e39dfd4130d0eb6b2cc3935672e557aca9cea354f3ffc96a186ecb5c4786771",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/s390x/docker-rootless-extras-29.10.1.tgz"
       },
       "windows-amd64": {
-        "dockerSha256": "cda7ca0c5d7f7373ffbeec50d811de64c22efc43d2cbd10a2e4c95fdea3f4a09",
-        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-29.10.1.zip"
+        "cliSha256": "0a9434db59f31b58853e9620c54f11488fcec8d2527d223a9d8dbb2273c74c44",
+        "cliUrl": "https://download.docker.com/win/static/stable/x86_64/docker-cli_29.10.1.zip"
       }
     },
     "buildx": {
@@ -188,7 +212,77 @@
       },
       "version": "5.8.0"
     },
+    "containerd": {
+      "arches": {
+        "amd64": {
+          "file": "containerd-static-2.4.2-linux-amd64.tar.gz",
+          "sha256": "da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe",
+          "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-amd64.tar.gz"
+        },
+        "arm64v8": {
+          "file": "containerd-static-2.4.2-linux-arm64.tar.gz",
+          "sha256": "37b84b9534533672528141b9d815f58621a2fe5deee2daa84317800255756689",
+          "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-arm64.tar.gz"
+        },
+        "ppc64le": {
+          "file": "containerd-static-2.4.2-linux-ppc64le.tar.gz",
+          "sha256": "62e789018b9684b15c6cc0fa75566da7170b8cc9dc4655a91b637d8ec58e451a",
+          "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-ppc64le.tar.gz"
+        },
+        "riscv64": {
+          "file": "containerd-static-2.4.2-linux-riscv64.tar.gz",
+          "sha256": "9cc5ff951d351e7c9166486f7805be4e5ec1e9442113987700ba5218a18d205c",
+          "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-riscv64.tar.gz"
+        },
+        "s390x": {
+          "file": "containerd-static-2.4.2-linux-s390x.tar.gz",
+          "sha256": "cf4b70a6e74cacd6b06d909f7d16217f8ed10bffe32191197f3232e51c49fe86",
+          "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-s390x.tar.gz"
+        }
+      },
+      "version": "2.4.2"
+    },
     "dindCommit": "8d9e3502aba39127e4d12196dae16d306f76993d",
+    "runc": {
+      "arches": {
+        "amd64": {
+          "file": "runc.amd64",
+          "sha256": "50dcc0b257d724fe07f3852c2dda52340223f038227c7572644eec870741223e",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.amd64"
+        },
+        "arm32v6": {
+          "file": "runc.armel",
+          "sha256": "339e33a5ee914e902b938e8fdc3487110f240dd82f23fadefa53c169c2982d06",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.armel"
+        },
+        "arm32v7": {
+          "file": "runc.armhf",
+          "sha256": "411d8039888d71a167e6125f5bef2aef71f2ab80769c507cbeb7f51ba54f6392",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.armhf"
+        },
+        "arm64v8": {
+          "file": "runc.arm64",
+          "sha256": "07b52aee923cc432c38fe4fb6809a08fc6471994efed650af3635350588a20be",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.arm64"
+        },
+        "ppc64le": {
+          "file": "runc.ppc64le",
+          "sha256": "e773f7c88e536edfbd690ce3aa4efb192beaeabeeaedf8dd4400aff91a97c028",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.ppc64le"
+        },
+        "riscv64": {
+          "file": "runc.riscv64",
+          "sha256": "780dd7e9e269d94c759c8578ef030b18c8d22fc4a43b8209465d5e485015f9bb",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.riscv64"
+        },
+        "s390x": {
+          "file": "runc.s390x",
+          "sha256": "159738a9e973b5c74aa9dec39845c36809d9dbf61fd2bc859f6a455436c17976",
+          "url": "https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.s390x"
+        }
+      },
+      "version": "1.5.3"
+    },
     "variants": [
       "cli",
       "dind",

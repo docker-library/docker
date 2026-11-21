@@ -39,12 +39,18 @@ def download(opts):
 		| ($bashbrewArch | apkArch) as $apkArch
 		| .value
 		| .[opts.urlKey] as $url
-		| (if $notSha256 then "none" else .[opts.sha256Key] end) as $sha256
 		| select($apkArch and $url)
+		| (
+			if $notSha256 then
+				"none"
+			else
+				.[opts.sha256Key] // error("missing \(opts.sha256Key) for \($bashbrewArch)")
+			end
+		) as $sha256
 		| ("
 		\($apkArch | @sh))
 			url=\($url | @sh);"
-			+ if $notSha256 or ($sha256 == null) then "" else "
+			+ if $notSha256 then "" else "
 			sha256=\($sha256 | @sh);"
 			end + "
 			;;"
@@ -57,7 +63,7 @@ def download(opts):
 	
 	wget -O \(opts.target | @sh) \"$url\";"
 	,
-	if opts.sha256Key and all(opts.arches[]; has(opts.sha256Key)) then "
+	if opts.sha256Key then "
 	echo \"$sha256 *\"\(opts.target | @sh) | sha256sum -c -;"
 	else "" end
 	] | add

@@ -51,8 +51,8 @@ RUN set -eux; \
 	{{
 		download({
 			arches: .arches,
-			urlKey: "dockerUrl",
-			sha256Key: "dockerSha256",
+			urlKey: "engineUrl",
+			sha256Key: "engineSha256",
 			target: "docker.tgz",
 		})
 	}}; \
@@ -62,20 +62,50 @@ RUN set -eux; \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		--no-same-owner \
-# we exclude the CLI binary because we already extracted that over in the "docker:{{ env.version }}-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
-		--exclude 'docker/docker' \
-{{ if .version == "29.8.2" then "" else ( -}}
-# exclude containerd, relying on the "embedded containerd" instead: https://github.com/moby/moby/pull/53388 (makes for a smaller image)
-		--exclude 'docker/containerd' \
-{{ ) end -}}
+# only "bin" (not the "doc" directory with a README and LICENSE we do not want in /usr/local/bin)
+		'bin' \
 	; \
 	rm docker.tgz; \
 	\
-	dockerd --version; \
-{{ if .version == "29.8.2" then ( -}}
-	containerd --version; \
-{{ ) else "" end -}}
-	ctr --version; \
+	dockerd --version
+
+# the "embedded containerd" means we only need the shim and "ctr" from containerd (not the whole daemon): https://github.com/moby/moby/pull/53388 (makes for a smaller image)
+RUN set -eux; \
+	\
+	{{
+		download({
+			arches: .containerd.arches,
+			urlKey: "url",
+			sha256Key: "sha256",
+			target: "containerd.tgz",
+		})
+	}}; \
+	\
+	tar --extract \
+		--file containerd.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+		--no-same-owner \
+		'bin/containerd-shim-runc-v2' \
+		'bin/ctr' \
+	; \
+	rm containerd.tgz; \
+	\
+	ctr --version
+
+RUN set -eux; \
+	\
+	{{
+		download({
+			arches: .runc.arches,
+			urlKey: "url",
+			sha256Key: "sha256",
+			target: "runc",
+		})
+	}}; \
+	\
+	chmod +x runc; \
+	mv -vT runc /usr/local/bin/runc; \
 	runc --version
 
 # https://github.com/moby/moby/tree/master/hack/dind
