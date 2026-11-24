@@ -4,18 +4,6 @@ set -Eeuo pipefail
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-if [ "$#" -eq 0 ]; then
-	versions="$(jq -r '
-		to_entries
-		# sort version numbers with highest first
-		| sort_by(.key | split("[.-]"; "") | map(try tonumber // .))
-		| reverse
-		| map(if .value then .key | @sh else empty end)
-		| join(" ")
-	' versions.json)"
-	eval "set -- $versions"
-fi
-
 # get the most recent commit which modified any of "$@"
 fileCommit() {
 	git log -1 --format='format:%H' HEAD -- "$@"
@@ -38,55 +26,45 @@ dirCommit() {
 	)
 }
 
+# "29/cli", "29/windows/windowsservercore-ltsc2025", etc
+dirs="$(
+	jq --raw-output '
+		to_entries[]
+		| select(.value)
+		| .key as $version
+		| .value.variants[]
+		| "\($version)/\(.)"
+		| @sh
+	' versions.json
+)"
+eval "dirs=( $dirs )"
+
+commits='{}'
+parents='{}'
+for dir in "${dirs[@]}"; do
+	[ -f "$dir/Dockerfile" ] || continue
+
+	commit="$(dirCommit "$dir")"
+	commits="$(jq <<<"$commits" --compact-output --arg dir "$dir" --arg commit "$commit" '.[$dir] = $commit')"
+
+	# only "cli" is FROM our base image (the other variants are FROM it), so that is where we find out which parent image's architectures limit us
+	version="${dir%%/*}"
+	if [ "${dir#*/}" = 'cli' ]; then
+		parent="$(jq --raw-input --null-input --raw-output 'first(inputs | capture("^FROM (?<parent>[^ ]+)"; "i").parent)' "$dir/Dockerfile")"
+		[ -n "$parent" ]
+		parents="$(jq <<<"$parents" --compact-output --arg version "$version" --arg parent "$parent" '.[$version] = $parent')"
+	fi
+done
+
 getArches() {
-	local repo="$1"; shift
-	local officialImagesBase="${BASHBREW_LIBRARY:-https://github.com/docker-library/official-images/raw/HEAD/library}/"
+	local oiBase="${BASHBREW_LIBRARY:-https://github.com/docker-library/official-images/raw/HEAD/library}/"
 
-	local parentRepoToArchesStr
-	parentRepoToArchesStr="$(
-		find -name 'Dockerfile' -exec awk -v officialImagesBase="$officialImagesBase" '
-				toupper($1) == "FROM" && $2 !~ /^('"$repo"'|scratch|.*\/.*)(:|$)/ {
-					printf "%s%s\n", officialImagesBase, $2
-				}
-			' '{}' + \
-			| sort -u \
-			| xargs -r bashbrew cat --format '["{{ .RepoName }}:{{ .TagName }}"]="{{ join " " .TagEntry.Architectures }}"'
-	)"
-	eval "declare -g -A parentRepoToArches=( $parentRepoToArchesStr )"
+	# grab supported architectures for each parent image
+	jq <<<"$parents" --raw-output --arg oiBase "$oiBase" '[ .[] ] | unique[] | $oiBase + .' \
+		| xargs -r bashbrew cat --format '{ {{ join ":" .RepoName .TagName | json }}: {{ json .TagEntry.Architectures }} }' \
+		| jq --compact-output --slurp 'add // {}'
 }
-getArches 'docker'
-
-versionArches() {
-	local version="$1"; shift
-	local variant="${1:-}"
-	local selector='dockerUrl'
-	if [[ "$variant" = *rootless ]]; then
-		selector='rootlessExtrasUrl'
-	fi
-
-	if [[ "$variant" = windows/* ]]; then
-		version="$version" jq -r '
-			.[env.version].arches
-			| keys[]
-			| select(startswith("windows-"))
-		' versions.json | sort
-		return
-	fi
-
-	local parent parentArches
-	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/cli/Dockerfile")"
-	parentArches="${parentRepoToArches[$parent]:-}"
-
-	comm -12 \
-		<(
-			version="$version" jq -r --arg selector "$selector" '
-				.[env.version].arches | to_entries[]
-				| select(.value[$selector])
-				| .key
-			' versions.json | sort
-		) \
-		<(xargs -n1 <<<"$parentArches" | sort)
-}
+parentsArches="$(getArches)"
 
 cat <<-EOH
 # this file is generated via https://github.com/docker-library/docker/blob/$(fileCommit "$self")/$self
@@ -97,113 +75,11 @@ GitRepo: https://github.com/docker-library/docker.git
 Builder: buildkit
 EOH
 
-# prints "$2$1$3$1...$N"
-join() {
-	local sep="$1"; shift
-	local out; printf -v out "${sep//%/%%}%s" "$@"
-	echo "${out#$sep}"
-}
-
-# used for auto-detecting the "latest" of each channel (for tagging it appropriately)
-# https://blog.docker.com/2017/03/docker-enterprise-edition/
-declare -A latestChannelRelease=()
-
-for version; do
-	export version
-	rcVersion="${version%-rc}"
-
-	if ! fullVersion="$(jq -er '.[env.version] | if . then .version else empty end' versions.json)"; then
-		# support running "generate-stackbrew-library.sh" on a singular "null" version ("20.10-rc" when the RC is older than the GA release, for example)
-		continue
-	fi
-
-	versionAliases=()
-	if [ "$version" = "$rcVersion" ]; then
-		while [ "$fullVersion" != "$rcVersion" -a "${fullVersion%[.-]*}" != "$fullVersion" ]; do
-			versionAliases+=( $fullVersion )
-			fullVersion="${fullVersion%[.-]*}"
-		done
-	else
-		versionAliases+=( $fullVersion )
-	fi
-	if [ "$fullVersion" != "$version" ]; then
-		versionAliases+=(
-			$version
-		)
-	fi
-
-	# add a few channel/version-related aliases
-	majorVersion="${version%%.*}"
-	if [ "$version" != "$rcVersion" ] && [ -z "${latestChannelRelease['rc']:-}" ]; then
-		versionAliases+=( 'rc' )
-		latestChannelRelease['rc']="$version"
-	fi
-	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease[$majorVersion]:-}" ]; then
-		versionAliases+=( "$majorVersion" )
-		latestChannelRelease["$majorVersion"]="$version"
-	fi
-
-	channel='stable'
-	if [ "$rcVersion" != "$version" ]; then
-		channel='test'
-	fi
-	# every release goes into the "test" channel, so the biggest numbered release wins (RC or not)
-	if [ -z "${latestChannelRelease['test']:-}" ]; then
-		latestChannelRelease['test']="$version"
-	fi
-	if [ "$version" = "$rcVersion" ] && [ -z "${latestChannelRelease['latest']:-}" ]; then
-		versionAliases+=( 'latest' )
-		latestChannelRelease['latest']="$version"
-	fi
-
-	variants="$(jq -r '.[env.version].variants | map(@sh) | join(" ")' versions.json)"
-	eval "variants=( $variants )"
-
-	for v in "${variants[@]}"; do
-		dir="$version/$v"
-		[ -f "$dir/Dockerfile" ] || continue
-
-		commit="$(dirCommit "$dir")"
-
-		variant="$(basename "$v")"
-		variantAliases=( "${versionAliases[@]/%/-$variant}" )
-		variantAliases=( "${variantAliases[@]//latest-/}" )
-
-		if [ "$variant" = 'cli' ] || [ "$variant" = 'dind' ]; then
-			parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/cli/Dockerfile")"
-			alpine="${parent#*:}" # "3.14"
-			suiteAliases=( "${variantAliases[0]}" ) # only "X.Y.Z-foo"
-			suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
-			suiteAliases=( "${suiteAliases[@]//latest-/}" )
-			variantAliases+=( "${suiteAliases[@]}" )
-			if [ "$variant" = 'dind' ]; then
-				# add "latest" aliases
-				suiteAliases=( "${versionAliases[0]}" ) # only "X.Y.Z-foo"
-				suiteAliases=( "${suiteAliases[@]/%/-alpine$alpine}" )
-				suiteAliases=( "${suiteAliases[@]//latest-/}" )
-				variantAliases+=( "${versionAliases[@]}" "${suiteAliases[@]}" )
-			fi
-		fi
-
-		sharedTags=()
-		if [[ "$variant" == windowsservercore* ]]; then
-			sharedTags=( "${versionAliases[@]/%/-windowsservercore}" )
-			sharedTags=( "${sharedTags[@]//latest-/}" )
-		fi
-
-		echo
-		echo "Tags: $(join ', ' "${variantAliases[@]}")"
-		if [ "${#sharedTags[@]}" -gt 0 ]; then
-			echo "SharedTags: $(join ', ' "${sharedTags[@]}")"
-		fi
-		cat <<-EOE
-			Architectures: $(join ', ' $(versionArches "$version" "$v"))
-			GitCommit: $commit
-			Directory: $dir
-		EOE
-		if [ "$variant" != "$v" ]; then
-			echo "Constraints: $variant"
-			echo 'Builder: classic' # no Windows support in BuildKit (yet)
-		fi
-	done
-done
+exec jq \
+	--raw-output \
+	--argjson commits "$commits" \
+	--argjson parents "$parents" \
+	--argjson parentsArches "$parentsArches" \
+	--from-file generate-stackbrew-library.jq \
+	versions.json \
+	--args -- "$@"

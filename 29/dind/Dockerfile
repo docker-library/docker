@@ -56,32 +56,32 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-29.10.1.tgz'; \
-			sha256='061642059fa7f2ed9b2f04a327a951cff4249585cf04b2661c2a6539197c9962'; \
+			url='https://download.docker.com/linux/static/stable/x86_64/docker-engine_29.10.1.tgz'; \
+			sha256='c530efff9498c33227043061563e390739bd4cee626a958357ea0abc0d53a2a0'; \
 			;; \
 		'armhf') \
-			url='https://download.docker.com/linux/static/stable/armel/docker-29.10.1.tgz'; \
-			sha256='0a5d05059d3d82099a35ec7326120f4789f43b1b238ecc318242b178b986f09c'; \
+			url='https://download.docker.com/linux/static/stable/armel/docker-engine_29.10.1.tgz'; \
+			sha256='5d399af1c9f3f29ea4765c44b888bb7bbda9f254e8bf2230fa628e65a40f3e8c'; \
 			;; \
 		'armv7') \
-			url='https://download.docker.com/linux/static/stable/armhf/docker-29.10.1.tgz'; \
-			sha256='64e904668b30def335d933d5318b6310927a90a68570073d81741af78e71b1fd'; \
+			url='https://download.docker.com/linux/static/stable/armhf/docker-engine_29.10.1.tgz'; \
+			sha256='55105b9e8da700112ed93f40199d58862f5376c85344cbeab0622b8c124a8756'; \
 			;; \
 		'aarch64') \
-			url='https://download.docker.com/linux/static/stable/aarch64/docker-29.10.1.tgz'; \
-			sha256='a38c8a9ef6d17bce07499bfd3a3688542274769dc3b4f75c06ea2705fe65053e'; \
+			url='https://download.docker.com/linux/static/stable/aarch64/docker-engine_29.10.1.tgz'; \
+			sha256='7fbc252bfacb3685d244dfbef701048de7640eb981f24033623f0a3af4fc48b5'; \
 			;; \
 		'ppc64le') \
-			url='https://download.docker.com/linux/static/stable/ppc64le/docker-29.10.1.tgz'; \
-			sha256='431f36bea426544239e95019e85a1d491b1b4817fd393fc5258fb2f000577791'; \
+			url='https://download.docker.com/linux/static/stable/ppc64le/docker-engine_29.10.1.tgz'; \
+			sha256='755c3d51f4377d9269f72198293f34e4ca8a58af7716085426c4f50c85d88fc1'; \
 			;; \
 		'riscv64') \
-			url='https://download.docker.com/linux/static/stable/riscv64/docker-29.10.1.tgz'; \
-			sha256='f30e9d9f642feaf4bc175d8c114f4b0bd4fa0032f2352ffbc1d3269592b9c6bf'; \
+			url='https://download.docker.com/linux/static/stable/riscv64/docker-engine_29.10.1.tgz'; \
+			sha256='09161e18d14c1cfea30e15f56a5535ebf0eef29fd641c8d70017ba21ad7ee873'; \
 			;; \
 		's390x') \
-			url='https://download.docker.com/linux/static/stable/s390x/docker-29.10.1.tgz'; \
-			sha256='c161754580a9e74a8af85a78b9ee7c79a5971676c28113b88f117cafd8036728'; \
+			url='https://download.docker.com/linux/static/stable/s390x/docker-engine_29.10.1.tgz'; \
+			sha256='ff4e6aa4f1c513862667d52facea19da235b0704404d5a52dee27059e49ecc73'; \
 			;; \
 		*) echo >&2 "error: unsupported 'docker.tgz' architecture ($apkArch)"; exit 1 ;; \
 	esac; \
@@ -94,15 +94,96 @@ RUN set -eux; \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		--no-same-owner \
-# we exclude the CLI binary because we already extracted that over in the "docker:29-cli" image that we're FROM and we don't want to duplicate those bytes again in this layer
-		--exclude 'docker/docker' \
-# exclude containerd, relying on the "embedded containerd" instead: https://github.com/moby/moby/pull/53388 (makes for a smaller image)
-		--exclude 'docker/containerd' \
+# only "bin" (not the "doc" directory with a README and LICENSE we do not want in /usr/local/bin)
+		'bin' \
 	; \
 	rm docker.tgz; \
 	\
-	dockerd --version; \
-	ctr --version; \
+	dockerd --version
+
+# the "embedded containerd" means we only need the shim and "ctr" from containerd (not the whole daemon): https://github.com/moby/moby/pull/53388 (makes for a smaller image)
+RUN set -eux; \
+	\
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-amd64.tar.gz'; \
+			sha256='da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe'; \
+			;; \
+		'aarch64') \
+			url='https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-arm64.tar.gz'; \
+			sha256='37b84b9534533672528141b9d815f58621a2fe5deee2daa84317800255756689'; \
+			;; \
+		'ppc64le') \
+			url='https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-ppc64le.tar.gz'; \
+			sha256='62e789018b9684b15c6cc0fa75566da7170b8cc9dc4655a91b637d8ec58e451a'; \
+			;; \
+		'riscv64') \
+			url='https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-riscv64.tar.gz'; \
+			sha256='9cc5ff951d351e7c9166486f7805be4e5ec1e9442113987700ba5218a18d205c'; \
+			;; \
+		's390x') \
+			url='https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-static-2.4.2-linux-s390x.tar.gz'; \
+			sha256='cf4b70a6e74cacd6b06d909f7d16217f8ed10bffe32191197f3232e51c49fe86'; \
+			;; \
+		*) echo >&2 "error: unsupported 'containerd.tgz' architecture ($apkArch)"; exit 1 ;; \
+	esac; \
+	\
+	wget -O 'containerd.tgz' "$url"; \
+	echo "$sha256 *"'containerd.tgz' | sha256sum -c -; \
+	\
+	tar --extract \
+		--file containerd.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+		--no-same-owner \
+		'bin/containerd-shim-runc-v2' \
+		'bin/ctr' \
+	; \
+	rm containerd.tgz; \
+	\
+	ctr --version
+
+RUN set -eux; \
+	\
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		'x86_64') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.amd64'; \
+			sha256='50dcc0b257d724fe07f3852c2dda52340223f038227c7572644eec870741223e'; \
+			;; \
+		'armhf') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.armel'; \
+			sha256='339e33a5ee914e902b938e8fdc3487110f240dd82f23fadefa53c169c2982d06'; \
+			;; \
+		'armv7') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.armhf'; \
+			sha256='411d8039888d71a167e6125f5bef2aef71f2ab80769c507cbeb7f51ba54f6392'; \
+			;; \
+		'aarch64') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.arm64'; \
+			sha256='07b52aee923cc432c38fe4fb6809a08fc6471994efed650af3635350588a20be'; \
+			;; \
+		'ppc64le') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.ppc64le'; \
+			sha256='e773f7c88e536edfbd690ce3aa4efb192beaeabeeaedf8dd4400aff91a97c028'; \
+			;; \
+		'riscv64') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.riscv64'; \
+			sha256='780dd7e9e269d94c759c8578ef030b18c8d22fc4a43b8209465d5e485015f9bb'; \
+			;; \
+		's390x') \
+			url='https://github.com/opencontainers/runc/releases/download/v1.5.3/runc.s390x'; \
+			sha256='159738a9e973b5c74aa9dec39845c36809d9dbf61fd2bc859f6a455436c17976'; \
+			;; \
+		*) echo >&2 "error: unsupported 'runc' architecture ($apkArch)"; exit 1 ;; \
+	esac; \
+	\
+	wget -O 'runc' "$url"; \
+	echo "$sha256 *"'runc' | sha256sum -c -; \
+	\
+	chmod +x runc; \
+	mv -vT runc /usr/local/bin/runc; \
 	runc --version
 
 # https://github.com/moby/moby/tree/master/hack/dind

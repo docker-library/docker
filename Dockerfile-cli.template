@@ -25,8 +25,8 @@ RUN set -eux; \
 	{{
 		download({
 			arches: .arches,
-			urlKey: "dockerUrl",
-			sha256Key: "dockerSha256",
+			urlKey: "cliUrl",
+			sha256Key: "cliSha256",
 			target: "docker.tgz",
 		})
 	}}; \
@@ -36,7 +36,7 @@ RUN set -eux; \
 		--strip-components 1 \
 		--directory /usr/local/bin/ \
 		--no-same-owner \
-		'docker/docker' \
+		'bin/docker' \
 	; \
 	rm docker.tgz; \
 	\
