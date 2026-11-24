@@ -191,6 +191,11 @@ if [ "$1" = 'dockerd' ]; then
 	iptables --version # so users can see whether it's legacy or not
 
 	uid="$(id -u)"
+	if [ "$uid" = '0' ] && iptables -nL DOCKER > /dev/null 2>&1; then
+		# a "DOCKER" chain before our dockerd has even started means another daemon is (or was) managing iptables in this network namespace (usually "--network=host" on a host that also runs Docker); dockerd flushes and recreates its chains on startup, which wipes the other daemon's rules
+		echo >&2 "warning: found an existing 'DOCKER' iptables chain; another Docker daemon seems to share this network namespace (--network=host?)"
+		echo >&2 "warning: starting dockerd here will reset that daemon's iptables rules and can break networking for its containers"
+	fi
 	if [ "$uid" != '0' ]; then
 		# if we're not root, we must be trying to run rootless
 		if ! command -v rootlesskit > /dev/null; then
