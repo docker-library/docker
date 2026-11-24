@@ -2,36 +2,40 @@
   "29": {
     "arches": {
       "amd64": {
-        "dockerSha256": "7c1ebadc65c716cdc6d35fc78759ed0e4317debf43c21dd12f066f2006999def",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-29.10.0.tgz",
-        "rootlessExtrasSha256": "a4ad65be3921ac3e45f3fe69893f5edbd078cb3b4a6499fe13288053553dce25",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-29.10.0.tgz"
+        "dockerSha256": "061642059fa7f2ed9b2f04a327a951cff4249585cf04b2661c2a6539197c9962",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-29.10.1.tgz",
+        "rootlessExtrasSha256": "11eb5fa9a88e5971e71713aa277dbd916b7d368c6625844cacffa1c42b8df60c",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-29.10.1.tgz"
       },
       "arm32v6": {
-        "dockerSha256": "b3e626f7560728eb601687da86c27edf9b7dd71f6a0f00737baeeb607c0f1d68",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-29.10.0.tgz"
+        "dockerSha256": "0a5d05059d3d82099a35ec7326120f4789f43b1b238ecc318242b178b986f09c",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armel/docker-29.10.1.tgz"
       },
       "arm32v7": {
-        "dockerSha256": "08757af1f923c25d170211a1de8acc4e69e9cfbe7b5af63dd787afe2057efd5f",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-29.10.0.tgz"
+        "dockerSha256": "64e904668b30def335d933d5318b6310927a90a68570073d81741af78e71b1fd",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/armhf/docker-29.10.1.tgz"
       },
       "arm64v8": {
-        "dockerSha256": "6e5159e8b5615e0c0c2954a2a1a2a12bc65f5d9b603595dba24a10cb367408cd",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-29.10.0.tgz",
-        "rootlessExtrasSha256": "6d08caae6a61e58f86c21dc94bcbf87f2b7a82bb634ef051243004a7f92f9e07",
-        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-29.10.0.tgz"
+        "dockerSha256": "a38c8a9ef6d17bce07499bfd3a3688542274769dc3b4f75c06ea2705fe65053e",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-29.10.1.tgz",
+        "rootlessExtrasSha256": "9b677eb3bb0ce21c4e6aae3e44678309250f1aa6fbc95f66a94de7b88b04e45b",
+        "rootlessExtrasUrl": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-29.10.1.tgz"
       },
       "ppc64le": {
-        "dockerSha256": "f07fe44072d1614de38effa6492f840653dfbf9e5a7d3a0a1dab4c2dad257190",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/ppc64le/docker-29.10.0.tgz"
+        "dockerSha256": "431f36bea426544239e95019e85a1d491b1b4817fd393fc5258fb2f000577791",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/ppc64le/docker-29.10.1.tgz"
+      },
+      "riscv64": {
+        "dockerSha256": "f30e9d9f642feaf4bc175d8c114f4b0bd4fa0032f2352ffbc1d3269592b9c6bf",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/riscv64/docker-29.10.1.tgz"
       },
       "s390x": {
-        "dockerSha256": "09c4a2ec475121fe9c1485c65e9f54f1fa20aa4d68d0c4b271005db3943a763b",
-        "dockerUrl": "https://download.docker.com/linux/static/stable/s390x/docker-29.10.0.tgz"
+        "dockerSha256": "c161754580a9e74a8af85a78b9ee7c79a5971676c28113b88f117cafd8036728",
+        "dockerUrl": "https://download.docker.com/linux/static/stable/s390x/docker-29.10.1.tgz"
       },
       "windows-amd64": {
-        "dockerSha256": "bb894f67d85155e635ce71980fb2cf587e71dad8c41cc145c42a0de5160b6561",
-        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-29.10.0.zip"
+        "dockerSha256": "cda7ca0c5d7f7373ffbeec50d811de64c22efc43d2cbd10a2e4c95fdea3f4a09",
+        "dockerUrl": "https://download.docker.com/win/static/stable/x86_64/docker-29.10.1.zip"
       }
     },
     "buildx": {
@@ -192,7 +196,7 @@
       "windows/windowsservercore-ltsc2025",
       "windows/windowsservercore-ltsc2022"
     ],
-    "version": "29.10.0"
+    "version": "29.10.1"
   },
   "29-rc": null
 }

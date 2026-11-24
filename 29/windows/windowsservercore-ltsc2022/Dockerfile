@@ -15,9 +15,9 @@ RUN $newPath = ('{0}\docker;{1}' -f $env:ProgramFiles, $env:PATH); \
 	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine);
 # doing this first to share cache across versions more aggressively
 
-ENV DOCKER_VERSION 29.10.0
-ENV DOCKER_URL https://download.docker.com/win/static/stable/x86_64/docker-29.10.0.zip
-ENV DOCKER_SHA256 bb894f67d85155e635ce71980fb2cf587e71dad8c41cc145c42a0de5160b6561
+ENV DOCKER_VERSION 29.10.1
+ENV DOCKER_URL https://download.docker.com/win/static/stable/x86_64/docker-29.10.1.zip
+ENV DOCKER_SHA256 cda7ca0c5d7f7373ffbeec50d811de64c22efc43d2cbd10a2e4c95fdea3f4a09
 
 RUN Write-Host ('Downloading {0} ...' -f $env:DOCKER_URL); \
 	Invoke-WebRequest -Uri $env:DOCKER_URL -OutFile 'docker.zip'; \
